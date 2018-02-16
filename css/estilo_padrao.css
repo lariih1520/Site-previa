@@ -1,0 +1,269 @@
+/** 
+	Data: 07/02/2018
+	Objetivo: Padronização da estrutura, botões e estilização do site.
+ **/
+ 
+*{
+	padding:0;
+	margin:0;
+    list-style: none ;
+}
+h1{
+    font-weight: normal;
+}
+a{
+    text-decoration: none;
+}
+
+body{
+    overflow-x: hidden;
+}
+
+#principal{
+    width:100%;
+    height:auto;
+    min-width: 800px;
+    background-color: #F3F3F3;
+    border: solid 0px black;
+}
+
+nav{
+    width:100%;
+    min-width: 700px;
+    height:20px;
+    padding-top: 3px;
+    padding-bottom: 6px;
+    background-color: #29292A;
+    border: solid 1px black;
+}
+
+/*___________________*/
+/******* barra *******/
+#barra_superior{
+    margin: auto;
+    width:90%;
+}
+#barra_superior a{
+    float: left;
+    font-size: 21px;
+    color: white;
+}
+#barra_superior a:hover{
+    transition: 0.5s;
+    color: lightgray;
+}
+
+#barra_superior span{
+    float: right;
+    font-size: 18px;
+    color: #DADADA;
+}
+
+/*_________________*/
+/**** Cabecalho ****/
+header{
+    width:100%;
+    min-width: 800px;
+    height:125px;
+    background-color: #FFFFFF;
+    box-shadow: 0px 0px 5px;
+    border-bottom: solid 5px #8A0808;
+}
+#content_header{
+    width:90%;
+    height: 120px;
+    margin: 0px auto 0px auto;
+    border: solid 1px transparent /*#DADADA*/;
+}
+
+/*__________________________*/
+/***** Logotipo do site *****/
+#content_logo{
+    float: left;
+    width:140px;
+    height: 100px;
+    margin-top: 2px;
+    border: solid 1px transparent;
+}
+
+#logo{
+    width:140px;
+    height: 100px;
+    border: solid 1px transparent;
+}
+
+/*____________*/
+/*** botoes ***/
+.botao{
+    color: white;
+    cursor: pointer;
+    font-size: 22px;
+    border-radius: 5px;
+    background-color: #DF0101;
+    border: solid 1px darkred;
+    padding: 2px 5px 2px 5px;
+    box-shadow: 1px 1px 5px gray;
+}
+.botao a{
+    color: white;
+    font-size: 22px;
+}
+
+.botao a:hover {
+    color: black;
+    transition: 0.5s;
+}
+
+.botao:hover{
+    color: black;
+    transition: 0.5s;
+}
+
+.content_logar{
+    width: 130px;
+    height: 50px;
+    float: right;
+    margin: 20px;
+    border: solid 1px transparent;
+}
+
+.botao_header{
+    color: white;
+    width: 100px;
+    cursor: pointer;
+    font-size: 22px;
+    margin-left: 28px;
+    border-radius: 5px;
+    background-color: #DF0101;
+    border: solid 1px darkred;
+    padding: 2px 5px 2px 5px;
+    box-shadow: 1px 1px 5px #616161;
+}
+.tipo_login{
+    display: none;
+    width: 130px;
+    height: 50px;
+    margin-top: 4px;
+    margin-right: 5px;
+    text-align: right;
+    position: absolute;
+    border-radius: 3px;
+    box-shadow: 1px 1px 2px gray;
+    border: solid 1px gray;
+    padding: 2px 6px 4px 2px;
+}
+
+.tipo_login p{
+    margin-top: 5px;
+}
+
+.tipo_login p a{
+    color: black;
+    font-size: 16px;
+}
+
+.tipo_login p a:hover{
+    text-decoration: underline;
+}
+
+.botao_header a{
+    color: white;
+    font-size: 22px;
+}
+
+.botao_header a:hover{
+    color: black;
+    transition: 0.5s;
+}
+
+.content_logar:hover div.tipo_login{
+    display: inline-block;
+    transition: 0.8s;
+}
+
+.lado{ float: left;}
+/*___________*/
+/*** INPUT ***/
+input{
+    padding: 2px 0px 1px 3px;
+    border-radius:4px; 
+    margin-bottom: 10px;
+    border: solid 1px gray;
+    box-shadow: inset 1px 1px 1px;
+}
+select{
+    padding: 2px 0px 1px 3px;
+    border-radius:4px; 
+    margin-bottom: 10px;
+    border: solid 1px gray;
+    box-shadow: inset 1px 1px 1px;
+}
+
+#conteudo{
+    width:1000px;
+    min-width: 800px;
+    height:auto;
+    padding: 1%;
+    margin: 10px auto 5px auto;
+    border: solid 1px #FAFAFA;
+    background-color: white;
+}
+
+.titulo{
+    font-size: 25px;
+}
+.titulo_maior{
+    font-size: 28px;
+    text-align: center;
+}
+.centro{
+    text-align: center;
+}
+.desc{
+    font-size: 15px;
+}
+.alerta{
+    color: white;
+    font-size: 20px;
+    text-shadow: 0px 0px 10px red;
+}
+.carregando{
+    color:#666;
+    display:none;
+}
+
+/*_____________*/
+/*** Imagens ***/
+.icone{
+    width: 25px;
+    height: auto;
+    max-width: 100%;
+}
+
+/*_____________*/
+/**** Rodapé ****/
+footer{
+    width:100%;
+    min-width: 800px;
+    height:auto;
+    background-color: #8A0808;
+    border-bottom: solid 15px #000;
+}
+#content_footer{
+    width: 900px;
+    height:40px;
+    margin: auto;
+    font-size: 18px;
+    text-align: center;
+    padding-top: 20px;
+    border: solid 1px transparent;
+}
+#content_footer p a{
+    color: white;
+    text-decoration: none;
+}
+
+#content_footer p a:hover{
+    transition: 0.5s;
+    color: gray;
+}

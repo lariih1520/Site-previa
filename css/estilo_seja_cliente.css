@@ -1,0 +1,69 @@
+/** 
+	Data: 10/02/2018
+	Objetivo: Estilização da página cadastro de clientes.
+    Arquivos relacionados: seja-cliente.php
+ **/
+
+.titulo{
+    margin-top: 10px;
+    text-align: center;
+    border: solid 1px transparent;
+}
+.botao{
+    width: 100px;
+    height: 35px;
+    margin-left: 25px;
+    font-size: 20px;
+    margin-top: 10px;
+}
+.cont_alinhar{
+    width: 750px;
+    height: 500px;
+    margin: auto;
+    border: solid 1px transparent;
+}
+
+.lst_cadastrar_dados{
+    float: left;
+    width: 350px;
+    height: 300px;
+    margin: auto;
+    padding: 10px;
+    margin-top: 30px;
+    border: solid 1px transparent;
+}
+
+.lst_cadastrar_dados li{
+    width: 340px;
+    font-size: 20px;
+    margin-left: 10px;
+    border: solid 1px transparent;
+}
+
+.lst_cadastrar_dados li input{
+    font-size: 16px;
+}
+.lst_cadastrar_dados li select{
+    font-size: 16px;
+}
+.carregando{
+    color:#666;
+    display:none;
+}
+.alert{
+    width: 200px;
+    height: auto;
+    text-align: center;
+    padding: 5px;
+    padding-top: 10px;
+    border: solid 1px gray;
+    box-shadow: 1px 1px 5px #CDCDCD;
+}
+.botao_ok{
+    width: 80px;
+    height: 40px;
+    line-height: 2;
+    border-radius: 5px;
+    background-color: red;
+    border: solid 1px gray;
+}

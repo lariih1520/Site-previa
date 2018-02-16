@@ -1,0 +1,113 @@
+/** 
+	Data: 08/02/2018
+	Objetivo: Estilização da página index.
+ **/
+
+
+body{
+   /* background-image: url(../imagens/free-wallpaper.jpg);
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-size: 100% 100%;*/
+    background-image:linear-gradient(to bottom right, black 60%, red);
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+}
+
+#principal_index{
+	width:1000px;
+	height:500px;
+    overflow: hidden;
+	border:solid 2px transparent;
+    margin: 100px auto 0 auto;
+}
+
+#introducao{
+    float: left;
+    width:365px;
+	height:478px;
+	border:solid 1px transparent;
+    margin: 0px auto 0 auto;
+    padding: 10px;
+    color:aliceblue;
+    font-size: 25px;
+    text-align: center;
+}
+#introducao p{
+    font-size: 30px;
+    margin-bottom: 50px;
+    margin-top: 50px;
+}
+
+#introducao p.alerta{
+    color: white;
+    font-size: 20px;
+    text-shadow: 0px 0px 10px red;
+}
+
+#menu_index{
+    float: left;
+    width:580px;
+	height:478px;
+	border:solid 1px transparent;
+    margin: 0px auto 0 auto;
+    padding: 5px;
+}
+#fazer_login{
+    float: left;
+    width:335px;
+    height:110px;
+    border-radius: 5px;
+    margin: 10px 5px 5px 5px;
+    border: solid 1px white;
+    text-align: center;
+    font-size: 25px;
+    color: white;
+    padding: 80px 20px 0px 20px;
+}
+#ir_site{
+    
+}
+#ver_homens{
+    -webkit-filter:grayscale(100%);
+    filter:blackscale(100%);
+    transition: 0.3s;
+}
+#ver_mulheres{
+    -webkit-filter:grayscale(100%);
+    filter:blackscale(100%);
+    transition: 0.3s;
+}
+#seja_filiado{
+    float: left;
+    width:140px;
+    height:130px;
+    margin: 10px 5px 5px 5px;
+    border: solid 1px white;
+    border-radius: 5px;
+    text-align: center;
+    font-size: 25px;
+    padding: 60px 20px 0px 20px;
+    color: white;
+}
+
+#ir_site,
+#ver_homens,
+#ver_mulheres {
+    float: left;
+    width:140px;
+    height:110px;
+    margin: 10px 5px 5px 5px;
+    border: solid 1px white;
+    border-radius: 5px;
+    text-align: center;
+    font-size: 25px;
+    padding: 80px 20px 0px 20px;
+}
+
+a{ color: white;}
+
+a:hover{
+    color:darkgrey;
+}

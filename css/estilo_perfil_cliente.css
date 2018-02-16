@@ -1,0 +1,164 @@
+/**
+
+	Data: 09/02/2018
+	Objetivo: Estilização da página cadastro de filiado.
+
+**/
+
+/*********************************************/
+/***************** Usuário *****************/
+
+#content{
+    width: 900px;
+    height: 1000px;
+    margin: auto;
+    padding: 10px;
+    border: solid 1px transparent;
+}
+
+#foto_perfil{
+    width: 200px;
+    height: 200px;
+    overflow: hidden;
+    border-radius: 100px;
+    margin-bottom: 10px;
+    border: solid 1px black;
+}
+
+#foto_perfil img{ height: 100% !important; }
+
+/******** Editar dados do usuário *********/
+#dados{
+    width:900px;
+    height:200px;
+    margin: auto;
+    padding-top: 20px; 
+    padding-bottom: 20px; 
+    margin-bottom: 20px;
+    border-bottom: solid 1px black;
+}
+.lst_dados{
+    list-style: none;
+}
+.lst_dados li{
+    float: left;
+    width: 220px;
+    height: 50px;
+    margin-right: 2px;
+    margin-bottom: 2px;
+    border: solid 1px transparent;
+}
+.editar_dados{
+    float: left;
+    clear: both;
+    width: 100%;
+    height: 40px;
+    font-size: 20px;
+    margin-top: 10px;
+    border: solid 1px transparent;
+}
+p label{
+    font-size: 20px;
+}
+select{
+    font-size: 16px;
+}
+/********** Dados usuario ********/
+#ver_dados{
+    width:900px;
+    height:200px;
+    margin: auto;
+    padding-top: 10px; 
+    padding-bottom: 10px; 
+    margin-bottom: 20px;
+    border-bottom: solid 1px black;
+}
+.lst_dados_ver{
+    list-style: none;
+}
+.lst_dados_ver li{
+    float: left;
+    width: 160px;
+    margin-right: 18px;
+    margin-bottom: 10px;
+    border-radius: 15px;
+    padding: 2px 10px 2px 20px;
+    border: solid 1px #CDCDCD;
+}
+.lst_dados_ver li span{
+    font-size: 20px;
+}
+.label_dados{
+    font-size: 22px;
+}
+
+/********** Dados Importantes ***********/
+#informacoes{
+    height: 120px;
+    width: 900px;
+    margin-bottom: 20px;
+    border-bottom: solid 1px black;
+}
+
+
+/******** Sugestãos *********/
+#sugestoes{
+    width: 880px;
+    height: 280px;
+    margin: auto;
+    margin-bottom: 10px;
+    border: solid 1px transparent;
+}
+.lst_sugestoes li{
+    float: left;
+    width: 280px;
+    height: 190px;
+    overflow: hidden;
+    margin-right: 10px;
+    border-radius: 10px;
+    background-color: #8A0808;
+    border: solid 1px black;
+}
+label{
+    font-size: 18px;
+}
+.foto{
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+}
+.img_peril{
+    max-width: 100%;
+    height: 100%;
+}
+.titulo{
+    margin-bottom: 20px;
+}
+
+.perfil_sugestao{
+    color: white;
+    width: 272px;
+    height: 0px;
+    opacity: 0.6;
+    font-size: 20px;
+    padding-top: 5px;
+    padding-left: 5px;
+    margin-top: 185px;
+    margin-left: 0px;
+    visibility: hidden;
+    text-align: justify;
+    position: absolute;
+    border-radius: 10px;
+    background-color: #ffffff;
+    border: 1px solid black;
+    filter: alpha(opacity=60);
+}
+
+.lst_sugestoes li:hover .perfil_sugestao{
+    transition-duration: 0.5s;
+    height: 184px;
+    color: black;
+    visibility: visible;
+    margin-top: 0;
+}
+
+

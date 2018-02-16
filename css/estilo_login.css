@@ -1,0 +1,61 @@
+/** 
+	Data: 09/02/2018
+	Objetivo: Estilização da página de Login do site.
+ **/
+
+#login{
+    width: 400px;
+    height: 450px;
+    margin: auto;
+    border-radius: 20px;
+    background-color: black;
+    border: solid 1px #CDCDCD;
+    padding: 30px 25px 10px 25px;
+    box-shadow: 1px 1px 10px gray;
+}
+
+.titulo{
+    color: white;
+}
+
+.botao{
+    width: 200px;
+}
+.botao_alinhar{
+    text-align: center;
+}
+
+.alinhar{
+    width: 200px;
+    padding: 5px;
+    border: solid 1px transparent;
+    margin: 40px auto 10px auto;
+}
+
+.alinhar p{
+    color: white;
+    font-size: 20px;
+}
+
+input{
+    font-size: 15px;
+}
+
+.desc{
+    color: #969595;
+    font-size: 15px;
+    width: 300px;
+    margin: auto;
+    margin-top: 10px;
+    text-align: center;
+}
+
+.cadastre_se{
+    color: #969595;
+    width: 400px;
+    margin: auto;
+    font-size: 15px;
+    margin-top: 30px;
+    text-align: center;
+}
+
