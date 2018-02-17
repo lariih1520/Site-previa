@@ -1,0 +1,33 @@
+/**
+    Data: 16/02/2018
+    Objetivo: estilo pagina default de adm
+**/
+
+h1{
+    text-align: center;
+}
+
+.lst_adm{
+    width: 900px;
+    height: 350px;
+    margin: auto;
+    margin-top: 20px;
+    border: solid 1px white;
+}
+.lst_adm li{
+    float: left;
+    width: 370px;
+    margin: 20px;
+    font-size: 20px;
+    border-radius: 10px;
+    padding: 5px 10px 5px 10px;
+    border: solid 1px #ACACAC;
+}
+a{
+    color: black;
+}
+.lst_adm li:hover{
+    color: #454545;
+    transition: 0.5s;
+    background-color: #DCDCDC;
+}

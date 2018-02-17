@@ -1,0 +1,168 @@
+/** 
+	Data: 07/02/2018
+	Objetivo: Padronização da estrutura, botões e estilização do site.
+ **/
+ 
+*{
+	padding:0;
+	margin:0;
+    list-style: none ;
+}
+a{
+    text-decoration: none;
+}
+
+body{
+    overflow-x: hidden;
+}
+
+#principal{
+    width:100%;
+    height:auto;
+    min-width: 800px;
+    background-color: #F3F3F3;
+    border: solid 1px black;
+}
+
+/**** Cabecalho ****/
+#cabecalho{
+    width:100%;
+    min-width: 800px;
+    height:110px;
+    text-align: center;
+    background-color: #8A0808;
+    box-shadow: 0px 0px 5px;
+    border-bottom: solid 8px #000;
+}
+
+/*__________________________*/
+/***** Logotipo do site *****/
+#content_logo{
+    float: left;
+    width:140px;
+    height: 100px;
+    margin-top: 2px;
+    border: solid 1px transparent;
+}
+
+#logo{
+    width:130px;
+    height: 100px;
+    margin:auto;
+    margin-top:5px;
+    border: solid 1px transparent;
+}
+
+/*____________*/
+/*** botoes ***/
+.botao{
+    color: white;
+    cursor: pointer;
+    font-size: 22px;
+    border-radius: 5px;
+    background-color: #DF0101;
+    border: solid 1px darkred;
+    padding: 2px 5px 2px 5px;
+    box-shadow: 1px 1px 5px gray;
+}
+.botao a{
+    color: white;
+    font-size: 22px;
+}
+
+.botao a:hover {
+    color: black;
+    transition: 0.5s;
+}
+
+.botao:hover{
+    color: black;
+    transition: 0.5s;
+}
+
+.lado{ float: left;}
+/*___________*/
+/*** INPUT ***/
+input{
+    padding: 2px 0px 1px 3px;
+    border-radius:4px; 
+    margin-bottom: 10px;
+    border: solid 1px gray;
+    box-shadow: inset 1px 1px 1px;
+}
+select{
+    padding: 2px 0px 1px 3px;
+    border-radius:4px; 
+    margin-bottom: 10px;
+    border: solid 1px gray;
+    box-shadow: inset 1px 1px 1px;
+}
+
+#conteudo{
+    width:1000px;
+    min-width: 800px;
+    height:auto;
+    padding: 1%;
+    margin: 10px auto 5px auto;
+    border: solid 1px #FAFAFA;
+    background-color: white;
+}
+
+.titulo{
+    font-size: 25px;
+}
+.titulo_maior{
+    font-size: 28px;
+    text-align: center;
+}
+.centro{
+    text-align: center;
+}
+
+/*_____________*/
+/*** Imagens ***/
+.icone{
+    width: 25px;
+    height: auto;
+    max-width: 100%;
+}
+
+/*_____________*/
+/**** Rodapé ****/
+#rodape{
+    width:100%;
+    min-width: 800px;
+    height:auto;
+    background-color: #8A0808;
+    border-bottom: solid 15px #000;
+    font-size: 18px;
+    text-align: center;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    border: solid 1px transparent;
+}
+#rodape p a{
+    color: white;
+    text-decoration: none;
+}
+
+#rodape p a:hover{
+    transition: 0.5s;
+    color: gray;
+}
+
+
+
+/**********************/
+#content_rest{
+    width: 250px;
+    height: 150px;
+    margin: auto;
+    margin-top: 10%;
+    padding: 20px 25px 20px 25px;
+    box-shadow:  0px 0px 2px black;
+    border: solid 1px #CDCDCD;
+    background-color: cornsilk;
+}
+
+

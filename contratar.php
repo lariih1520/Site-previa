@@ -97,7 +97,7 @@
         <label>Estado:
         <input name="uf" type="text" id="uf" size="2" /></label><br />
         <label>
-        <input name="btn_larissa" type="submit" id="botao" /></label><br />
+        <input name="btnSalvar" type="submit" id="botao" /></label><br />
       </form>
     </body>
 

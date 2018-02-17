@@ -125,7 +125,7 @@ class PagSeguro{
 		
 		$transaction= curl_exec($curl);
 		if($transaction == 'Unauthorized'){
-			//TRANSAÇÃO NÃO AUTORIZADA
+			echo 'NÂO AUTORIZADA';
 			
 		    exit;
 		}
@@ -145,14 +145,13 @@ class PagSeguro{
 	
 		$transaction = curl_exec($curl);
 		if($transaction == 'Unauthorized') {
-			//Insira seu código avisando que o sistema está com problemas
-			//sugiro enviar um e-mail avisando para alguém fazer a manutenção
+			echo 'Erro no sistema';
 			exit;//Mantenha essa linha para evitar que o código prossiga
 		}
 		$transaction_obj = simplexml_load_string($transaction);
 		
 		if(count($transaction_obj -> error) > 0) {
-		   //Insira seu código avisando que o sistema está com problemas
+		   echo 'Erro no sistema';
 		   var_dump($transaction_obj);
 		}		
 

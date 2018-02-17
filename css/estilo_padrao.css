@@ -76,6 +76,27 @@ header{
     border: solid 1px transparent /*#DADADA*/;
 }
 
+.lst_menu{
+    float: left;
+    width: 650px;
+    height: 50px;
+    margin-top: 70px;
+    margin-left: 10%;
+    border: solid 1px transparent;
+}
+.lst_menu li{
+    float: left;
+    font-size: 20px;
+    margin-right: 2px;
+    padding: 4px 8px 4px 8px;
+}
+.lst_menu li a{color: black;}
+.lst_menu li:hover{
+    transition: 0.5s;
+    border-bottom: solid 2px black;
+}
+
+
 /*__________________________*/
 /***** Logotipo do site *****/
 #content_logo{
