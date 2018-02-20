@@ -12,6 +12,19 @@
 		<link rel="stylesheet" type="text/css" href="css/estilo_index.css" />
 	</head>
 	<body>
+        <?php
+            session_start();
+
+            if(!empty($_SESSION['id_cliente'])){
+                $lgrc = true;
+                $msg = '<a href="perfil.php?perfil=cliente"> Ir para o perfil </a>';
+
+            }else{
+                $lgrc = false;
+                $msg = '<a href="login.php"> Faça Login </a>';
+            }
+
+        ?>
 		<div id="principal_index">
 			
             <div id="introducao">
@@ -23,7 +36,7 @@
             </div>
             
             <div id="menu_index">
-                <div id="fazer_login"><a href="login.php"> Faça Login </a></div>
+                <div id="fazer_login"> <?php echo $msg ?> </div>
                 <div id="ir_site"><a href="inicio.php"> Ir para o site </a></div>
                 <div id="ver_homens"><a href="inicio.php?#homens"> Homens </a></div>
                 <div id="ver_mulheres"><a href="inicio.php?#mulheres"> Mulheres </a></div>

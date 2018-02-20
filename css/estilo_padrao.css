@@ -30,7 +30,7 @@ body{
 nav{
     width:100%;
     min-width: 700px;
-    height:20px;
+    height:25px;
     padding-top: 3px;
     padding-bottom: 6px;
     background-color: #29292A;
@@ -44,8 +44,7 @@ nav{
     width:90%;
 }
 #barra_superior a{
-    float: left;
-    font-size: 21px;
+    float: right;
     color: white;
 }
 #barra_superior a:hover{
@@ -58,6 +57,12 @@ nav{
     font-size: 18px;
     color: #DADADA;
 }
+.icon{
+    width: 25px;
+    height: 25px;
+    margin-right: 8px;
+}
+
 
 /*_________________*/
 /**** Cabecalho ****/
@@ -201,7 +206,7 @@ header{
     display: inline-block;
     transition: 0.8s;
 }
-
+.centro{text-align: center;}
 .lado{ float: left;}
 /*___________*/
 /*** INPUT ***/

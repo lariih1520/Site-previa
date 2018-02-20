@@ -6,10 +6,33 @@
                        <span class="trs prev"></span>
 
                      <!-- IMAGENS DO SLIDE -->
-                       <div id="slider">
-                          <a href="#" class="trs"><img src="imagens/free-wallpaper.jpg" alt="" /></a>
-                          <a href="#" class="trs"><img src="imagens/back.png" alt="" /></a>
-                          
+                    <div id="slider">
+                        <a href="#" class="trs"><img src="imagens/free-wallpaper.jpg" alt="" /></a>
+                        <a href="#" class="trs"><img src="imagens/back.png" alt="" /></a>
+                        <?php
+                            require_once('controller/home_controller.php');
+                            $controller = new ControllerHome();
+                            $rs = $controller->BuscarFotos();
+
+                            $cont = 0;
+                            if($rs != false){
+
+                                while($cont < count($rs)){
+                                    $img = $rs[$cont]->imagem;
+                        ?>
+                                <a href="#" class="trs"><img src="<?php echo $img ?>" alt="" /></a>
+
+                        <?php
+                                    $cont++;
+
+                                }
+
+                            }else{
+                                echo 'Ainda não há imagens';
+
+                            }
+
+                        ?>
                        </div>
 
                        <figcaption></figcaption>

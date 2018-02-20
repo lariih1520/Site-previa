@@ -12,10 +12,14 @@
 		
     <?php
         if(!empty($_GET)){
-            if($_GET['perfil'] == 'acompanhante'){ ?>  
+            if($_GET['perfil'] == 'acompanhante' && !empty($_GET['codigo'])){ ?>  
         
         <link rel="stylesheet" type="text/css" href="css/estilo_perfil_filiado.css" /> 
     
+    <?php   }elseif($_GET['perfil'] == 'acompanhante' && empty($_GET['codigo'])){ ?>
+        
+        <link rel="stylesheet" type="text/css" href="css/estilo_filiado.css" /> 
+        
     <?php   }else{ ?>  
         
         <link rel="stylesheet" type="text/css" href="css/estilo_perfil_cliente.css" /> 
@@ -40,8 +44,11 @@
                         if ($_GET['perfil'] == 'acompanhante'){
                             include_once('view/perfil_filiado.php'); 
                             
-                        } else {
+                        } elseif($_GET['perfil'] == 'cliente') {
                             include_once('view/perfil_cliente.php'); 
+                        
+                        }else{
+                            header('location:login.php');
                         }
                         
                     }elseif (empty($_GET)){

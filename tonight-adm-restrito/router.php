@@ -11,9 +11,29 @@
 
     switch ($controller){
 
-        case '':
-
-            break;
+        case 'home':
+            switch ($modo){
+                case 'inserir':
+                    include_once('model/home_class.php');
+                    include_once('controller/home_controller.php');
+                    
+                    $controller = new ControllerHome();
+                    $controller->Inserir();
+                    
+                    break;
+                    
+                case 'excluir':
+                    include_once('model/home_class.php');
+                    include_once('controller/home_controller.php');
+                    
+                    $controller = new ControllerHome();
+                    $controller->Excluir();
+                    
+                    break;
+                    
+                    
+            }
+        break;
 
     }
 

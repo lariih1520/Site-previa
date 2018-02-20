@@ -2,29 +2,18 @@
 
         include_once('controller/cliente_controller.php');
         
-        $nome = '';
-        $ddd = '';
-        $celular = '';
-        $email = '';
-
-        if(isset($_GET['dados'])){
-            $nome = $_GET['nome'];
-            $ddd = $_GET['ddd'];
-            $celular = $_GET['celular'];
-            $email = $_GET['email'];
-                
-        }
     ?>
+    <div id="divisao">
     <div class="titulo"> Cadastre-se para contratar um dos nossos aompanhantes! </div>
     <form action="router.php?controller=cliente&modo=inserir" method="post" class="cont_alinhar">
         <ul class="lst_cadastrar_dados">
             <li> 
                  <p> Nome:</p>
-                 <input type="text" name="txtNome" placeholder="Ex: Usuario" value="<?php echo $nome ?>" required>
+                 <input type="text" name="txtNome" placeholder="Ex: Usuario" value="" required>
             </li>
             <li>
                  <p> E-mail:</p>
-                 <input type="email" name="txtEmail" placeholder="Ex: usuario@email.com" value="<?php echo $email ?>" required>
+                 <input type="email" name="txtEmail" placeholder="Ex: usuario@email.com" value="" required>
             </li>
             <li>
                  <p> Senha:</p>
@@ -36,8 +25,8 @@
             </li>
             <li>
                  <p> Celular:</p>
-                 <input type="text" name="txtDDD" maxlength="2" size="1" placeholder="00" value="<?php echo $ddd ?>" required>
-                 <input type="text" name="txtCel" maxlength="9" size="10" placeholder="12348765" value="<?php echo $celular ?>" required>
+                 <input type="text" name="txtDDD" maxlength="2" size="1" placeholder="00" value="" required>
+                 <input type="text" name="txtCel" maxlength="9" size="10" placeholder="12348765" value="" required>
             </li>
         </ul>
         <ul class="lst_cadastrar_dados">
@@ -138,6 +127,7 @@
                     <option value="0"> Selecione </option>
                     <option value="1"> Mulheres </option>
                     <option value="2"> Homens </option>
+                    <option value="3"> Os dois </option>
                 </select>
             </li>
             <li>
@@ -177,6 +167,7 @@
         </ul>
         <input type="submit" name="btnSavar" value="Cadastrar" class="botao">
     </form>
+    </div>
     <script src="js/jsapi.js"></script>
 		<script type="text/javascript">
 		  google.load('jquery', '1.3');

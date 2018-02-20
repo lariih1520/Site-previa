@@ -21,6 +21,8 @@ class ControllerCliente{
     }
     
     public function Cadastrar(){
+        date_default_timezone_set('America/Sao_Paulo');
+        $datetime = (date('Y/m/d H:i'));
         
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             
@@ -48,8 +50,9 @@ class ControllerCliente{
                 $cliente->senha = $_POST['txtSenha'];
                 $cliente->sexo = $_POST['slc_sexo'];
                 $cliente->enteresse = $_POST['slc_enteresse'];
-                $cliente->cidade = $_POST['cod_cidades'];
+                $cliente->id_cidade = $_POST['cod_cidades'];
                 $cliente->nasc = $ano."-".$mes."-".$dia;
+                $cliente->datetime =  $datetime;
                 
                 $anos = $ano_hoje - $ano;
                 
@@ -117,7 +120,7 @@ class ControllerCliente{
             $cliente->nome = $_POST['txtNome'];
             $cliente->email = $_POST['txtEmail'];
             $cliente->sexo = $_POST['slc_sexo'];
-            $cliente->cidade = $_POST['cod_cidades'];
+            $cliente->id_cidade = $_POST['cod_cidades'];
             $cliente->enteresse = $_POST['slc_prefere'];
             $cliente->nasc = $ano."-".$mes."-".$dia;
 
@@ -167,8 +170,8 @@ class ControllerCliente{
     public function BuscarEstados(){
         require_once('model/cliente_class.php');
         
-        $cliente_class = new Cliente();
-        $result = $cliente_class->SelectEstados();
+        $cliente_classe = new Cliente();
+        $result = $cliente_classe->SelectEstados();
        
         return $result;
     }

@@ -1,0 +1,87 @@
+/**
+    Data: 17/02/2018
+    Objetivo: estilo da pagina adm Home
+**/
+
+#content_bar{
+    width: 900px;
+    height: 360px;
+    margin: auto;
+    padding: 10px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    border: solid 1px white;
+}
+.adicione{
+    width: 350px;
+    height: 330px;
+    padding: 5px;
+    text-align: center;
+    margin-right: 30px;
+    border: solid 1px #CDCDCD;
+}
+.adicione img{
+    width: 220px;
+    height: 220px;
+}
+.adicionar{
+    width: 280px;
+    height: 250px;
+    padding: 5px;
+    font-size: 20px;
+    text-align: center;
+    margin-right: 30px;
+    border: solid 1px #CDCDCD;
+}
+.adicionar img{
+    width: 220px;
+    height: 220px;
+    margin-top: 10px;
+}
+.imagem_add{
+    width: 330px;
+    height: 230px;
+    margin: auto;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    border: solid 1px black;
+}
+.vizualisar{
+    float: right;
+    width: 400px;
+    height: 300px;
+    border: solid 1px black;
+}
+.vizualisar img{
+    width: 400px;
+    height: 300px;
+}
+div.titulo{
+    width: 950px;
+    margin: auto;
+}
+#img_todas{
+    width: 930px;
+    height: 300px;
+    margin: auto;
+    padding: 10px;
+    color: gray;
+    font-size: 18px;
+    margin-top: 20px;
+    text-align: center;
+    overflow-y: scroll;
+    border: solid 1px gray;
+}
+
+.lst_fotos li{
+    float: left;
+    width: 280px;
+    height: 200px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+}
+.lst_fotos li img{
+    width: 280px;
+    height: 180px;
+}
+

@@ -3,7 +3,12 @@
 	Objetivo: Estilização da página cadastro de clientes.
     Arquivos relacionados: seja-cliente.php
  **/
-
+#divisao{
+    width: auto;
+    height: auto;
+    box-shadow: inset 0px 0px 2px gray;
+    border: solid 1px #CDCDCD;
+}
 .titulo{
     margin-top: 10px;
     text-align: center;
@@ -17,7 +22,7 @@
     margin-top: 10px;
 }
 .cont_alinhar{
-    width: 750px;
+    width: 660px;
     height: 500px;
     margin: auto;
     border: solid 1px transparent;
@@ -25,7 +30,7 @@
 
 .lst_cadastrar_dados{
     float: left;
-    width: 350px;
+    width: 300px;
     height: 300px;
     margin: auto;
     padding: 10px;
@@ -34,7 +39,7 @@
 }
 
 .lst_cadastrar_dados li{
-    width: 340px;
+    width: 300px;
     font-size: 20px;
     margin-left: 10px;
     border: solid 1px transparent;

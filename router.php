@@ -40,14 +40,27 @@ switch ($controller) {
     case 'acompanhante':
         switch ($modo){
             case 'inserir':
-                 
+                require_once('model/filiado_class.php');
+                require_once('controller/filiado_controller.php');
+                require_once('controller/filiado.php');
+                
+                $controller = new ControllerAcompanhante();
+                
+                 if(!empty($_GET['tipo'])){
+                     $controller->CadastrarFiliado();
+                         
+                 }else{
+                     $controller->CadastrarFiliadoCartao();
+                     
+                 }
                
             break;
                 
             case 'logar':
-                require_once('controller/acompanhante_controller.php');
-                $autentica_controller = new ControllerAutentica();
-                $autentica_controller->Login();
+                require_once('model/filiado_class.php');
+                require_once('controller/filiado_controller.php');
+                $autentica_controller = new ControllerAcompanhante();
+                $autentica_controller->Logar();
             break;
                 
         }

@@ -1,6 +1,7 @@
 <?php
-    
-    $id = 3;
+    include_once('controller/cliente_controller.php');
+
+    $id = $_SESSION['id_cliente'];
 
     $controller = new ControllerCliente();
     $rs = $controller->BuscarDadosUsuario($id);
@@ -24,16 +25,9 @@
         $cidade = $rs->cidade;
         $enteresse = $rs->enteresse;
         
-        if($enteresse == ''){
-            $enteresse = 'Não especificado';
-        
-        }elseif($enteresse == 1){
-            $enteresse = 'Mulheres';
-            
-        }elseif($enteresse == 2){
-            $enteresse = 'Homens';
-            
-        }
+        $m = "";
+        $h = "";
+        $d = "";
         
         if($foto == '' && $sexo == 1){
             $foto = 'icones/usuaria.jpg';
@@ -53,6 +47,17 @@
                     $sexo = 'Feminino';
                 }else{
                     $sexo = 'Masculino';
+                }
+                
+                if($enteresse == ''){
+                    $enteresse = 'Não especificado';
+
+                }elseif($enteresse == 1){
+                    $enteresse = 'Mulheres';
+
+                }elseif($enteresse == 2){
+                    $enteresse = 'Homens';
+
                 }
         ?>
             
@@ -94,11 +99,28 @@
                     <span><?php echo $enteresse ?></span>
                 </li>
             </ul>
-            <div class="editar_dados"><a href="?perfil=cliente&editar=dados#content"> Editar dados </a></div>
+            <div class="editar_dados"><a href="?perfil=cliente&editar=dados&codigo=<?php echo $id ?>#content"> Editar dados </a></div>
         </div>
         
         <?php
         }elseif($_GET['editar'] == 'dados'){
+            if($enteresse == 1){
+                $m = 'selected';
+
+            }elseif($enteresse == 2){
+                $h = 'selected';
+
+            }elseif($enteresse == 3){
+                $d = 'selected';
+
+            }
+                
+            if($sexo == 1){
+                $f = 'selected';
+            }else{
+                $m = 'selected';
+            }
+                
         ?>
         <form action="router.php?controller=cliente&modo=alterar&id=<?php echo $id ?>" method="post" enctype="multipart/form-data">
             <div id="foto_perfil">
@@ -120,9 +142,10 @@
                     <li> 
                         <p><label> Enteresse </label></p>
                         <select name="slc_prefere">
-                                <option value="1"> Mulheres </option>
-                                <option value="2"> Homens </option>
-                                <option value="3"> Os dois </option>
+                                <option value="0"> Selecione </option>
+                                <option value="1" <?php echo $m ?>> Mulheres </option>
+                                <option value="2" <?php echo $h ?>> Homens </option>
+                                <option value="3" <?php echo $d ?>> Os dois </option>
                         </select>
                     </li>
                     <li>
@@ -200,8 +223,9 @@
                     <li>
                         <p><label> Sexo </label></p>
                         <select name="slc_sexo">
-                                <option value="1"> Feminino </option>
-                                <option value="2"> Masculino </option>
+                                <option value="0"> Selecione </option>
+                                <option value="1"<?php echo $f ?>> Feminino </option>
+                                <option value="2"<?php echo $m ?>> Masculino </option>
                         </select>
                     </li>
                     <li>
@@ -209,19 +233,24 @@
                         <select name="cod_estados" id="cod_estados">
                             <option value="0"> selecione </option>
                             <?php
-                                $controller_estado = new ControllerCliente();
-                                $result = $controller_estado->BuscarEstados();
-
+                                $cont_estado = new ControllerCliente();
+                                $result = $cont_estado->BuscarEstados();
+                                
                                  if($result != null){
                                     $cont = 0;
                                     while($cont < count($result)){
                                         $id_estado = $result[$cont]->id_estado;
                                         $estado = $result[$cont]->estado;
                                         $uf = $result[$cont]->uf;
+                                        
+                                        if($uf_estado == $uf){
+                                            $slctd = 'selected';
+                                        }else{
+                                            $slctd = '';
+                                        }
 
                             ?>
-
-                                <option value="<?php echo $uf ?>"> <?php echo $uf ?> </option>
+                                <option value="<?php echo $uf ?>" <?php echo $slctd ?>> <?php echo $uf ?> </option>
 
                             <?php
                                         $cont++;
@@ -256,7 +285,17 @@
             <ul class="lst_dados_ver">
                 <li>
                     <p class="label_dados"> Senha </p>
-                    <span><?php echo $senha ?></span>
+                    <span>
+                    <?php 
+                        $len = strlen($senha);
+                        $cont = 0;
+                
+                        while($cont < $len){
+                            echo '*';
+                            $cont++;
+                        }
+                    ?>
+                    </span>
                 </li>
             </ul>
             <div class="editar_dados"><a href="?perfil=cliente&editar=informacoes#content"> Editar dados </a></div>

@@ -9,6 +9,7 @@ class Cliente{
     
     public $id_estado;
     public $estado;
+    public $codigo_uf;
     public $id_cidade;
     public $cidade;
     public $uf;
@@ -24,6 +25,7 @@ class Cliente{
     public $dia;
     public $mes;
     public $ano;
+    public $datetime;
     
     public function __construct(){
         require_once('db_class.php');
@@ -37,10 +39,17 @@ class Cliente{
         $sql = "select * from tbl_cliente where email = '".$cliente->email."' ";
         $sql = $sql." and senha =  '".$cliente->senha."'";
         
-        mysql_query($sql);
+        $select = mysql_query($sql);
         
         if(mysql_affected_rows() > 0){
-            echo ('Yeah você foi logado!');
+            
+            while($rs = mysql_fetch_array($select)){
+                $id = $rs['id_cliente'];
+            }
+            session_start();
+            $_SESSION['id_cliente'] = $id;
+            
+            header('location:perfil.php?perfil=cliente');
             
         }else{
             header('location:login.php?erro-ao-logar');
@@ -49,7 +58,7 @@ class Cliente{
     }
     
     public function SelectClienteById($id){
-        $sql = 'call VwDadosUsuarioById('.$id.')';
+        $sql = 'call VwDadosUsuario('.$id.')';
         
         if($select = mysql_query($sql)){
             
@@ -109,62 +118,62 @@ class Cliente{
             
         }else{
         
-            $sql = "insert into tbl_cliente(nome, email, senha, sexo, celular, nasc, enteresse)";
+            $sql = "insert into tbl_cliente(nome, email, senha, sexo, celular, nasc, enteresse, id_cidade, data_cadastro)";
             $sql = $sql." values ('".
                         $cliente->nome."', '".$cliente->email."' , '".$cliente->senha."', ".
                         $cliente->sexo.", '".$cliente->celular."', '".$cliente->nasc."', ".
-                        $cliente->slc_enteresse.") ";
+                        $cliente->enteresse.", ".$cliente->id_cidade.", '".$cliente->datetime."') ";
             
             if(mysql_query($sql)){
-                
-                $sql = "select id_cliente from tbl_cliente where email = '".$cliente->email."' ";
-                
-                if($select = mysql_query($sql)){
+                $sql = "select * from tbl_cliente where email = '".$cliente->email."' ";
+        
+                if($slct = mysql_query($sql)){
                     
-                    while($rs = mysql_fetch_array($select)){
+                    while($rs = mysql_fetch_array($slct)){
                         $id = $rs['id_cliente'];
+                        /******
+                            Codigo da session aqui
+                        ******/
+                        header('location:perfil.php?perfil=cliente&codigo='.$id);
                     }
                     
-                    $sql = "insert into tbl_cliente_endereco(id_cliente, id_cidade)";
-                    $sql = $sql."values(".$id.", ".$cliente->cidade.")";
-                    
-                    
-                    if(mysql_query($sql)){
-                        //echo ('Cadastrado');
-                        header('location:perfil-cliente.php?codigo='.$id);
-
-                    }else{
-                      header('location:index.php');
-
-                    }
-                    
+                }else{
+                    header('location:login.php?perfil=cliente');
                 }
-                    
+                
+
+            }else{
+              //header('location:index.php');
+                echo $sql;
             }
+                    
+            
             
         }
         
     }
     
     public function SelectEstados(){
-        $sql = "select * from db_tonight.tbl_estado";
         
-        if($select = mysql_query($sql)){
+        /******** ERRAAADO *********/
+        if ($slct = mysql_query("select * from tbl_estado") ) {
            
-            $cont = 0;
-            while($rs = mysql_fetch_array($select)){
+            $conta = 0;
+            while($rst = mysql_fetch_array($slct)){
                 
                 $estado[] = new Cliente();
                 
-                $estado[$cont]->id_estado = $rs['id_estado'];
-                $estado[$cont]->estado = $rs['estado'];
-                $estado[$cont]->uf = $rs['uf'];
+                $estado[$conta]->id_estado = $rst['id_estado'];
+                $estado[$conta]->codigo_uf = $rst['codigo_uf'];
+                $estado[$conta]->estado = $rst['estado'];
+                $estado[$conta]->uf = $rst['uf'];
                
-                $cont++;
+                $conta++;
+                
             }
             return $estado;
             
-        }else{
+        } else {
             return false;
             
         }
@@ -213,25 +222,12 @@ class Cliente{
                 $sql = "update tbl_cliente set nome = '".$cliente->nome."', email = '".$cliente->email."', ";
                 $sql = 
                 $sql."sexo = ".$cliente->sexo.", celular = '".$cliente->celular."', nasc = '".
-                    $cliente->nasc."', enteresse = ".$cliente->enteresse." where id_cliente = ".$cliente->id;
+                    $cliente->nasc."', enteresse = ".$cliente->enteresse.",  id_cidade = '".$cliente->id_cidade."'
+                    where id_cliente = ".$cliente->id;
 
                 if(mysql_query($sql)){
                     header('location:perfil.php?perfil=cliente&editar=sucesso');
-                    /*
-                        $sql = "update tbl_cliente_endereco(id_cliente, id_cidade)";
-                        $sql = $sql."values(".$id.", ".$cliente->cidade.")";
-
-                        if(mysql_query($sql)){
-                            header('location:perfil-cliente.php?codigo='.$id);
-
-                        }else{
-                          header('location:index.php');
-
-                        }
-
-
-                 */       
-                
+                    
                 }else{
                     //header('location:perfil.php?perfil=cliente&erro');
                     echo $sql;
@@ -252,7 +248,7 @@ class Cliente{
                         $sql."sexo = ".$cliente->sexo.", celular = '".$cliente->celular."', nasc = '".
                             $cliente->nasc."', enteresse = ".$cliente->enteresse.", foto_perfil = '".$imagem."'
                             where id_cliente = ".$cliente->id;
-
+                            /*    , id_cidade = '".$cliente->id_cidade."'   */
                         if(mysql_query($sql)){
                             header('location:perfil.php?perfil=cliente&editar=sucesso');
 

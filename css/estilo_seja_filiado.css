@@ -1,0 +1,103 @@
+/*** 
+	Data: 17/02/2018
+	Objetivo: estilo pagina filiado
+ ***/
+
+
+#estilo{
+    width: auto;
+    height: auto;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border: solid 1px #CDCDCD;
+    box-shadow: inset 0px 0px 5px #CDCDCD;
+}
+.titulo{
+    text-align: center;
+    margin-bottom: 30px;
+}
+input{font-size: 17px;}
+select{font-size: 17px;}
+.centro{font-size: 18px;}
+
+.content_dados_1{
+    margin: auto;
+    width: 950px;
+    height: 500px;
+    border: solid 1px transparent;
+}
+.content_dados_2{
+    margin: auto;
+    width: 950px;
+    height: 400px;
+    border: solid 1px transparent;
+}
+.sobre_pag{
+    width: 940px;
+    margin: auto;
+    height: 40px;
+    font-size: 20px;
+}
+.tipo_conta{
+    float: left;
+    width: 280px;
+    height: 120px;
+    padding: 10px;
+    cursor: pointer;
+    margin-left: 10px;
+    margin-bottom: 10px;
+    box-shadow: 0px 0px 6px #ADADAD;
+}
+.tipo_conta p.titulo{
+    font-size: 25px;
+    margin-bottom: 5px;
+}
+.tipo_conta p.valor{
+    font-size: 20px;
+}
+.forma_pag{
+    float: left;
+    clear: both;
+    width: 280px;
+    height: 80px;
+    padding: 10px;
+    margin-left: 10px;
+    border: solid 1px transparent;
+}
+.selecionado{
+    border: solid 2px red;
+}
+.forma_letras{
+    font-size: 20px;
+    margin-bottom: 5px;
+}
+.content_dados_3{
+    margin: auto;
+    width: 950px;
+    height: 500px;
+    border: solid 1px transparent;
+}
+
+.lst_dados_1{
+    margin-top: 30px;
+}
+.lst_dados_1 li{
+    float: left;
+    width: 280px;
+    height: 50px;
+    padding: 8px;
+    font-size: 20px;
+    margin-right: 10px;
+    margin-bottom: 5px;
+    padding-bottom: 10px;
+    border-radius: 5px;
+    border: solid 1px #CDCDCD;
+}
+.botao{
+    float: right;
+    margin-top: 10px;
+    margin-right: 20px;
+}
+
+
+
