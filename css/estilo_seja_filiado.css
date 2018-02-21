@@ -44,11 +44,19 @@ select{font-size: 17px;}
     height: 120px;
     padding: 10px;
     cursor: pointer;
-    margin-left: 10px;
+    margin-left: 8px;
     margin-bottom: 10px;
+    border: double 4px #CDCDCD;
     box-shadow: 0px 0px 6px #ADADAD;
 }
+
+.tipo_conta p{
+    color: black;
+    font-size: 18px;
+}
 .tipo_conta p.titulo{
+    color: black;
+    text-shadow: 0px 0px 4px #8A0808;
     font-size: 25px;
     margin-bottom: 5px;
 }
@@ -85,7 +93,7 @@ select{font-size: 17px;}
     margin-bottom: 5px;
     padding-bottom: 10px;
     border-radius: 5px;
-    border: solid 1px #CDCDCD;
+    border: solid 1px #FFF;
 }
 .right{
     float: right;

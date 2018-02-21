@@ -31,7 +31,7 @@
         require_once('controller/home_controller.php');
         $controller = new ControllerHome();
         $rs = $controller->BuscarFotos();
-        
+
         $cont = 0;
         if($rs != false){
             

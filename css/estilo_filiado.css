@@ -3,36 +3,131 @@
     Objetivo: estilo pagina perfil acompanhante
 **/
 
-.content_dados{
+.titulo{
+    margin-bottom: 20px;
+}
+.content_foto_perfil{
     padding: 8px;
     margin: auto;
     width: 900px;
     height: 300px;
     margin-top: 20px;
     margin-bottom: 10px;
+    border: solid 1px white;
+}
+.foto_perfil{
+    margin: auto;
+    width: 300px;
+    height: 300px;
+    overflow: hidden;
+    border-radius: 300px;
     border: solid 1px red;
 }
+.foto_perfil img{
+    max-width: 350px;
+    height: 300px;
+}
+
+/***************/
+
+.content_dados{
+    padding: 8px;
+    margin: auto;
+    width: 900px;
+    height: 480px;
+    margin-bottom: 10px;
+    border: solid 1px white;
+}
+.lst_dados{
+    width: 890px;
+    height: 420px;
+    border: solid 1px white;
+}
+.lst_dados li{
+    float: left;
+    width: 400px;
+    height: 35px;
+    margin-left: 18px;
+    margin-bottom: 10px;
+    padding: 6px 6px 6px 6px;
+    border: solid 1px gray;
+}
+
+
+/***************/
+
 .content_midia{
     padding: 8px;
     margin: auto;
     width: 900px;
     height: auto;
     margin-bottom: 10px;
-    border: solid 1px red;
+    border: solid 1px white;
 }
+.imgs{
+    float: left;
+    width: 280px;
+    height: 300px;
+    overflow: hidden;
+    text-align: center;
+    margin-right: 18px;
+    margin-bottom: 18px;
+    border: solid 1px black;
+}
+.imgs img{
+    margin: auto;
+    height: 250px;
+    width: auto;
+}
+
+/***************/
+
 .content_dados_seguranca{
     padding: 8px;
     margin: auto;
     width: 900px;
     height: 300px;
     margin-bottom: 10px;
-    border: solid 1px red;
+    border: solid 1px white;
 }
+
+/********/
 .sua_conta{
     padding: 8px;
     margin: auto;
-    width: 900px;
+    width: 950px;
     height: 250px;
     margin-bottom: 10px;
-    border: solid 1px red;
+    border: solid 1px white;
+}
+
+.tipo_conta{
+    float: left;
+    width: 280px;
+    height: 120px;
+    padding: 10px;
+    margin-left: 5px;
+    margin-bottom: 10px;
+    border: double 4px #CDCDCD;
+    box-shadow: 0px 0px 6px #ADADAD;
+}
+.tipo_conta p{
+    color: black;
+    font-size: 18px;
+}
+.tipo_conta p.titulo{
+    color: black;
+    text-shadow: 0px 0px 4px #8A0808;
+    font-size: 25px;
+    margin-bottom: 5px;
+}
+.tipo_conta p.valor{
+    font-size: 20px;
+}
+.clear{
+    float: left;
+    clear: both;
+    width: 900px;
+    height: 1px;
+    margin-bottom: 5px;
 }

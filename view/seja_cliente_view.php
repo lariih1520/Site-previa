@@ -9,24 +9,24 @@
         <ul class="lst_cadastrar_dados">
             <li> 
                  <p> Nome:</p>
-                 <input type="text" name="txtNome" placeholder="Ex: Usuario" value="" required>
+                 <input type="text" name="txtNome" placeholder="Ex: Usuario" value="" required oninvalid="setCustomValidity('Preencha o nome')">
             </li>
             <li>
                  <p> E-mail:</p>
-                 <input type="email" name="txtEmail" placeholder="Ex: usuario@email.com" value="" required>
+                 <input type="email" name="txtEmail" placeholder="Ex: usuario@email.com" value="" required oninvalid="setCustomValidity('Preencha o e-mail')">
             </li>
             <li>
                  <p> Senha:</p>
-                 <input type="password" name="txtSenha" maxlength="10" required>
+                 <input type="password" name="txtSenha" maxlength="10" required oninvalid="setCustomValidity('Escolha uma senha')">
             </li>
             <li>
                  <p> Confirmar senha:</p>
-                 <input type="password" name="txtConfrmSenha" maxlength="10" required>
+                 <input type="password" name="txtConfrmSenha" maxlength="10" required oninvalid="setCustomValidity('Confirme a senha')">
             </li>
             <li>
                  <p> Celular:</p>
-                 <input type="text" name="txtDDD" maxlength="2" size="1" placeholder="00" value="" required>
-                 <input type="text" name="txtCel" maxlength="9" size="10" placeholder="12348765" value="" required>
+                 <input type="text" name="txtDDD" maxlength="2" size="1" placeholder="00" value="" required oninvalid="setCustomValidity('Preencha o ddd')">
+                 <input type="text" name="txtCel" maxlength="9" size="10" placeholder="12348765" value="" required oninvalid="setCustomValidity('Preencha o celular')">
             </li>
         </ul>
         <ul class="lst_cadastrar_dados">
@@ -39,7 +39,7 @@
                 </select>
             </li>
             <li>
-                <p><label for="cod_estados">Estado:</label></p>
+                <p><label for="cod_estados"> Estado: </label></p>
                 <select name="cod_estados" id="cod_estados">
                     <option value="0"> selecione </option>
                     <?php

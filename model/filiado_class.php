@@ -14,6 +14,7 @@ class Acompanhante{
     public $cidade;
     public $uf;
     public $nome;
+    public $sobrenome;
     public $email;
     public $senha;
     public $confrmSenha;
@@ -27,6 +28,9 @@ class Acompanhante{
     public $datetime;
     public $id_etnia;
     public $etnia;
+    public $apresentacao;
+    public $altura;
+    public $peso;
     
     public function __construct(){
         require_once('db_class.php');
@@ -60,14 +64,17 @@ class Acompanhante{
     }
     
     /* Buscar dados do aompanhante  */
-    public function SelectFiliadoById($id){
-        $sql = 'call VwDadosUsuario('.$id.')';
+    public function SelectFiliadoById(){
+        $id = $_SESSION['id_filiado'];
+        
+        $sql = 'call VwDadosFiliado('.$id.')';
         
         if($select = mysql_query($sql)){
             
             $cont = 0;
             while($rs = mysql_fetch_array($select)){
-                $cliente = new Cliente();
+                
+                $filiado = new Acompanhante();
                 
                 $data = explode('-', $rs['nasc']);
                 
@@ -75,32 +82,57 @@ class Acompanhante{
                 $mes = $data[1];
                 $dia = $data[2];
                 
-                $tel = explode(')', $rs['celular']);
+                $tel1 = explode(')', $rs['celular1']);
                 
-                $telddd = explode('(', $tel[0]);
-                $ddd = $telddd[1];
-                $numero = $tel[1];
+                $telddd1 = explode('(', $tel1[0]);
+                $ddd1 = $telddd1[1];
+                $numero1 = $tel1[1];
                 
-                $cliente->id = $rs['id_cliente'];
-                $cliente->nome = $rs['nome'];
-                $cliente->email = $rs['email'];
-                $cliente->senha = $rs['senha'];
-                $cliente->sexo = $rs['sexo'];
-                $cliente->foto = $rs['foto_perfil'];
-                $cliente->ddd = $ddd;
-                $cliente->celular = $numero;
-                $cliente->uf = $rs['uf'];
-                $cliente->id_cidade = $rs['id_cidade'];
-                $cliente->estado = $rs['estado'];
-                $cliente->cidade = $rs['cidade'];
-                $cliente->enteresse = $rs['enteresse'];
-                $cliente->dia = $dia;
-                $cliente->mes = $mes;
-                $cliente->ano = $ano;
+                if($rs['celular2'] != null){
+                    $tel2 = explode(')', $rs['celular2']);
+
+                    $telddd2 = explode('(', $tel2[0]);
+                    $ddd2 = $telddd2[1];
+                    $numero2 = $tel2[1];
+                    
+                    $filiado->celular2 = $numero2;
+                    
+                }else{
+                    $filiado->celular2 = 'vazio';
+                }
+                
+                $filiado->estado = $rs['estado'];
+                $filiado->cidade = $rs['cidade'];
+                $filiado->nome = $rs['nome'];
+                $filiado->email = $rs['email'];
+                $filiado->senha = $rs['senha'];
+                
+                if($rs['sexo'] == 1){
+                    $filiado->sexo = 'Feminino';
+                    
+                }elseif($rs['sexo'] == 2){
+                    $filiado->sexo = 'Masculino';
+                    
+                }
+                
+                $filiado->cobrar = $rs['cobrar'];
+                $filiado->foto = $rs['foto_perfil'];
+                $filiado->etnia = $rs['etnia'];
+                $filiado->cabelo = $rs['cabelo'];
+                $filiado->altura = $rs['altura'];
+                $filiado->peso = $rs['peso'];
+                $filiado->titulo = $rs['titulo'];
+                $filiado->valor = $rs['valor_conta'];
+                $filiado->qtd_fotos = $rs['foto'];
+                $filiado->qtd_videos = $rs['video'];
+                $filiado->dia = $dia;
+                $filiado->mes = $mes;
+                $filiado->ano = $ano;
+                $filiado->celular1 = $numero1;
                 
             }
             
-            return $cliente;
+            return $filiado;
             
         } else {
             return false;
@@ -247,6 +279,37 @@ class Acompanhante{
             
         }
         
+    }
+    
+    public function SelectTipoConta(){
+        $id = $_SESSION['id_filiado'];
+        
+        $sql = "select tc.* 
+                from tbl_tipo_conta as tc
+                inner join tbl_filiado as fi
+                on tc.id_tipo_conta = fi.id_tipo_conta
+                where id_filiado = ".$id;
+        
+        if($select = mysql_query($sql)){
+            
+            while($rs = mysql_fetch_array($select)){
+
+                $tipoConta = new Acompanhante();
+
+                $tipoConta->tipo_conta = $rs['tipo_conta'];
+                $tipoConta->titulo = $rs['titulo'];
+                $tipoConta->valor = $rs['valor'];
+                $tipoConta->qtd_fotos = $rs['foto'];
+                $tipoConta->qtd_videos = $rs['video'];
+                
+            }
+
+            return $tipoConta;
+            
+        } else {
+            echo $sql;
+            
+        }
     }
     
 }

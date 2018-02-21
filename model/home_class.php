@@ -30,9 +30,9 @@ class Home{
                 $home[$cont]->imagem = $rs['imagem'];
                 $cont++;
                 
-                return $home;
             }
             
+            return $home;
             
         }else{
             return false;

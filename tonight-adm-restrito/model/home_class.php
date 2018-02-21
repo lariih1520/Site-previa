@@ -43,11 +43,12 @@ class Home{
                 
                 $home[$cont]->id_home = $rs['id_home'];
                 $home[$cont]->imagem = $rs['imagem'];
+                
                 $cont++;
                 
-                return $home;
             }
             
+            return $home;
             
         }else{
             return false;

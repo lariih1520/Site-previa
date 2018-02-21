@@ -101,11 +101,11 @@ class ControllerAcompanhante{
     }
     
     /* Buscar usuário de acordo com o id */
-    public function BuscarDadosUsuario($id){
-        require_once('model/cliente_class.php');
+    public function BuscarDadosUsuario(){
+        require_once('model/filiado_class.php');
         
-        $cliente_class = new Cliente();
-        $rs = $cliente_class->SelectClienteById($id);
+        $class = new Acompanhante();
+        $rs = $class->SelectFiliadoById();
         
         return $rs;
         
@@ -150,6 +150,15 @@ class ControllerAcompanhante{
         
         return $rs;
         
+    }
+    
+    /* Buscar o tipo da conta do usuário */
+    public function BuscarTipoConta(){
+        require_once('model/filiado_class.php');
+        $class = new Acompanhante();
+        $rs = $class->SelectTipoConta();
+        
+        return $rs;
     }
     
 }

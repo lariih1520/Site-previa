@@ -15,7 +15,7 @@
         <ul class="lst_dados_1">
             
             <li><p> *Nome: </p> 
-                <input type="text" name="txtNome" maxlength=""></li>
+                <input type="text" name="txtNome" maxlength="" required oninvalid="setCustomValidity('Preencha o nome')"></li>
             
             <li><p> *Data de nascimeto: </p> 
                 
@@ -74,22 +74,22 @@
             </li>
             
             <li><p> *Senha: </p> 
-                <input type="password" name="txtSenha" maxlength=""></li>
+                <input type="password" name="txtSenha" maxlength="" required oninvalid="setCustomValidity('Preencha a senha')"></li>
             
             <li><p> *Confirmar senha: </p> 
-                <input type="password" name="txtConfrmSenha" maxlength=""></li>
+                <input type="password" name="txtConfrmSenha" maxlength="" required oninvalid="setCustomValidity('Confirme a senha')"></li>
             
             <li><p> *E-mail: </p> 
-                <input type="text" name="txtEmail" maxlength=""></li>
+                <input type="text" name="txtEmail" maxlength="" required oninvalid="setCustomValidity('Preencha o e-mail')"></li>
             
             <li><p> *Celular 1: </p> 
-                <input type="text" name="txtDDD1" maxlength="2" size="1" placeholder="00" required>
-                <input type="text" name="txtCel1" maxlength="9" size="10" placeholder="12348765" required>
+                <input type="text" name="txtDDD1" maxlength="2" size="1" placeholder="00" required oninvalid="setCustomValidity('Preencha o ddd')">
+                <input type="text" name="txtCel1" maxlength="9" size="10" placeholder="12348765" required oninvalid="setCustomValidity('Preencha o celular')">
             </li>
             
             <li><p> Celular 2 (opcional): </p> 
-                <input type="text" name="txtDDD2" maxlength="2" size="1" placeholder="00">
-                <input type="text" name="txtCel2" maxlength="9" size="10" placeholder="12348765">
+                <input type="text" name="txtDDD2" maxlength="2" size="1" required placeholder="00">
+                <input type="text" name="txtCel2" maxlength="9" size="10" required placeholder="12348765">
             </li>
             
             <li><p> *Etnia: </p> 
@@ -120,11 +120,11 @@
                 </select>
             </li>
             
-            <li><p> Peso: </p> 
-                <input type="text" name="txtPeso" maxlength="3" size="3"> KG </li>
+            <li><p> Peso (opcional): </p> 
+                <input type="text" name="txtPeso" maxlength="3" size="3" > KG </li>
             
             <li><p> *Altura: </p> 
-                <input type="text" name="txtAltura" maxlength="4" size="3"></li>
+                <input type="text" name="txtAltura" maxlength="4" size="3" required oninvalid="setCustomValidity('Preencha o campo altura')"></li>
             
             <li><p> *Acompanha: </p> 
                 <select name="slc_acompanha" required>
@@ -136,7 +136,7 @@
             </li>
             
             <li>
-                <p><label for="cod_estados">Estado:</label></p>
+                <p><label for="cod_estados"> *Estado: </label></p>
                 <select name="cod_estados" id="cod_estados">
                     <option value="0"> selecione </option>
                     <?php
@@ -162,7 +162,7 @@
                 </select>
             </li>
             <li>
-                <p><label for="cod_cidades">Cidade:</label></p>
+                <p><label for="cod_cidades"> *Cidade: </label></p>
                 <span class="carregando">Aguarde, carregando...</span>
                 <select name="cod_cidades" id="cod_cidades" required>
                     <option value="">-- Escolha um estado --</option>
@@ -171,7 +171,7 @@
             </li>
             
             <li><p> *Valor que deseja cobrar: </p> 
-                <input type="text" name="txtValor" maxlength="6" size="5">,00
+                <input type="text" name="txtValor" maxlength="6" required size="5" oninvalid="setCustomValidity('Escolha o valor que deseja cobrar')">,00
             </li>
             
         </ul>
@@ -246,31 +246,28 @@
             
             <p class="sobre_pag"> Valor mensal dia 10 <br>
             
-            <a href="?etapa=2&tipo=1">
+        <?php
+            require_once('controller/filiado_controller.php');
+            $controller = new ControllerAcompanhante();
+            $rs = $controller->BuscarTipoConta();
+            
+            if($rs != null){
+                $cont = 0;
+                while($cont < count($rs)){
+        ?>
+            <a href="?etapa=2&tipo=<?php echo $rs[$cont]->tipo_conta ?>">
             <div class="tipo_conta">
-                <p class="titulo"> Titulo </p>
-                <p class="valor"> Mensalidade </p>
-                <p> Quantidade de fotos </p>
-                <p> Quantidade de videos </p>
+                <p class="titulo"> <?php echo $rs[$cont]->titulo ?> </p>
+                <p class="valor"> Preço: <?php echo $rs[$cont]->valor ?>,00 / Mês </p>
+                <p> Quantidade de fotos: <?php echo $rs[$cont]->qtd_fotos ?> </p>
+                <p> Quantidade de videos: <?php echo $rs[$cont]->qtd_videos ?> </p>
             </div>
             </a>
-            <a href="?etapa=2&tipo=2">
-            <div class="tipo_conta">
-                <p class="titulo"> Titulo </p>
-                <p class="valor"> Mensalidade </p>
-                <p> Quantidade de fotos </p>
-                <p> Quantidade de videos </p>
-            </div>
-            </a>
-            <a href="?etapa=2&tipo=3">
-            <div class="tipo_conta">
-                <p class="titulo"> Titulo </p>
-                <p class="valor"> Mensalidade </p>
-                <p> Quantidade de fotos </p>
-                <p> Quantidade de videos </p>
-            </div>
-            </a>
-                
+        <?php 
+                    $cont++;
+                }
+            }
+        ?>            
             <div class="termos">
                 <?php 
                     $rs = $filiado->getTermos();

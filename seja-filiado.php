@@ -29,7 +29,12 @@
         
         <script src="js/jquery-3.2.1.min.js" ></script>
         <script type="text/javascript" >
-
+            
+            function addClass(opt){
+                
+                opt.addClass('selecionado');
+            }
+            
             function termos(){
                 
                 if(document.getElementById('check').checked == true){ 	 

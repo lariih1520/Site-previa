@@ -4,3 +4,6 @@
     </a>
     
 </div>
+<div class="barra">
+    <a href="../inicio.php"> Sair </a>
+</div>

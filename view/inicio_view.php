@@ -7,8 +7,9 @@
 
                      <!-- IMAGENS DO SLIDE -->
                     <div id="slider">
-                        <a href="#" class="trs"><img src="imagens/free-wallpaper.jpg" alt="" /></a>
-                        <a href="#" class="trs"><img src="imagens/back.png" alt="" /></a>
+                        <!--<a href="#" class="trs"><img src="imagens/free-wallpaper.jpg" alt="" /></a>
+                        <a href="#" class="trs"><img src="imagens/back.png" alt="" /></a>-->
+                        
                         <?php
                             require_once('controller/home_controller.php');
                             $controller = new ControllerHome();

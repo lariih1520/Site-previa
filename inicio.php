@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title> Tonight </title>
+		<title> Tonight - Página inicial </title>
 		<meta charset="UTF-8">
 		<meta http-equiv="content-language" content="pt-br" />
 		<meta name="viewport" content="initial-scale=1" />
