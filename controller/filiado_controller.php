@@ -7,6 +7,7 @@
 
 class ControllerAcompanhante{
     
+    /* Realizar login */
     public function Logar(){
         
         if ($_SERVER['REQUEST_METHOD'] == 'POST'){
@@ -20,24 +21,7 @@ class ControllerAcompanhante{
         }
     }
     
-    public function BuscarEtnias(){
-        require_once('model/filiado_class.php');
-        $class = new Acompanhante();
-        $rs = $class->SelectEtnia();
-        
-        return $rs;
-        
-    }
-    
-    public function BuscarCorCabelo(){
-        require_once('model/filiado_class.php');
-        $class = new Acompanhante();
-        $rs = $class->SelectCorCabelo();
-        
-        return $rs;
-        
-    }
-    
+    /* cadastrar filiado */
     public function CadastrarFiliado(){
         
         if($_GET['tipo'] <= 3 && $_GET['tipo'] > 0){
@@ -52,14 +36,7 @@ class ControllerAcompanhante{
         
     }
     
-    public function CadastrarFiliadoCartao(){
-        date_default_timezone_set('America/Sao_Paulo');
-        $datetime = (date('Y/m/d H:i'));
-        
-        
-        
-    }
-    
+    /* Alterar dados do acompanhante */
     public function Alterar(){
         $id = $_GET['id'];
         
@@ -123,6 +100,7 @@ class ControllerAcompanhante{
         
     }
     
+    /* Buscar usuário de acordo com o id */
     public function BuscarDadosUsuario($id){
         require_once('model/cliente_class.php');
         
@@ -133,6 +111,7 @@ class ControllerAcompanhante{
         
     }
     
+    /* Buscar estados */
     public function BuscarEstados(){
         require_once('model/filiado_class.php');
         
@@ -142,6 +121,7 @@ class ControllerAcompanhante{
         return $result;
     }
     
+    /* Buscar cidades */
     public function BuscarCidade(){
         require_once('model/cliente_class.php');
         
@@ -152,6 +132,26 @@ class ControllerAcompanhante{
         
     }
 
+    /* Buscar opções de etnias */
+    public function BuscarEtnias(){
+        require_once('model/filiado_class.php');
+        $class = new Acompanhante();
+        $rs = $class->SelectEtnia();
+        
+        return $rs;
+        
+    }
+    
+    /* Buscar cores de cabelo */
+    public function BuscarCorCabelo(){
+        require_once('model/filiado_class.php');
+        $class = new Acompanhante();
+        $rs = $class->SelectCorCabelo();
+        
+        return $rs;
+        
+    }
+    
 }
 
 

@@ -1,141 +1,14 @@
-<?php
-/**
-    Data: 19/02/2018
-    Objetivo: GERAR GETTERS E SETTERS COM SESSION
-    Arquivos relacionados: seja-filiado.php
-**/
-
-class Filiado{
-    
-    public $nome;
-    public $nasc;
-    public $email;
-    public $senha;
-    public $confrmSenha;
-    public $celular1;
-    public $celular2;
-    public $etnia;
-    public $sexo;
-    public $altura;
-    public $peso;
-    public $acompanha;
-    public $cobra;
-    
-    public function setFiliado(
-        $nome, $nasc, $email, $senha, $confrmSenha, $ddd1, $celular1, $ddd2, $celular2,
-        $etnia, $sexo, $altura, $peso, $acompanha, $cidade, $estado, $cobra)
-    {
-        date_default_timezone_set('America/Sao_Paulo');
-        $datetime = (date('Y/m/d H:i'));
+    <h1 class="titulo_maior"> Sobre o site </h1>
+    <div class="termos">
+        <p>Nosso Site tem como objetivo a divulgação de produtos e serviços do mercado adulto ou correlacionados e torná-los público a quem busca esse tipo de conteúdo e informação, desde que se tenha autoridade legal para acessar tal conteúdo, ou seja, que o visitante ou usuário tenha maioridade exigida pela constituição brasileira.  </p>
         
-        $data_hoje = date('d/m/Y');
-        $dt_hoje = explode('/', $data_hoje);
+        <br>
+        <p><b> TERMOS DE USO, REGRAS E POLÍTICA DE PRIVACIDADE DO SITE TONIGHT.NET.BR </b></p>
         
-        $dt_nasc = explode('-', $nasc);
-
-        $dia_hoje = $dt_hoje[0];
-        $mes_hoje = $dt_hoje[1];
-        $ano_hoje = $dt_hoje[2];
-
-        $dia = $dt_nasc[2];
-        $mes = $dt_nasc[1];
-        $ano = $dt_nasc[0];
-                
-        /* Verificar idade */
-        if($ano > 18){
-           $idade = true;
-            
-        }elseif($ano == 18){
-
-            if ($mes < $mes_hoje) {
-                $idade = true;
-
-            } elseif ($mes == $mes_hoje) {
-
-                if ($dia <= $dia_hoje) {
-                    $idade = true;
-
-                } else {
-                    $idade = false;
-                }
-
-            }else{
-                $idade = false;
-            }
-
-        }else{
-            $idade = false;
-        }
-        
-        if($idade == true){
-            if ($senha == $confrmSenha) {
-                
-                $_SESSION['nome'] = $nome;
-                $_SESSION['nasc'] = $nasc;
-                $_SESSION['email'] = $email;
-                $_SESSION['senha'] = $senha;
-                $_SESSION['celular1'] = '('.$ddd1.')'.$celular1;
-                
-                if($celular2 != null && $ddd2){ 
-                    $_SESSION['celular2'] = '('.$ddd2.')'.$celular2;
-                }
-                $_SESSION['etnia'] = $etnia;
-                $_SESSION['sexo'] = $sexo;
-                $_SESSION['altura'] = $altura;
-                $_SESSION['peso'] = $peso;
-                $_SESSION['acompanha'] = $acompanha;
-                $_SESSION['cidade'] = $cidade;
-                $_SESSION['estado'] = $estado;
-                $_SESSION['cobra'] = $cobra;
-                
-            }else{
-                header('location:seja-filiado.php?Erro=Senha');
-            }
-            
-        }else{
-            header('location:seja-filiado.php?Erro=Idade');
-        }
-        
-    }
-    
-    public function getFiliado(){
-        
-        $filiado = new Filiado();
-        
-        $filiado->nome = $_SESSION['nome'];
-        $filiado->nasc = $_SESSION['nasc'];
-        $filiado->email = $_SESSION['email'];
-        $filiado->senha = $_SESSION['senha'];
-        $filiado->celular1 = $_SESSION['celular1'];
-        
-        if($_SESSION['celular2'] != null){
-        
-            $filiado->celular2 = $_SESSION['celular2'];
-        }
-        
-        $filiado->etnia = $_SESSION['etnia'];
-        $filiado->sexo = $_SESSION['sexo'];
-        $filiado->altura = $_SESSION['altura'];
-        $filiado->peso = $_SESSION['peso'];
-        $filiado->acompanha = $_SESSION['acompanha'];
-        $filiado->cidade = $_SESSION['cidade'];
-        $filiado->estado = $_SESSION['estado'];
-        $filiado->cobra = $_SESSION['cobra'];
-        
-        return $filiado;
-        
-    }
-    
-    public function getTermos(){
-        $termos="
-        <center><b> TERMOS DE USO, REGRAS E POLÍTICA DE PRIVACIDADE DO SITE TONIGHT.NET.BR </b></center>
-
-        <p> (Redigida aos ) </p>
-
         <p>Seguem abaixo os termos de uso, regras e política de privacidade para nossos usuários, assinantes, anunciantes e visitantes.</p>
         
         <br>
-        <p><b> DA CLASSIFICAÇÃO: </b></P>
+        <p><b> CLASSIFICAÇÃO: </b></p>
 
         <p>Anunciantes: Todos aqueles que possuem um banner, perfil e/ou espaço para divulgação de serviços e/ou negócios no site.
 
@@ -144,7 +17,7 @@ class Filiado{
         Usuários: São aqueles que utilizam dos recursos limitados do site de forma gratuita.</p>
 
         <br>
-        <p><b> DA PRIVACIDADE: </b></p>
+        <p><b> PRIVACIDADE: </b></p>
 
         <p> Sua privacidade é extremamente importante para a nossa equipe! </p>
 
@@ -155,7 +28,7 @@ class Filiado{
         <p>Seus dados sensíveis,tais como: senha, e-mail, IP, telefone, nome real e/ou endereço completo, jamais serão expostos a outros usuários do site ou mesmo a terceiros, salvo em casos de demanda judicial/policial.</p>
         
         <br>
-        <p><b> DO CADASTRO: </b> </p>
+        <p><b> CADASTRO: </b> </p>
 
         <p>O conteúdo do site não se destina a menores de 18 (dezoito) anos! Assim sendo, conforme a legislação vigente no país (Brasil), fica proibido o cadastro de pessoas menores de 18 (dezoito) anos. Observação: Osite poderá, a qualquer momento, excluir o cadastro do usuário identificado (ou suspeito) como sendo menor de 18 (dezoito) anos. O ocorrido será informado às autoridades legais competentes. PEDOFILIA É CRIME! DENUNCIE!</p>
 
@@ -170,7 +43,7 @@ class Filiado{
         <p>Perfis sem movimentação por período superior a 3 (três) meses serão automaticamente excluídos (sem aviso prévio!).</p>
 
         <br>
-        <p><b>DAS COMUNICAÇÕES ENTRE OS USUÁRIOS, OS ASSINANTES E OS ANUNCIANTES EM QUALQUER DAS FERRAMENTAS DO SITE:</b></p>
+        <p><b> COMUNICAÇÕES ENTRE OS USUÁRIOS, OS ASSINANTES E OS ANUNCIANTES EM QUALQUER DAS FERRAMENTAS DO SITE:</b></p>
 
         <p>A comunicação realizada no site TONIGHT.NET.BR deverá ser pautada na boa educação, na cordialidade e com base no respeito pelos desejos e limites do outro.</p>
 
@@ -192,7 +65,7 @@ class Filiado{
          <p>O TONIGHT.NET.BR veda e tomará as medidas legais cabíveis contra todo conteúdo  considerado como spam ou algo do gênero.</p>
 
         <br>
-        <p><b>DA PUBLICAÇÃO DE MÍDIAS (FOTOS, VÍDEOS E AFINS):</b></p>
+        <p><b> PUBLICAÇÃO DE MÍDIAS (FOTOS, VÍDEOS E AFINS):</b></p>
 
         <p>Toda a publicação de mídia confeccionada e editada será feita exclusivamente por você usuário, que terá seus direitos de uso preservados.</p>
 
@@ -203,13 +76,13 @@ class Filiado{
         <p>Todo conteúdo que contenha pedofilia, zoofilia, necrofilia, mutilação ou conteúdo considerado ilegal, discriminatório ou agressivo será retirado do site e denunciado às autoridades competentes.</p>
 
         <br>
-        <p><b>DOS DIREITOS E DEVERES ESPECIAIS PARA ANUNCIANTES:</b></p>
+        <p><b> DIREITOS E DEVERES ESPECIAIS PARA ANUNCIANTES:</b></p>
 
         <p>Os anunciantes poderão utilizar o próprio mural para anunciar seus produtos e serviços. </p>
         <p>Isto poderá ser feito uma única vez ao dia, enquanto durar sua assinatura no site TONIGHT.NET.BR, conforme o contrato escolhido, e nos murais específicos para esta finalidade (propaganda de produtos e serviços), podendo, caso desejarem, conter imagens e/ou valores.</p>
 
         <br>
-        <p><b>DOS DIREITOS DO SITE TONIGHT.NET.BR:</b></p>
+        <p><b> DIREITOS DO SITE TONIGHT.NET.BR:</b></p>
 
         <p>Nossa equipe trabalha para manter o site TONIGHT.NET.BR sempre atualizado, seguro e com o máximo em firewall. Entretanto nossos usuários o utilizam por sua conta e risco. </p>
 
@@ -228,7 +101,7 @@ class Filiado{
         <p>A nossa logomarca poderá ser utilizada em futuros projetos na web somente pelos proprietários legais do site TONIGHT.NET.BR.</p>
 
         <br>
-        <p><b>DOS TERMOS RESCISÓRIOS:</b></p>
+        <p><b> TERMOS RESCISÓRIOS:</b></p>
 
         <p>Caso o usuário venha a violar os termos de utilização e a essência do presente site, ou venha ainda, gerar possível risco ou exposição legal para nós, poderemos deixar de fornecer, no todo ou parte, os serviços constantes no site TONIGHT.NET.BR. </p>
         <p>Notificaremos você, usuário, na próxima vez que você tentar acessar sua conta. Você também é livre para excluir sua conta a qualquer momento!</p>
@@ -236,23 +109,63 @@ class Filiado{
         <p>Não haverá reembolso de valores pagos por motivo de discordância de qualquer termo utilização deste site ou por arrependimento. Caberá reembolso somente nos casos decorrentes de problemas técnicos ou por erros de faturamento.</p>
 
         <br>
+        <p><b>VISITANTES E USUÁRIOS:</b></p>
+        
+        <p>1º Tenho mais de 18 anos de idade e em meu país essa maioridade me permite ao acesso deste conteúdo.</p>
+        <br>
+        
+        <p>2º Declaro estar ciente que o material exposto neste site é de conteúdo erótico e adulto, e que estou acessando para o meu uso pessoal e não irei expor este conteúdo a menores de 18 anos ou a outros que exista alguma restrição legal ou moral.</p>
+        <br>
+        
+        <p>3º Assumo inteira responsabilidade cível e criminal pelo uso indevido dos materiais fotográficos, vídeos e outros existentes no site, uma vez que as veiculações dos anúncios não representam cessão de direitos de imagem aos visitantes e usuários.</p>
+        <br>
+        
+        <p>4º Declaro também estar ciente que o Site TONIGHT.NET.BR é um site de classificados de produtos e serviços relacionados ao mercado adulto, e que o mesmo não tem nenhum vinculo com os produtos ou serviços divulgados. </p>
+        <br>
+        
+        <p>O TONIGHT.NET.BR se posiciona como um catálogo de produtos e serviços eróticos ou classificados dos mesmos, mas tendo como sua única responsabilidade, a prestação de serviço em publicidade dos produtos e serviços que nossos anunciantes solicitam a publicação através de uma taxa de manutenção. </p>
+
+        <br>
+        <p>Em nosso Site, todo anúncio de um produto ou serviço erótico publicado, é de inteira responsabilidade da empresa ou profissional autônomo Anunciante. Sendo assim, não nos comprometemos com a qualidade, atendimento, entrega ou qualquer outro valor agregado dos produtos e serviços prestados por nossos Anunciantes. </p>
+
+        <br>
+        <p>Nós do TONIGHT.NET.BR, não nos comprometemos com a total veracidade das informações passadas por nossos anunciantes. Salvo os números de telefone para contato. Isso porque, alguns de nossos anunciantes usam pseudônimos para atender seus clientes, como no caso das Acompanhantes e Massagistas que se divulgam em nosso site. </p>
+
+        <br>
+        <p>O TONIGHT.NET.BR entende os serviços de Acompanhantes e Massagistas como serviços autônomos sem certificações para os mesmos que os identifiquem. Entendendo assim, o serviço de Acompanhante, como aquela pessoa que acompanha outra em eventos sociais ou pessoal só para ter alguém lhe fazendo companhia. E Massagista, a pessoa que se posiciona em tentar relaxar outra com movimentos diversos utilizando suas mãos e força muscular para tentar trazer algum conforto nos músculos de quem esta recebendo tal esforço por outro cedido. Sendo assim, tais atividades podem ser cobradas, onde os mesmos estipulam uma taxa por esses serviços prestados, mas sem uma intervenção de algum órgão que os coloque uma tabela de valor por cada serviço e possa regular e mediar esse mercado. Ou seja, cada profissional autônomo destas modalidades, poderá cobrar o valor que bem entenderem. </p>
+
+        <br>
+        <p>Todos os anunciantes presentes no site assinaram um termo de autorização e responsabilidade para autorização da publicação de seu anúncio, com as informações: (nomes artísticos, telefones, dados pessoais, dimensões, medidas e texto descritivo dos seus serviços ou produtos) de sua livre autoria e inteira responsabilidade. </p>
+
+        <br>
+        <p>O site TONIGHT.NET.BR  declara que todos os nossos anunciantes têm maioridade legal para se vincularem a um site erótico e prestarem seus serviços e comercializarem seus produtos. </p>
+
+        <br>
+        <p id="ajuda"><b>AJUDA:</b></p>
+        
+        <p> Se ainda tiver duvidadas, se desejar fazer uma reclamação ou relatar algum problema entre em contato conosco através do e-mail <i> rogerbellussi17@gmail.com </i> . </p>
+        
+        <br>
         <p><b>DISPOSIÇÕES FINAIS:</b></p>
 
         <p>Ao concordar com estes termos de utilização e serviço, você também concorda que os moderadores do site TONIGHT.NET.BR atuem como árbitros para o julgamento das questões acima citadas.</p>
-
+        
+        <br>
         <p>Boas vindas!!!</p>
 
+        <br>
         <p>É com muito prazer e satisfação que damos boas vindas a todos e esperamos que seus desejos mais íntimos se realizem através do nosso site. Esperamos promover, acima de tudo, muitas novas e boas amizades!</p>
-
-        ";
         
-        return $termos;
-    }
-    
-    public function destroySession(){
-        session_destroy();
-    }
-    
-}
+        <br>
+        <p>E caso você desconfie ou saiba que possa existir alguma fraude aplicada por um de nossos anunciantes, nos avise imediatamente. </p>
 
-?>
+        <br>
+        <p>Diga não ao Trabalho e Prostituição Infantil ! </p>
+
+        <br>
+        <p>Bom Divertimento, </p>
+
+        <br>
+        <p><b>TONIGHT.NET.BR</b></p>
+
+    </div>

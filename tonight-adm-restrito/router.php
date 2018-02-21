@@ -33,6 +33,28 @@
                     
                     
             }
+            
+        case 'index':
+            switch ($modo){
+                case 'alterar':
+                    include_once('model/index_class.php');
+                    include_once('controller/index_controller.php');
+                    
+                    $controller = new ControllerIndex();
+                    $controller->Alterar();
+                    
+                    break;
+                    
+                case 'excluir':
+                    include_once('model/index_class.php');
+                    include_once('controller/index_controller.php');
+                    
+                    $controller = new ControllerIndex();
+                    $controller->Excluir();
+                    
+                    break;
+                    
+            }
         break;
 
     }

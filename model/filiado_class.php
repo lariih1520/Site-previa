@@ -36,6 +36,7 @@ class Acompanhante{
         
     }
     
+    /* Login do acompanhante */
     public function Login($filiado){
         $sql = "select * from tbl_filiado where email = '".$filiado->email."' ";
         $sql = $sql." and senha =  '".$filiado->senha."'";
@@ -45,12 +46,12 @@ class Acompanhante{
         if(mysql_affected_rows() > 0){
             
             while($rs = mysql_fetch_array($select)){
-                $id = $rs['id_filado'];
+                $id = $rs['id_filiado'];
             }
             session_start();
             $_SESSION['id_filiado'] = $id;
             
-            header('location:perfil.php?perfil=acompanhante');
+            header('location:perfil-filiado.php');
             
         }else{
             header('location:login.php?perfil=acompanhante&erro-ao-logar');
@@ -58,7 +59,8 @@ class Acompanhante{
         
     }
     
-    public function SelectClienteById($id){
+    /* Buscar dados do aompanhante  */
+    public function SelectFiliadoById($id){
         $sql = 'call VwDadosUsuario('.$id.')';
         
         if($select = mysql_query($sql)){
@@ -108,15 +110,20 @@ class Acompanhante{
         
     }
     
+    /* Cadastrar novo acompanhante no site */
     public function InsertFiliado($tipo_conta){
+        
+        /* necessário para o funcionamento da classe filiado */
         session_start();
+        
         $filiado = new Filiado();
         $fld = $filiado->getFiliado();
         
-        
+        /* Pegar data de cadastro */
         date_default_timezone_set('America/Sao_Paulo');
         $datetime = (date('Y/m/d H:i'));
         
+        /* Pegando id do estado através do uf */
         $select = mysql_query("select * from tbl_estado where uf = '".$fld->estado."' ");
         
         while($rs = mysql_fetch_array($select)){
@@ -143,12 +150,29 @@ class Acompanhante{
                          $datetime."', 1, 1)";
         
         if(mysql_query($sql)){
-            /******* TOBE CONTINUE ********/
+            
+            /* Pegar id do acompanhante através do email cadastrado */
+            $sql = 'select * from tbl_filiado where email = "'.$fld->email.'" ';
+            
+            if($select = mysql_query($sql)){
+                
+                while($rs=mysql_fetch_array($select)){
+                    $_SESSION['id_filiado'] = $rs['id_filiado'];
+                    
+                    header('location:perfil-filiado.php');
+                }
+                
+            }else{
+                echo $sql; /* Se der erro */
+            }
+            
         }else{
-            echo $sql;
+            echo $sql; /* Se der erro */
         }
+        
     }
     
+    /* Buscar estados */
     public function SelectEstados(){
         
         if ($slct = mysql_query("select * from tbl_estado") ) {
@@ -174,6 +198,7 @@ class Acompanhante{
         }
     }
     
+    /* Buscar cidades */
     public function SelectCidade(){
         $sql = "select * from tbl_cidade";
         
@@ -199,6 +224,7 @@ class Acompanhante{
         
     }
     
+    /* Buscar etnia */
     public function SelectEtnia(){
         $sql = "select * from tbl_etnia";
         
@@ -220,10 +246,6 @@ class Acompanhante{
             return false;
             
         }
-        
-    }
-    
-    public function SelectSugestoes($id){
         
     }
     

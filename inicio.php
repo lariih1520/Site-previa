@@ -14,7 +14,6 @@
 		<script type="text/javascript" src="js/jcarousellite.js"></script>
         <script type="text/javascript">
 		
-		<!-- JavaScript do Slide -->
 			function setaImagem(){
 				var settings = {
 					primeiraImg: function(){

@@ -49,9 +49,6 @@ switch ($controller) {
                  if(!empty($_GET['tipo'])){
                      $controller->CadastrarFiliado();
                          
-                 }else{
-                     $controller->CadastrarFiliadoCartao();
-                     
                  }
                
             break;
@@ -61,6 +58,7 @@ switch ($controller) {
                 require_once('controller/filiado_controller.php');
                 $autentica_controller = new ControllerAcompanhante();
                 $autentica_controller->Logar();
+                
             break;
                 
         }

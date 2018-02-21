@@ -78,8 +78,8 @@ select{
 }
 .lst_dados_ver li{
     float: left;
-    width: 160px;
-    margin-right: 18px;
+    width: 185px;
+    margin-right: 8px;
     margin-bottom: 10px;
     border-radius: 15px;
     padding: 2px 10px 2px 20px;
@@ -89,7 +89,7 @@ select{
     font-size: 20px;
 }
 .label_dados{
-    font-size: 22px;
+    font-size: 18px;
 }
 
 /********** Dados Importantes ***********/

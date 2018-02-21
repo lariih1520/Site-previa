@@ -49,7 +49,7 @@ class Cliente{
             session_start();
             $_SESSION['id_cliente'] = $id;
             
-            header('location:perfil.php?perfil=cliente');
+            header('location:perfil-cliente.php');
             
         }else{
             header('location:login.php?erro-ao-logar');
@@ -75,8 +75,8 @@ class Cliente{
                 $tel = explode(')', $rs['celular']);
                 
                 $telddd = explode('(', $tel[0]);
-                $ddd = $telddd[1];
-                $numero = $tel[1];
+                $ddd = $telddd[0];
+                $numero = $tel[0];
                 
                 $cliente->id = $rs['id_cliente'];
                 $cliente->nome = $rs['nome'];
@@ -90,7 +90,14 @@ class Cliente{
                 $cliente->id_cidade = $rs['id_cidade'];
                 $cliente->estado = $rs['estado'];
                 $cliente->cidade = $rs['cidade'];
-                $cliente->enteresse = $rs['enteresse'];
+                
+                if(!empty($rs['enteresse'])){
+                    $cliente->enteresse = $rs['enteresse'];
+                    
+                }else{
+                    $cliente->enteresse = '';
+                }
+                
                 $cliente->dia = $dia;
                 $cliente->mes = $mes;
                 $cliente->ano = $ano;

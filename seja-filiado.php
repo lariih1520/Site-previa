@@ -13,7 +13,20 @@
         <script src="js/jquery-3.2.1.min.js" ></script>
         <script type="text/javascript" >
 
+            function termos(){
+                
+                if(document.getElementById('check').checked == true){ 	 
+                    document.getElementById('btnConcordo').disabled = ""; 
+                    $('#btnConcordo').removeClass('desabilitado');
+                }  
+                if(document.getElementById('check').checked == false){
+                    document.getElementById('btnConcordo').disabled = "disabled";
+                    $('#btnConcordo').addClass('desabilitado');
+                }
+            }
+            
             $(document).ready(function() {
+                
 
                 $("#botao").val("Digite um cep");
 

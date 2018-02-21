@@ -7,6 +7,7 @@
 	padding:0;
 	margin:0;
     list-style: none ;
+    font-family: arial;
 }
 h1{
     font-weight: normal;
@@ -83,7 +84,7 @@ header{
 
 .lst_menu{
     float: left;
-    width: 650px;
+    width: 675px;
     height: 50px;
     margin-top: 70px;
     margin-left: 10%;
@@ -93,7 +94,8 @@ header{
     float: left;
     font-size: 20px;
     margin-right: 2px;
-    padding: 4px 8px 4px 8px;
+    padding: 4px 4px 4px 4px;
+    border: solid 1px transparent;
 }
 .lst_menu li a{color: black;}
 .lst_menu li:hover{
@@ -123,7 +125,7 @@ header{
 .botao{
     color: white;
     cursor: pointer;
-    font-size: 22px;
+    font-size: 20px;
     border-radius: 5px;
     background-color: #DF0101;
     border: solid 1px darkred;
@@ -132,7 +134,7 @@ header{
 }
 .botao a{
     color: white;
-    font-size: 22px;
+    font-size: 20px;
 }
 
 .botao a:hover {
@@ -155,7 +157,7 @@ header{
 
 .botao_header{
     color: white;
-    width: 100px;
+    width: 110px;
     cursor: pointer;
     font-size: 22px;
     margin-left: 28px;
@@ -167,7 +169,7 @@ header{
 }
 .tipo_login{
     display: none;
-    width: 130px;
+    width: 160px;
     height: 50px;
     margin-top: 4px;
     margin-right: 5px;

@@ -95,7 +95,7 @@
                     <span><?php echo $cidade ?></span>
                 </li>
                 <li>
-                    <p><label> Enteresse </label></p>
+                    <p class="label_dados"> Enteresse </p>
                     <span><?php echo $enteresse ?></span>
                 </li>
             </ul>
@@ -308,15 +308,15 @@
             <ul class="lst_dados">
                 <li>
                    <p><label> Senha anterior </label></p>
-                    <input type="password" name="txtSenha" value="<?php echo $senha ?>">
+                    <input type="password" name="txtSenha" value="">
                 </li>
                 <li>
                    <p><label> Nova senha </label></p>
-                    <input type="password" name="txtSenha" value="<?php echo $senha ?>">
+                    <input type="password" name="txtSenha" value="">
                 </li>
                 <li>
                    <p><label> Confirmar senha </label></p>
-                    <input type="password" name="txtSenha" value="<?php echo $senha ?>">
+                    <input type="password" name="txtSenha" value="">
                 </li>
             </ul>
             <div class="editar_dados"> 

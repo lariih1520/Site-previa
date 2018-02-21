@@ -1,0 +1,38 @@
+/**
+    Data: 20/02/2018
+    Objetivo: estilo pagina perfil acompanhante
+**/
+
+.content_dados{
+    padding: 8px;
+    margin: auto;
+    width: 900px;
+    height: 300px;
+    margin-top: 20px;
+    margin-bottom: 10px;
+    border: solid 1px red;
+}
+.content_midia{
+    padding: 8px;
+    margin: auto;
+    width: 900px;
+    height: auto;
+    margin-bottom: 10px;
+    border: solid 1px red;
+}
+.content_dados_seguranca{
+    padding: 8px;
+    margin: auto;
+    width: 900px;
+    height: 300px;
+    margin-bottom: 10px;
+    border: solid 1px red;
+}
+.sua_conta{
+    padding: 8px;
+    margin: auto;
+    width: 900px;
+    height: 250px;
+    margin-bottom: 10px;
+    border: solid 1px red;
+}

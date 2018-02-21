@@ -50,13 +50,12 @@
         <div id="content_header"> 
             <div id="content_logo">
                 <a href="index.php">
-                   <img src="imagens/logo.jpg" id="logo" alt="logo tonight">
+                   <img src="imagens/logo.png" id="logo" title="Tonight" alt="logo tonight">
                 </a>
             </div>
             <ul class="lst_menu">
                 <li><a href="inicio.php"> Home </a></li>
-                <li><a href="sobre-o-site.php"> Sobre o site </a></li>
-                <li><a href="localidade.php"> Ver por estado </a></li>
+                <li><a href="localidade.php"> Filtrar por estado </a></li>
                 <?php
                     if($lgrc == false || $lgrf == false){
                 ?>
@@ -65,7 +64,8 @@
                 <?php
                     }
                 ?>
-                <li><a href="seja-filiado.php"> Seja um acompanhante </a></li>
+                <li><a href="seja-filiado.php"> Seja acompanhante </a></li>
+                <li><a href="sobre-o-site.php"> Sobre </a></li>
             </ul>
             <div class="content_logar">
                 <?php

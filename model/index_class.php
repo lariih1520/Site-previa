@@ -1,12 +1,10 @@
 <?php
 /**
-    Data: 17/02/2018
-    Objetivo: Buscar fotos slides
+    Data: 20/02/2018
 **/
 
-class Home{
+class Index{
     
-    public $id_home;
     public $imagem;
     
     public function __construct(){
@@ -17,28 +15,24 @@ class Home{
         
     }
     
-    public function SelectFotos(){
-        $sql = 'select * from tbl_home_slide';
+    public function SelectImagens(){
+        $sql = 'select * from tbl_index';
         
         if($select = mysql_query($sql)){
             
             $cont = 0;
             while($rs = mysql_fetch_array($select)){
-                $home[] = new Home();
                 
-                $home[$cont]->id_home = $rs['id_home'];
-                $home[$cont]->imagem = $rs['imagem'];
+                $imagem[] = new Index();
+                $imagem[$cont]->imagem = $rs['imagem'];
+                
                 $cont++;
                 
-                return $home;
             }
-            
-            
-        }else{
-            return false;
+            return $imagem;
         }
         
     }
-    
-    
 }
+
+?>

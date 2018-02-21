@@ -1,14 +1,15 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title> Tonight Administração - HOME </title>
+		<title> Tonight - Perfil do usuário </title>
 		<meta charset="UTF-8">
 		<meta http-equiv="content-language" content="pt-br" />
 		<meta name="viewport" content="initial-scale=1" />
 		<meta name="author" content="Larissa AP" />
+		<meta name="description" content="Precisa de um ampanhante? Nós temos o que você precisa" />
+		<meta name="keywords" content="Acompanhante, Acompanhantes, companhias para festas" />
 		<link rel="stylesheet" type="text/css" href="css/estilo_padrao.css" />
-		<link rel="stylesheet" type="text/css" href="css/estilo_adm_planos.css" />
-        
+        <link rel="stylesheet" type="text/css" href="css/estilo_perfil_cliente.css" /> 
 	</head>
 	<body>
 		<div id="principal">
@@ -18,11 +19,15 @@
             
             <!-- conteudo -->
             <section id="conteudo">
-                <?php include_once('view/adm_planos_view.php'); ?>
+                <?php
+                    if(!empty($_SESSION['id_cliente'])){
+                        include_once('view/perfil_cliente_view.php'); 
+                    }
+                ?>
             </section>
             
             <!-- rodape -->
-            <?php include_once('view/footer.php'); ?>
+            <?php include_once('view/footer.html'); ?>
 		</div>
 	</body>
 </html>

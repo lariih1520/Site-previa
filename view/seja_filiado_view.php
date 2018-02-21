@@ -8,7 +8,7 @@
 ?>
 
     <h1 class="titulo"> Seja um acompanhante e duvulgue-se! </h1>
-    <p class="centro"> Preencha os dados a seguir para cadastrar-se, essas informações ajudam os clientes a encontrar o seu perfil </p>
+    <p class="centro"> Preencha os dados a seguir para cadastrar-se, essas informações ajudam os clientes a encontrar o seu perfil. Essses são os dados publicos </p>
     <div class="content_dados_1">
         
         <form action="?etapa=2" method="post">
@@ -175,7 +175,7 @@
             </li>
             
         </ul>
-            <input type="submit" value="Próximo &raquo;" class="botao" name="btnProx">
+            <input type="submit" value="Próximo &raquo;" class="botao right" name="btnProx">
 
         </form>
         
@@ -242,9 +242,9 @@
 
     <h1 class="titulo"> Escolha o tipo da conta! </h1>
     <div class="content_dados_2">
-        <form action="?etapa=3<?php echo $tipo ?>" method="post">
+        <form action="router.php?controller=acompanhante&modo=inserir<?php echo $tipo ?>" method="post">
             
-            <p class="sobre_pag">Valor mensal dia 10<br>
+            <p class="sobre_pag"> Valor mensal dia 10 <br>
             
             <a href="?etapa=2&tipo=1">
             <div class="tipo_conta">
@@ -271,40 +271,33 @@
             </div>
             </a>
                 
-            <div class="forma_pag">
-                <p class="forma_letras"> Forma de pagamento </p>
-                <select name="slc_forma_pag">
-                    <option value="1"> Cartão </option>
-                    <option value="2"> Boleto </option>
-                    <option value="0" selected> Escolher depois </option>
-                </select>
-                <p>É possivel alterar posteriormente</p>
+            <div class="termos">
+                <?php 
+                    $rs = $filiado->getTermos();
+                    echo $rs;
+                ?>
             </div>
-            <input type="submit" value="Próximo &raquo;" class="botao" name="btnProx2">
-            
+            <div class="termos_confirmar">
+                <p><input type="checkbox" name="ckTermos" onclick="termos()" id="check"> Li e concordo com os termos </p>
+                <input type="submit" value="Concluir" name="btnProx2" disabled class="botao desabilitado" id="btnConcordo">
+            </div>
         </form>
     </div>
 
 <?php
-    } elseif($_GET['etapa'] == '3') {
-        $opt = '1';
-        
-        if(isset($_POST['btnProx2'])){
-            $tipo = $_GET['tipo'];
-            $opt = $_POST['slc_forma_pag'];
-            $conta = '&tipo='.$tipo.'&forma='.$opt;
-        }
-        
+    } 
 ?>
+
+</div>
+
+
+<!-- ************* Dados cartão *************
 
     <h1 class="titulo"> Quase lá! </h1>
     <div class="content_dados_3">
-        <?php 
-            if($opt == '1'){
-        ?>
             <p> Os dados a seguir são referentes ao titular do cartão </p>
         
-        <!--<form action="router.php?controller=acompanhante&modo=inserir">-->
+        /*<form action="router.php?controller=acompanhante&modo=inserir">*/
         
             <form method="get" action="." id="frm">
             <ul class="lst_dados_1">
@@ -345,21 +338,5 @@
             </ul>
             <p><input type="submit" value="Concluido!" class="botao" name="btnSalvar"></p>
         </form>
-        <?php 
-            }else{
-                $link = 'router.php?controller=acompanhante&modo=inserir'.$conta; 
-        ?>
-            <script>
-                window.location.href = '<?php echo $link ?>';
-            </script>
-                
-        <?php
-            }
-        ?>
     </div>
-<?php
-        
-    }
-?>
-    
-</div>
+-->

@@ -11,21 +11,19 @@
 		<link rel="stylesheet" type="text/css" href="css/estilo_padrao.css" />
 		
     <?php
-        if(!empty($_GET)){
-            if($_GET['perfil'] == 'acompanhante' && !empty($_GET['codigo'])){ ?>  
+        /* Ver perfil do acompanhante */
+        if(!empty($_GET['codigo'])){ ?>  
         
         <link rel="stylesheet" type="text/css" href="css/estilo_perfil_filiado.css" /> 
     
-    <?php   }elseif($_GET['perfil'] == 'acompanhante' && empty($_GET['codigo'])){ ?>
+    <?php 
+        /* O acompanhante ver o próprio perfil */
+        }else{ 
+    ?>
         
         <link rel="stylesheet" type="text/css" href="css/estilo_filiado.css" /> 
         
-    <?php   }else{ ?>  
-        
-        <link rel="stylesheet" type="text/css" href="css/estilo_perfil_cliente.css" /> 
-    
-    <?php
-            }
+    <?php   
         }
     ?>
 	</head>
@@ -39,21 +37,8 @@
             <section id="conteudo">
                 <?php
                     
-                    if (!empty($_GET)){
+                include_once('view/perfil_filiado_view.php'); 
                         
-                        if ($_GET['perfil'] == 'acompanhante'){
-                            include_once('view/perfil_filiado.php'); 
-                            
-                        } elseif($_GET['perfil'] == 'cliente') {
-                            include_once('view/perfil_cliente.php'); 
-                        
-                        }else{
-                            header('location:login.php');
-                        }
-                        
-                    }elseif (empty($_GET)){
-                        header('location:login.php');
-                    }
                 ?>
             </section>
             

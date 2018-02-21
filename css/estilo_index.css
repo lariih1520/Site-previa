@@ -5,14 +5,15 @@
 
 
 body{
-   /* background-image: url(../imagens/free-wallpaper.jpg);
-    background-attachment: fixed;
-    background-repeat: no-repeat;
-    background-size: 100% 100%;*/
-    background-image:linear-gradient(to bottom right, black 60%, red);
+   /*background-image: url(../imagens/free-wallpaper.jpg);*/
     background-attachment: fixed;
     background-repeat: no-repeat;
     background-size: 100% 100%;
+    background-color: black;
+    /*background-image:linear-gradient(to bottom right, black 60%, red);
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-size: 100% 100%;*/
 }
 
 #principal_index{
@@ -31,11 +32,11 @@ body{
     margin: 0px auto 0 auto;
     padding: 10px;
     color:aliceblue;
-    font-size: 25px;
+    font-size: 22px;
     text-align: center;
 }
 #introducao p{
-    font-size: 30px;
+    font-size: 24px;
     margin-bottom: 50px;
     margin-top: 50px;
 }
@@ -65,19 +66,24 @@ body{
     font-size: 25px;
     color: white;
     padding: 80px 20px 0px 20px;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
 }
 #ir_site{
-    
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
 }
 #ver_homens{
-    -webkit-filter:grayscale(100%);
-    filter:blackscale(100%);
-    transition: 0.3s;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
 }
 #ver_mulheres{
-    -webkit-filter:grayscale(100%);
-    filter:blackscale(100%);
-    transition: 0.3s;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
 }
 #seja_filiado{
     float: left;
@@ -90,6 +96,9 @@ body{
     font-size: 25px;
     padding: 60px 20px 0px 20px;
     color: white;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
 }
 
 #ir_site,
@@ -110,4 +119,7 @@ a{ color: white;}
 
 a:hover{
     color:darkgrey;
+}
+.termos{
+    font-size: 16px;
 }
