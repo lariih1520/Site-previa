@@ -8,8 +8,25 @@
 		<meta name="author" content="Larissa AP" />
 		<meta name="description" content="Seja um de nossos acompanhantes e divulgue-se, basta se cadastrar" />
 		<meta name="keywords" content="Acompanhante, Acompanhantes, companhias para festas, cadastre-se, ser acompanhante de luxo" />
+        <link rel="icon" type="icone/png" href="imagens/logo.png">
 		<link rel="stylesheet" type="text/css" href="css/estilo_padrao.css" />
 		<link rel="stylesheet" type="text/css" href="css/estilo_seja_filiado.css" />
+    </head>
+	<body>
+		<div id="principal">
+            
+            <!-- Cabecalho -->
+            <?php include_once('view/header.php'); ?>
+            
+            <!-- conteudo -->
+            <section id="conteudo">
+                <?php include_once('view/seja_filiado_view.php'); ?>
+            </section>
+            
+            <!-- rodape -->
+            <?php include_once('view/footer.html'); ?>
+		</div>
+        
         <script src="js/jquery-3.2.1.min.js" ></script>
         <script type="text/javascript" >
 
@@ -94,20 +111,5 @@
 
                 //conta.classList.toggle('selecionado');
         </script>    
-    </head>
-	<body>
-		<div id="principal">
-            
-            <!-- Cabecalho -->
-            <?php include_once('view/header.php'); ?>
-            
-            <!-- conteudo -->
-            <section id="conteudo">
-                <?php include_once('view/seja_filiado_view.php'); ?>
-            </section>
-            
-            <!-- rodape -->
-            <?php include_once('view/footer.html'); ?>
-		</div>
 	</body>
 </html>

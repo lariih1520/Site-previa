@@ -165,9 +165,35 @@
                     
             </li>
         </ul>
-        <input type="submit" name="btnSavar" value="Cadastrar" class="botao">
+        <div class="clear"></div>
+        <div class="termos">
+        <?php
+            
+            $termos = new ControllerCliente();
+            $rs = $termos->getTermos();
+            
+            echo $rs;
+            
+        ?>
+        </div>
+        <p class="concordo"> <input type="checkbox" id="check" name="check" onclick="termos()"> Li e concorco com os temos de uso do site. </p>
+        <input type="submit" name="btnSavar" id="btnSavar" value="Cadastrar" class="botao desabilitado" disabled='disabled'>
     </form>
+        
     </div>
+    <script>
+        function termos(){
+
+            if(document.getElementById('check').checked == true){ 	 
+                document.getElementById('btnSavar').disabled = ""; 
+                $('#btnSavar').removeClass('desabilitado');
+            }  
+            if(document.getElementById('check').checked == false){
+                document.getElementById('btnSavar').disabled = "disabled";
+                $('#btnSavar').addClass('desabilitado');
+            }
+        }
+    </script>
     <script src="js/jsapi.js"></script>
 		<script type="text/javascript">
 		  google.load('jquery', '1.3');

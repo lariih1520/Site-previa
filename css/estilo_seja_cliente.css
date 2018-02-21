@@ -15,6 +15,8 @@
     border: solid 1px transparent;
 }
 .botao{
+    float: left;
+    clear: both;
     width: 100px;
     height: 35px;
     margin-left: 25px;
@@ -23,33 +25,57 @@
 }
 .cont_alinhar{
     width: 660px;
-    height: 500px;
+    height: 800px;
     margin: auto;
     border: solid 1px transparent;
 }
-
 .lst_cadastrar_dados{
     float: left;
-    width: 300px;
+    width: 230px;
     height: 300px;
     margin: auto;
     padding: 10px;
+    padding-left: 70px;
     margin-top: 30px;
     border: solid 1px transparent;
 }
-
 .lst_cadastrar_dados li{
-    width: 300px;
+    width: 230px;
     font-size: 20px;
     margin-left: 10px;
     border: solid 1px transparent;
 }
-
 .lst_cadastrar_dados li input{
     font-size: 16px;
 }
 .lst_cadastrar_dados li select{
     font-size: 16px;
+}
+.clear{
+    float: left;
+    clear: both;
+    width: 660px;
+    height: 1px;
+    margin-bottom: 20px;
+    border: solid 1px white;
+}
+.desabilitado{
+    color: gray;
+    background-color: #CDCDCD;
+    border: solid 1px gray;
+}
+.termos{
+    width: 600px;
+    height:250px;
+    margin: auto;
+    padding: 5px;
+    overflow-y: scroll;
+    border: solid 1px #CDCDCD;
+}
+.concordo{
+    width: 600px;
+    margin: auto;
+    margin-top: 16px;
 }
 .carregando{
     color:#666;

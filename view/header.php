@@ -3,7 +3,7 @@
         
         if(!empty($_SESSION['id_cliente'])){
             $lgrc = true;
-            $perfil = 'cliente';
+            $perfil = 'perfil-filiado.php?';
             
         }else{
             $perfil = '';
@@ -12,10 +12,10 @@
 
         if(!empty($_SESSION['id_filiado'])){
             $lgrf = true;
-            $perfil = 'acompanhante';
+            $perfil = 'perfil-filiado.php?';
             
         }else{
-            $perfil = '';
+            $perfil = '#';
             $lgrf = false;
         }
 
@@ -38,10 +38,10 @@
             <?php
                 }
             ?>
-            <a href="perfil.php?perfil=<?php echo $perfil ?>&notification">
+            <a href="<?php echo $perfil ?>notification">
                 <img src="icones/sino.png" class="icon">
             </a>
-            <a href="perfil.php?perfil=<?php echo $perfil ?>&confirguracoes">
+            <a href="<?php echo $perfil ?>confirguracoes">
                 <img src="icones/config.png" class="icon">
             </a>
         </div>

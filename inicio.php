@@ -10,6 +10,7 @@
 		<meta name="keywords" content="Acompanhante, Acompanhantes, companhias para festas" />
 		<link rel="stylesheet" type="text/css" href="css/estilo_padrao.css" />
 		<link rel="stylesheet" type="text/css" href="css/estilo_inicio.css" />
+        <link rel="icon" type="icone/png" href="imagens/logo.png">
         <script src="js/jquery.min.js"></script>
 		<script type="text/javascript" src="js/jcarousellite.js"></script>
         <script type="text/javascript">

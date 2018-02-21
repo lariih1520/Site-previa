@@ -331,24 +331,46 @@
         <div id="sugestoes">
             <h1 class="titulo"> Sugestões </h1>
             <ul class="lst_sugestoes">
+                <?php
+                    $sugestoes = '';
+                        
+                    if($sugestoes != ''){
+                ?>
                 <li>
                     <a href="perfil.php">
                         <span class="perfil_sugestao">
                              <p> Nome: </p>
-                             <p> Peso: </p>
+                             <p> Estado: </p>
                              <p> Idade: </p>
                         </span>
                         <img src="imagens/free-wallpaper.jpg" class="img_peril">
                     </a>
                 </li>
                 <li> 
-                    <p class="perfil_sugestao"> Perfil </p>
-                    <img src="imagens/back.png" class="img_peril">
+                    <a href="perfil.php">
+                        <span class="perfil_sugestao">
+                             <p> Nome: </p>
+                             <p> Estado: </p>
+                             <p> Idade: </p>
+                        </span>
+                        <img src="imagens/back.png" class="img_peril">
+                    </a>
                 </li>
                 <li> 
-                    <p class="perfil_sugestao"> Perfil </p>
-                    <img src="imagens/logo.png" class="img_peril">
+                   <a href="perfil.php">
+                        <span class="perfil_sugestao">
+                             <p> Nome: </p>
+                             <p> Estado: </p>
+                             <p> Idade: </p>
+                        </span>
+                        <img src="imagens/logo.png" class="img_peril">
+                    </a>
                 </li>
+                <?php
+                    }else{
+                        echo '<center>Ainda não há sugestões</center>';
+                    }
+                ?>
             </ul>
         </div>
     </section>

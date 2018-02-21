@@ -249,10 +249,6 @@ class Filiado{
         return $termos;
     }
     
-    public function destroySession(){
-        session_destroy();
-    }
-    
 }
 
 ?>

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title> Tonight - Realizar Login </title>
+		<title> Tonight - Filtrar acompanhantes por cidade </title>
 		<meta charset="UTF-8">
 		<meta http-equiv="content-language" content="pt-br" />
 		<meta name="viewport" content="initial-scale=1" />
@@ -10,7 +10,7 @@
 		<meta name="keywords" content="Acompanhante, Acompanhantes, companhias para festas" />
         <link rel="icon" type="icone/png" href="imagens/logo.png">
 		<link rel="stylesheet" type="text/css" href="css/estilo_padrao.css" />
-		<link rel="stylesheet" type="text/css" href="css/estilo_login.css" />
+		<link rel="stylesheet" type="text/css" href="css/estilo_inicio.css" />
 	</head>
 	<body>
 		<div id="principal">
@@ -20,7 +20,8 @@
             
             <!-- conteudo -->
             <section id="conteudo">
-                <?php include_once('view/login_view.php'); ?>
+                <center> Em desenvolvimento </center>
+                <?php /*include_once('');*/ ?>
             </section>
             
             <!-- rodape -->
