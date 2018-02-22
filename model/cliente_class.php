@@ -7,10 +7,7 @@
 
 class Cliente{
     
-    public $id_estado;
     public $estado;
-    public $codigo_uf;
-    public $id_cidade;
     public $cidade;
     public $uf;
     public $nome;
@@ -26,12 +23,13 @@ class Cliente{
     public $mes;
     public $ano;
     public $datetime;
+    public $conect;
     
     public function __construct(){
         require_once('db_class.php');
         
         $conexao = new Mysql_db();
-        $conexao->conectar();
+        $this->conect = $conexao->conectar();
         
     }
     
@@ -39,20 +37,36 @@ class Cliente{
         $sql = "select * from tbl_cliente where email = '".$cliente->email."' ";
         $sql = $sql." and senha =  '".$cliente->senha."'";
         
-        $select = mysql_query($sql);
+        $select = mysqli_query($this->conect, $sql);
         
-        if(mysql_affected_rows() > 0){
+        if(mysqli_affected_rows($this->conect) > 0){
             
-            while($rs = mysql_fetch_array($select)){
+            while($rs = mysqli_fetch_array($select)){
                 $id = $rs['id_cliente'];
             }
-            session_start();
+            if(empty($_SESSION)){
+                session_start();
+            }
+            
             $_SESSION['id_cliente'] = $id;
             
-            header('location:perfil-cliente.php');
+            mysqli_close($this->conect);
+            
+            ?>
+                <script>
+                    window.location.href = "perfil-cliente.php";
+                </script>
+            <?php
+            //header('location:perfil-cliente.php');
             
         }else{
-            header('location:login.php?erro-ao-logar');
+            mysqli_close($this->conect);
+        ?>
+            <script>
+                window.location.href = "login.php?erro-ao-logar";
+            </script>
+        <?php
+            //header('location:login.php?erro-ao-logar');
         }
         
     }
@@ -60,10 +74,10 @@ class Cliente{
     public function SelectClienteById($id){
         $sql = 'call VwDadosUsuario('.$id.')';
         
-        if($select = mysql_query($sql)){
+        if($select = mysqli_query($this->conect, $sql)){
             
             $cont = 0;
-            while($rs = mysql_fetch_array($select)){
+            while($rs = mysqli_fetch_array($select)){
                 $cliente = new Cliente();
                 
                 $data = explode('-', $rs['nasc']);
@@ -87,7 +101,6 @@ class Cliente{
                 $cliente->ddd = $ddd;
                 $cliente->celular = $numero;
                 $cliente->uf = $rs['uf'];
-                $cliente->id_cidade = $rs['id_cidade'];
                 $cliente->estado = $rs['estado'];
                 $cliente->cidade = $rs['cidade'];
                 
@@ -104,9 +117,11 @@ class Cliente{
                 
             }
             
+            mysqli_close($this->conect);
             return $cliente;
             
         } else {
+            mysqli_close($this->conect);
             return false;
             
         }
@@ -118,33 +133,37 @@ class Cliente{
         
         $sql = "select * from tbl_cliente where email = '".$cliente->email."' ";
         
-        mysql_query($sql);
+        mysqli_query($this->conect, $sql);
         
-        if (mysql_affected_rows() > 0) {
+        if (mysqli_affected_rows($this->conect) > 0) {
             header('location:seja-cliente.php?erro=email');
             
         }else{
         
-            $sql = "insert into tbl_cliente(nome, email, senha, sexo, celular, nasc, enteresse, id_cidade, data_cadastro)";
+            $sql = "insert into tbl_cliente(nome, email, senha, sexo, celular, nasc, enteresse, cidade, uf, data_cadastro)";
             $sql = $sql." values ('".
                         $cliente->nome."', '".$cliente->email."' , '".$cliente->senha."', ".
                         $cliente->sexo.", '".$cliente->celular."', '".$cliente->nasc."', ".
-                        $cliente->enteresse.", ".$cliente->id_cidade.", '".$cliente->datetime."') ";
+                        $cliente->enteresse.", '".$cliente->cidade."', '".$cliente->estado."', '".$cliente->datetime."') ";
             
-            if(mysql_query($sql)){
+            if(mysqli_query($this->conect, $sql)){
                 $sql = "select * from tbl_cliente where email = '".$cliente->email."' ";
         
-                if($slct = mysql_query($sql)){
+                if($slct = mysqli_query($this->conect, $sql)){
                     
-                    while($rs = mysql_fetch_array($slct)){
+                    while($rs = mysqli_fetch_array($slct)){
                         $id = $rs['id_cliente'];
                         /******
                             Codigo da session aqui
                         ******/
-                        header('location:perfil.php?perfil=cliente&codigo='.$id);
+                        
+                        mysqli_close($this->conect);
+                        header('location:perfil-cliente.php?codigo='.$id);
                     }
                     
                 }else{
+                    
+                    mysqli_close($this->conect);
                     header('location:login.php?perfil=cliente');
                 }
                 
@@ -160,13 +179,13 @@ class Cliente{
         
     }
     
+    
     public function SelectEstados(){
         
-        /******** ERRAAADO *********/
-        if ($slct = mysql_query("select * from tbl_estado") ) {
+        if ($slct = mysqli_query($this->conect, "select * from tbl_estado where id_estado < 10") ) {
            
             $conta = 0;
-            while($rst = mysql_fetch_array($slct)){
+            while($rst = mysqli_fetch_array($slct)){
                 
                 $estado[] = new Cliente();
                 
@@ -189,10 +208,10 @@ class Cliente{
     public function SelectCidade(){
         $sql = "select * from tbl_cidade";
         
-        if($select = mysql_query($sql)){
+        if($select = mysqli_query($this->conect, $sql)){
            
             $cont = 0;
-            while($rs = mysql_fetch_array($select)){
+            while($rs = mysqli_fetch_array($select)){
                 
                 $estado = new Cliente();
                 
@@ -202,22 +221,27 @@ class Cliente{
                 
                 $cont++;
             }
+            
+            mysqli_close($this->conect);
             return $estado;
             
         }else{
+            
+            mysqli_close($this->conect);
             return false;
             
         }
         
     }
     
+    
     public function UpdateCliente($cliente){
         
         $sql = "select * from tbl_cliente where email = '".$cliente->email."' and id_cliente != ".$cliente->id;
         
-        mysql_query($sql);
+        mysqli_query($this->conect, $sql);
         
-        if (mysql_affected_rows() > 0) {
+        if (mysqli_affected_rows($this->conect) > 0) {
             header('location:seja-cliente.php?erro=email');
             
         }else{
@@ -232,7 +256,9 @@ class Cliente{
                     $cliente->nasc."', enteresse = ".$cliente->enteresse.",  id_cidade = '".$cliente->id_cidade."'
                     where id_cliente = ".$cliente->id;
 
-                if(mysql_query($sql)){
+                if(mysqli_query($this->conect, $sql)){
+                    
+                    mysqli_close($this->conect);
                     header('location:perfil.php?perfil=cliente&editar=sucesso');
                     
                 }else{
@@ -256,10 +282,14 @@ class Cliente{
                             $cliente->nasc."', enteresse = ".$cliente->enteresse.", foto_perfil = '".$imagem."'
                             where id_cliente = ".$cliente->id;
                             /*    , id_cidade = '".$cliente->id_cidade."'   */
-                        if(mysql_query($sql)){
+                        
+                        if(mysqli_query($this->conect, $sql)){
+                            
+                            mysqli_close($this->conect);
                             header('location:perfil.php?perfil=cliente&editar=sucesso');
 
                         }else{
+                            mysqli_close($this->conect);
                             //header('location:perfil.php?perfil=cliente&erro');
                             echo $sql;
                         }
@@ -270,6 +300,7 @@ class Cliente{
                     }
 
                 }else{
+                    mysqli_close($this->conect);
                     echo "<script> alert('Erro na extensão do arquivo'); </script>";
                 }
             }

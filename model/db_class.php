@@ -11,32 +11,43 @@
     public $server;
     public $user;
     public $password;
-
+    public $db;
+    public $conexao;
 
     public function __construct(){
-
+        
         $this->server = "localhost";
         $this->user = "root";
         $this->password = "bcd127";
-
+        $this->db = "db_tonight";
+        
+        /*
+        $this->server = "localhost";
+        $this->user = "tonig231";
+        $this->password = "9pL6q34mWu";
+        $this->db = "tonig231_tonight";
+        */
     }
 
     public function conectar(){
-
-        if($conexao = mysql_connect($this->server, $this->user, $this->password)){
-          mysql_select_db('db_tonight');
-          
-        }else{
+        
+        if ($conexao = mysqli_connect($this->server, $this->user, $this->password, $this->db) or die ('Erro de conexão')) {
+            
+          return $conexao;
+            
+        } else {
           echo("Erro de conexão");
           die();
+            
         }
 
     }
 
 
-    public function desconectar(){
+    public function desconectar($conect){
+
+      mysqli_close($conect);
     
-      mysql_close();
     }
 
   }

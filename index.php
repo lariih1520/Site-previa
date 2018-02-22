@@ -1,3 +1,6 @@
+<?php
+    session_start();
+?>
 <!DOCTYPE html>
 <html>
 	<head>
@@ -13,7 +16,7 @@
 		<link rel="stylesheet" type="text/css" href="css/estilo_index.css" />
 	</head>
     <?php 
-
+        
         require_once('controller/index_controller.php');
         $controller = new ControllerIndex();
         $rs = $controller->BuscarImagens();
@@ -40,8 +43,7 @@
     ?>
 	<body <?php echo $imagem[0] ?>>
         <?php
-            session_start();
-
+            
             if(!empty($_SESSION['id_cliente'])){
                 $lgrc = true;
                 $msg = '<a href="perfil.php?perfil=cliente"> Ir para o perfil </a>';

@@ -162,6 +162,15 @@ class ControllerAcompanhante{
     }
     
     /* Buscar o tipo da conta do usuário */
+    public function BuscarTiposConta(){
+        require_once('model/filiado_class.php');
+        $class = new Acompanhante();
+        $rs = $class->SelectTiposConta();
+        
+        return $rs;
+    }
+    
+    /* Buscar o tipo da conta do usuário */
     public function BuscarTipoConta(){
         require_once('model/filiado_class.php');
         $class = new Acompanhante();

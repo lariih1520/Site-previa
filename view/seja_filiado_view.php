@@ -134,42 +134,15 @@
                     <option value="3"> Os dois </option>
                 </select>
             </li>
-            
-            <li>
-                <p><label for="cod_estados"> *Estado: </label></p>
-                <select name="cod_estados" id="cod_estados">
-                    <option value="0"> selecione </option>
-                    <?php
-                        include_once('controller/filiado_controller.php');
-                        $controller = new ControllerAcompanhante();
-                        $rs = $controller->BuscarEstados();
-
-                         if($rs != null){
-                            $cont = 0;
-                            while($cont < count($rs)){
-                                $id_estado = $rs[$cont]->id_estado;
-                                $estado = $rs[$cont]->estado;
-                                $uf = $rs[$cont]->uf;
-                    ?>
-
-                        <option value="<?php echo $uf ?>"><?php echo $estado ?></option>
-
-                    <?php
-                                $cont++;
-                            }
-                         }
-                    ?>
-                </select>
+            <li><p> CEP:  </p>
+                 <input type="text" id="cep" name="CEP" maxlength="9">
             </li>
-            <li>
-                <p><label for="cod_cidades"> *Cidade: </label></p>
-                <span class="carregando">Aguarde, carregando...</span>
-                <select name="cod_cidades" id="cod_cidades" required>
-                    <option value="">-- Escolha um estado --</option>
-                </select>
-                
+            <li><p> UF:  </p>
+                 <input type="text" id="uf" name="txtUf" maxlength="10">
             </li>
-            
+            <li><p> Cidade:</p>
+                 <input type="text" id="cidade" name="txtCidade" maxlength="10">
+            </li>
             <li><p> *Valor que deseja cobrar: </p> 
                 <input type="text" name="txtValor" maxlength="6" required size="5" oninvalid="setCustomValidity('Escolha o valor que deseja cobrar')">,00
             </li>
@@ -179,32 +152,70 @@
 
         </form>
         
-    </div>
-    <script src="js/jsapi.js"></script>
-    <script type="text/javascript">
-      google.load('jquery', '1.3');
-    </script>		
+        <script src="js/jquery-3.2.1.min.js" ></script>
 
-    <script type="text/javascript">
-    $(function(){
-        $('#cod_estados').change(function(){
-            if( $(this).val() ) {
-                $('#cod_cidades').hide();
-                $('.carregando').show();
-                $.getJSON('model/cidades.ajax.php?search=',{cod_estados: $(this).val(), ajax: 'true'}, function(j){
-                    var options = '<option value="0"> Selecione </option>';	
-                    for (var i = 0; i < j.length; i++) {
-                        options += '<option value="' + j[i].cod_cidades + '">' + j[i].nome + '</option>';
-                    }	
-                    $('#cod_cidades').html(options).show();
-                    $('.carregando').hide();
+        <!-- Adicionando Javascript -->
+        <script type="text/javascript" >
+
+            $(document).ready(function() {
+
+                function limpa_formulário_cep() {
+                    // Limpa valores do formulário de cep.
+                    $("#cidade").val("");
+                    $("#uf").val("");
+                }
+
+                //Quando o campo cep perde o foco.
+                $("#cep").blur(function() {
+
+                    //Nova variável "cep" somente com dígitos.
+                    var cep = $(this).val().replace(/\D/g, '');
+
+                    //Verifica se campo cep possui valor informado.
+                    if (cep != "") {
+
+                        //Expressão regular para validar o CEP.
+                        var validacep = /^[0-9]{8}$/;
+
+                        //Valida o formato do CEP.
+                        if(validacep.test(cep)) {
+
+                            //Preenche os campos com "..." enquanto consulta webservice.
+                            $("#cidade").val("...");
+                            $("#uf").val("...");
+
+                            //Consulta o webservice viacep.com.br/
+                            $.getJSON("https://viacep.com.br/ws/"+ cep +"/json/?callback=?", function(dados) {
+
+                                if (!("erro" in dados)) {
+
+                                    $("#cidade").val(dados.localidade);
+                                    $("#uf").val(dados.uf);
+                                    $("#frm").attr('action', 'router.php?controller=cliente&modo=inserir');
+                                    $("#frm").attr('method', 'post');
+                                } 
+                                else {
+
+                                    limpa_formulário_cep();
+                                    alert("CEP não encontrado.");
+                                }
+                            });
+                        } 
+                        else {
+                            limpa_formulário_cep();
+                            alert("Formato de CEP inválido.");
+                        }
+                    } 
+                    else {
+                        //cep sem valor, limpa formulário.
+                        limpa_formulário_cep();
+                    }
                 });
-            } else {
-                $('#cod_cidades').html('<option value="">– Escolha um estado –</option>');
-            }
-        });
-    });
-    </script>
+            });
+
+        </script>
+    </div> 
+    
 <?php
     } elseif($_GET['etapa'] == '2') {
         
@@ -224,8 +235,8 @@
             $altura = $_POST['txtAltura'];
             $peso = $_POST['txtPeso'];
             $acompanha = $_POST['slc_acompanha'];
-            $cidade = $_POST['cod_cidades'];
-            $estado = $_POST['cod_estados'];
+            $cidade = $_POST['txtCidade'];
+            $estado = $_POST['txtUf'];
             $cobra = $_POST['txtValor'];
 
             $rsp = $filiado->setFiliado(
@@ -249,7 +260,7 @@
         <?php
             require_once('controller/filiado_controller.php');
             $controller = new ControllerAcompanhante();
-            $rs = $controller->BuscarTipoConta();
+            $rs = $controller->BuscarTiposConta();
             
             if($rs != null){
                 $cont = 0;

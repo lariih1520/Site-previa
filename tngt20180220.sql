@@ -217,7 +217,6 @@ DROP TABLE IF EXISTS `tbl_filiado`;
 CREATE TABLE `tbl_filiado` (
   `id_filiado` int(11) NOT NULL AUTO_INCREMENT,
   `nome` varchar(50) NOT NULL,
-  `sobrenome` varchar(50) DEFAULT NULL,
   `nasc` date NOT NULL,
   `email` varchar(100) NOT NULL,
   `senha` varchar(10) NOT NULL,
@@ -258,7 +257,7 @@ CREATE TABLE `tbl_filiado` (
 
 LOCK TABLES `tbl_filiado` WRITE;
 /*!40000 ALTER TABLE `tbl_filiado` DISABLE KEYS */;
-INSERT INTO `tbl_filiado` VALUES (1,'usuario',NULL,'2000-01-03','asdf@gmail.com','aaa','(11)32411215','(11)32411215',2,1,NULL,NULL,160,50,1,1,'1','100000',1,NULL,1483,17,'2018-02-19 20:41:00');
+INSERT INTO `tbl_filiado` VALUES (1,'usuario','2000-01-03','asdf@gmail.com','aaa','(11)32411215','(11)32411215',2,1,NULL,'imagens/usuario.jpg',160,50,1,1,'1','100000',1,NULL,1483,17,'2018-02-19 20:41:00');
 /*!40000 ALTER TABLE `tbl_filiado` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -300,7 +299,7 @@ CREATE TABLE `tbl_home_slide` (
   `id_home` int(11) NOT NULL AUTO_INCREMENT,
   `imagem` varchar(100) NOT NULL,
   PRIMARY KEY (`id_home`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -309,7 +308,7 @@ CREATE TABLE `tbl_home_slide` (
 
 LOCK TABLES `tbl_home_slide` WRITE;
 /*!40000 ALTER TABLE `tbl_home_slide` DISABLE KEYS */;
-INSERT INTO `tbl_home_slide` VALUES (1,'imagens/logo2.jpg');
+INSERT INTO `tbl_home_slide` VALUES (1,'imagens/logo2.jpg'),(2,'imagens/free-wallpaper.jpg'),(5,'imagens/back.png');
 /*!40000 ALTER TABLE `tbl_home_slide` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -325,7 +324,7 @@ CREATE TABLE `tbl_index` (
   `imagem` varchar(100) NOT NULL,
   `campo` int(11) NOT NULL,
   PRIMARY KEY (`id_index`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -334,6 +333,7 @@ CREATE TABLE `tbl_index` (
 
 LOCK TABLES `tbl_index` WRITE;
 /*!40000 ALTER TABLE `tbl_index` DISABLE KEYS */;
+INSERT INTO `tbl_index` VALUES (1,'-',1),(2,'-',2),(3,'-',3),(4,'-',4),(5,'-',5),(6,'-',6);
 /*!40000 ALTER TABLE `tbl_index` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -419,6 +419,8 @@ CREATE TABLE `tbl_pagamento_filiado` (
   `id_dados_pagamento` int(11) NOT NULL,
   `id_filiado` int(11) NOT NULL,
   `id_valor` int(11) NOT NULL,
+  `nome` varchar(45) DEFAULT NULL,
+  `sobrenome` varchar(45) DEFAULT NULL,
   `telefone` varchar(14) DEFAULT NULL,
   `rua` varchar(200) DEFAULT NULL,
   `numero` varchar(4) DEFAULT NULL,
@@ -479,13 +481,77 @@ CREATE TABLE `tbl_tipo_conta` (
 
 LOCK TABLES `tbl_tipo_conta` WRITE;
 /*!40000 ALTER TABLE `tbl_tipo_conta` DISABLE KEYS */;
-INSERT INTO `tbl_tipo_conta` VALUES (1,'Basica',0,2,0,1),(2,'Comum',0,4,1,2),(3,'Gold',0,8,1,3);
+INSERT INTO `tbl_tipo_conta` VALUES (1,'Basica',299,3,0,1),(2,'Comum',499,5,0,2),(3,'Gold',699,5,1,3);
 /*!40000 ALTER TABLE `tbl_tipo_conta` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
 -- Dumping routines for database 'db_tonight'
 --
+/*!50003 DROP PROCEDURE IF EXISTS `VwDadosFiliado` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `VwDadosFiliado`(id int)
+BEGIN
+	select fi.*, ci.cidade, es.estado, et.etnia, ca.cor as cabelo,
+    tc.foto, tc.titulo, tc.valor as valor_conta, tc.video
+	from tbl_filiado as fi
+	inner join tbl_cidade as ci
+	on fi.id_cidade = ci.id_cidade
+	inner join tbl_estado as es
+	on fi.id_estado = es.id_estado
+	inner join tbl_etnia as et
+	on fi.etnia = et.id_etnia
+    inner join tbl_tipo_conta as tc
+	on tc.id_tipo_conta = fi.id_tipo_conta
+	left join tbl_cabelo as ca
+	on fi.id_cabelo = ca.id_cabelo
+	where fi.id_filiado = id;
+    
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `VwDadosPag` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `VwDadosPag`(id int)
+BEGIN
+	
+    select pf.*, ci.cidade, es.estado, tp.valor 
+	from tbl_filiado as fi
+	inner join tbl_pagamento_filiado as pf
+	on fi.id_filiado = pf.id_filiado
+	inner join tbl_cidade as ci
+	on pf.id_cidade = ci.id_cidade
+	inner join tbl_estado as es
+	on fi.id_filiado = es.id_estado
+	inner join tbl_tipo_conta as tp
+	on pf.id_valor = tp.id_tipo_conta
+	where fi.id_filiado = id;
+    
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `VwDadosUsuario` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -521,4 +587,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-02-20 17:43:40
+-- Dump completed on 2018-02-22 14:14:31

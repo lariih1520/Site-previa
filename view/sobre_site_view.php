@@ -143,7 +143,7 @@
         <br>
         <p id="ajuda"><b>AJUDA:</b></p>
         
-        <p> Se ainda tiver duvidadas, se desejar fazer uma reclamação ou relatar algum problema entre em contato conosco através do e-mail <i> rogerbellussi17@gmail.com </i> . </p>
+        <p> Se ainda tiver duvidadas, se desejar fazer uma reclamação ou relatar algum problema entre em contato conosco através do e-mail <i> tonight@tonight.net.br </i> . </p>
         
         <br>
         <p><b>DISPOSIÇÕES FINAIS:</b></p>

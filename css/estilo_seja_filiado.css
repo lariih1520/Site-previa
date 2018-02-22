@@ -23,8 +23,8 @@ select{font-size: 17px;}
 .content_dados_1{
     margin: auto;
     width: 950px;
-    height: 500px;
-    border: solid 1px transparent;
+    height: 600px;
+    border: solid 1px white;
 }
 .content_dados_2{
     margin: auto;

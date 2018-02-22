@@ -25,14 +25,14 @@
 }
 .cont_alinhar{
     width: 660px;
-    height: 800px;
+    height: 880px;
     margin: auto;
     border: solid 1px transparent;
 }
 .lst_cadastrar_dados{
     float: left;
     width: 230px;
-    height: 300px;
+    height: 350px;
     margin: auto;
     padding: 10px;
     padding-left: 70px;

@@ -50,7 +50,8 @@ class ControllerCliente{
                 $cliente->senha = $_POST['txtSenha'];
                 $cliente->sexo = $_POST['slc_sexo'];
                 $cliente->enteresse = $_POST['slc_enteresse'];
-                $cliente->id_cidade = $_POST['cod_cidades'];
+                $cliente->estado = $_POST['txtUf'];
+                $cliente->cidade = $_POST['txtCidade'];
                 $cliente->nasc = $ano."-".$mes."-".$dia;
                 $cliente->datetime =  $datetime;
                 
