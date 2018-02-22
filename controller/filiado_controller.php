@@ -111,6 +111,15 @@ class ControllerAcompanhante{
         
     }
     
+    public function BuscarDadosPag(){
+        require_once('model/filiado_class.php');
+        $class = new Acompanhante();
+        $rs = $class->SelectDadosPag();
+        
+        return $rs;
+        
+    }
+    
     /* Buscar estados */
     public function BuscarEstados(){
         require_once('model/filiado_class.php');

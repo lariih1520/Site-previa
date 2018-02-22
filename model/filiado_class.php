@@ -115,6 +115,13 @@ class Acompanhante{
                     
                 }
                 
+                if($rs['apresentacao'] == null){
+                    $filiado->apresentacao = 'Não há apresentação';
+                    
+                }else{
+                    $filiado->apresentacao = $rs['apresentacao'];
+                }
+                
                 $filiado->cobrar = $rs['cobrar'];
                 $filiado->foto = $rs['foto_perfil'];
                 $filiado->etnia = $rs['etnia'];
@@ -132,14 +139,16 @@ class Acompanhante{
                 
             }
             
+            $conexao = new Mysql_db();
+            $conexao->desconectar();
+            
             return $filiado;
+            
             
         } else {
             return false;
             
         }
-        
-        
     }
     
     /* Cadastrar novo acompanhante no site */
@@ -202,6 +211,62 @@ class Acompanhante{
             echo $sql; /* Se der erro */
         }
         
+    }
+    
+    public function SelectDadosPag(){
+        
+        $id = $_SESSION['id_filiado'];
+        
+        $sql = 'call VwDadosPag('.$id.')';
+        
+        if($select = mysql_query($sql)){
+            
+            while($rs = mysql_fetch_array($select)){
+                
+                $dados = new Acompanhante();
+                
+                $dados->nome = $rs['nome'];
+                $dados->sobrenome = $rs['sobrenome'];
+                $dados->telefone = $rs['telefone'];
+                $dados->cep = $rs['cep'];
+                $dados->rua = $rs['rua'];
+                $dados->numero = $rs['numero'];
+                $dados->bairro = $rs['bairro'];
+                $dados->cidade = $rs['cidade'];
+                $dados->estado = $rs['estado'];
+                
+                $lencpf = strlen($rs['cpf']);
+                
+                $cont = 0;
+                while($cont < count($lencpf)){
+                    $cpf = $cpf.'*';
+                    $cont++;
+                }
+                
+                $dados->cpf = $cpf;
+                $dados->cvv = $rs['cvv'];
+                
+                $lennmr = strlen($rs['numero_cartao']);
+                
+                $cont = 0;
+                while($cont < count($lennmr)){
+                    $nmr = $cpf.'*';
+                    $cont++;
+                }
+                
+                $dados->numero_cartao = $nmr;
+                
+                $dados->expiracaoMes = $rs['expiracaoMes'];
+                $dados->expiracaoMes = $rs['expiracaoMes'];
+                $dados->formaPag = $rs['forma_pagamento'];
+            
+                return $dados;
+            }
+            
+        }else{
+            return false;
+        }
+            
     }
     
     /* Buscar estados */
