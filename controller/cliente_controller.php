@@ -121,7 +121,8 @@ class ControllerCliente{
             $cliente->nome = $_POST['txtNome'];
             $cliente->email = $_POST['txtEmail'];
             $cliente->sexo = $_POST['slc_sexo'];
-            $cliente->id_cidade = $_POST['cod_cidades'];
+            $cliente->uf = $_POST['txtUf'];
+            $cliente->cidade = $_POST['txtCidade'];
             $cliente->enteresse = $_POST['slc_prefere'];
             $cliente->nasc = $ano."-".$mes."-".$dia;
 
@@ -141,15 +142,15 @@ class ControllerCliente{
                         $cliente->UpdateCliente($cliente);
 
                     } else {
-                        header('location:perfil.php?perfil=cliente&erro=idade');
+                        header('location:perfil-cliente.php?erro=idade');
                     }
 
                 }else{
-                    header('location:perfil.php?perfil=cliente&erro=idade');
+                    header('location:perfil-cliente.php?erro=idade');
                 }
 
             }else{
-                header('location:perfil.php?perfil=cliente&erro=idade');
+                header('location:perfil-cliente.php?erro=idade');
 
             }
             

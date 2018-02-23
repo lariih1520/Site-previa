@@ -89,8 +89,8 @@ class Cliente{
                 $tel = explode(')', $rs['celular']);
                 
                 $telddd = explode('(', $tel[0]);
-                $ddd = $telddd[0];
-                $numero = $tel[0];
+                $ddd = $telddd[1];
+                $numero = $tel[1];
                 
                 $cliente->id = $rs['id_cliente'];
                 $cliente->nome = $rs['nome'];
@@ -101,7 +101,6 @@ class Cliente{
                 $cliente->ddd = $ddd;
                 $cliente->celular = $numero;
                 $cliente->uf = $rs['uf'];
-                $cliente->estado = $rs['estado'];
                 $cliente->cidade = $rs['cidade'];
                 
                 if(!empty($rs['enteresse'])){
@@ -179,6 +178,83 @@ class Cliente{
         
     }
     
+    public function UpdateCliente($cliente){
+        
+        $sql = "select * from tbl_cliente where email = '".$cliente->email."' and id_cliente != ".$cliente->id;
+        
+        mysqli_query($this->conect, $sql);
+        
+        if (mysqli_affected_rows($this->conect) > 0) {
+            header('location:seja-cliente.php?erro=email');
+            
+        }else{
+            
+            $arq = basename($_FILES['flFotoPerfil']['name']);
+            
+            if($arq == null){
+                
+                $sql = "update tbl_cliente set nome = '".$cliente->nome."', email = '".$cliente->email."', ";
+                $sql = 
+                $sql."sexo = ".$cliente->sexo.", celular = '".$cliente->celular."', nasc = '". $cliente->nasc.
+                    "', enteresse = ".$cliente->enteresse.",  uf = '".$cliente->uf."',  cidade = '".$cliente->cidade."'
+                    where id_cliente = ".$cliente->id;
+
+                if(mysqli_query($this->conect, $sql)){
+                    
+                    mysqli_close($this->conect);
+                    header('location:perfil-cliente.php?editar=sucesso');
+                    
+                }else{
+                    //header('location:perfil-cliente.php?perfil=cliente&erro');
+                    echo $sql;
+                }
+                
+            }else{
+                
+                $imagem =  'midia/'.$arq;
+
+                $extArq = strtolower(substr($arq, strlen($arq)-3, 3));
+
+                if($extArq == 'jpg' || $extArq == 'png' || $extArq == 'jpeg' || $extArq == 'Bitmap'){
+                    
+                    if(move_uploaded_file($_FILES['flFotoPerfil']['tmp_name'], $imagem)){
+                        
+                        $sql = "update tbl_cliente set nome = '".$cliente->nome."', email = '".$cliente->email."', ";
+                        $sql = 
+                        $sql."sexo = ".$cliente->sexo.", celular = '".$cliente->celular."', nasc = '".
+                            $cliente->nasc."', enteresse = ".$cliente->enteresse.", foto_perfil = '".$imagem."'
+                            where id_cliente = ".$cliente->id;
+                            /*    , id_cidade = '".$cliente->id_cidade."'   */
+                        
+                        if(mysqli_query($this->conect, $sql)){
+                            
+                            mysqli_close($this->conect);
+                            header('location:perfil-cliente.php?editar=sucesso');
+
+                        }else{
+                            mysqli_close($this->conect);
+                            //header('location:perfil-cliente.php?perfil=cliente&erro');
+                            echo $sql;
+                        }
+
+
+                    }else{
+                        echo 'ERRO na imagem';
+                    }
+
+                }else{
+                    mysqli_close($this->conect);
+                    echo "<script> alert('Erro na extensão do arquivo'); </script>";
+                }
+            }
+            
+        }
+        
+    }
+    
+    public function SelectSugestoes($id){
+        
+    }
     
     public function SelectEstados(){
         
@@ -231,85 +307,6 @@ class Cliente{
             return false;
             
         }
-        
-    }
-    
-    
-    public function UpdateCliente($cliente){
-        
-        $sql = "select * from tbl_cliente where email = '".$cliente->email."' and id_cliente != ".$cliente->id;
-        
-        mysqli_query($this->conect, $sql);
-        
-        if (mysqli_affected_rows($this->conect) > 0) {
-            header('location:seja-cliente.php?erro=email');
-            
-        }else{
-            
-            $arq = basename($_FILES['flFotoPerfil']['name']);
-            
-            if($arq == null){
-                
-                $sql = "update tbl_cliente set nome = '".$cliente->nome."', email = '".$cliente->email."', ";
-                $sql = 
-                $sql."sexo = ".$cliente->sexo.", celular = '".$cliente->celular."', nasc = '".
-                    $cliente->nasc."', enteresse = ".$cliente->enteresse.",  id_cidade = '".$cliente->id_cidade."'
-                    where id_cliente = ".$cliente->id;
-
-                if(mysqli_query($this->conect, $sql)){
-                    
-                    mysqli_close($this->conect);
-                    header('location:perfil.php?perfil=cliente&editar=sucesso');
-                    
-                }else{
-                    //header('location:perfil.php?perfil=cliente&erro');
-                    echo $sql;
-                }
-                
-            }else{
-                
-                $imagem =  'midia/'.$arq;
-
-                $extArq = strtolower(substr($arq, strlen($arq)-3, 3));
-
-                if($extArq == 'jpg' || $extArq == 'png' || $extArq == 'jpeg' || $extArq == 'Bitmap'){
-                    
-                    if(move_uploaded_file($_FILES['flFotoPerfil']['tmp_name'], $imagem)){
-                        
-                        $sql = "update tbl_cliente set nome = '".$cliente->nome."', email = '".$cliente->email."', ";
-                        $sql = 
-                        $sql."sexo = ".$cliente->sexo.", celular = '".$cliente->celular."', nasc = '".
-                            $cliente->nasc."', enteresse = ".$cliente->enteresse.", foto_perfil = '".$imagem."'
-                            where id_cliente = ".$cliente->id;
-                            /*    , id_cidade = '".$cliente->id_cidade."'   */
-                        
-                        if(mysqli_query($this->conect, $sql)){
-                            
-                            mysqli_close($this->conect);
-                            header('location:perfil.php?perfil=cliente&editar=sucesso');
-
-                        }else{
-                            mysqli_close($this->conect);
-                            //header('location:perfil.php?perfil=cliente&erro');
-                            echo $sql;
-                        }
-
-
-                    }else{
-                        echo 'ERRO na imagem';
-                    }
-
-                }else{
-                    mysqli_close($this->conect);
-                    echo "<script> alert('Erro na extensão do arquivo'); </script>";
-                }
-            }
-            
-        }
-        
-    }
-    
-    public function SelectSugestoes($id){
         
     }
     

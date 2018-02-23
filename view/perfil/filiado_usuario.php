@@ -70,15 +70,23 @@
         <p class="titulo"> Imagens </p>
         <p> Estas imagens serão exibidas no seu perfil, a quantidade de imagens é escolhida de acordo com o seu tipo de conta </p>
         
-        <div class="imgs">
+        <?php
+            $controller = new ControllerAcompanhante();
+            $rs = $controller->BuscarImagensFiliado();
             
-        </div>
-        <div class="imgs">
-            
-        </div>
-        <div class="imgs">
-            
-        </div>
+            if($rs != false){
+                $cont = 0;
+                while($cont < count($rs)){
+        ?>
+            <div class="imgs">
+                <img src="<?php echo $rs[$cont]->foto ?>">
+            </div>
+        
+        <?php
+                $cont++;
+                }
+            }
+        ?>
         
         <div style="clear: both;"></div> 
     </div>

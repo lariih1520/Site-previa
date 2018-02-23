@@ -16,6 +16,14 @@
                  <input type="email" name="txtEmail" placeholder="Ex: usuario@email.com" required oninvalid="setCustomValidity('Preencha o e-mail')">
             </li>
             <li>
+                 <p> Sexo:</p>
+                <select name="slc_sexo" required>
+                    <option value="0"> Selecione </option>
+                    <option value="1"> Feminino </option>
+                    <option value="2"> Masculino </option>
+                </select>
+            </li>
+            <li>
                  <p> Senha:</p>
                  <input type="password" name="txtSenha" maxlength="10" required oninvalid="setCustomValidity('Escolha uma senha')">
             </li>
@@ -27,14 +35,6 @@
                  <p> Celular:</p>
                  <input type="text" name="txtDDD" maxlength="2" size="1" placeholder="00" value="" required oninvalid="setCustomValidity('Preencha o ddd')">
                  <input type="text" name="txtCel" maxlength="9" size="10" placeholder="12348765" value="" required oninvalid="setCustomValidity('Preencha o celular')">
-            </li>
-            <li>
-                 <p> Sexo:</p>
-                <select name="slc_sexo" required>
-                    <option value="0"> Selecione </option>
-                    <option value="1"> Feminino </option>
-                    <option value="2"> Masculino </option>
-                </select>
             </li>
         </ul>
         <ul class="lst_cadastrar_dados">

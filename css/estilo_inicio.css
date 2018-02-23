@@ -98,7 +98,9 @@ a,img {
     background-color: #FAFAFA;
     border: solid 1px gray;
 }
-
+.titulo a{
+    color: black;
+}
 .img_carrossel{
 	width: 160px;
 	height: 160px;

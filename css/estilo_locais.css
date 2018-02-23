@@ -1,0 +1,61 @@
+/**
+    Data: 23/02/2018
+**/
+
+.content_estado{
+    float: left;
+    width: 150px;
+    height: 50px;
+    padding: 10px;
+    font-size: 18px;
+    margin-left: 50px;
+    border: solid 1px gray;
+    background-color: #3A3A3A;
+    box-shadow: 1px 1px 5px gray;
+}
+.content_estado{
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: auto 100%;
+}
+.content_estado p{
+    color: white;
+}
+
+.content_estado:hover p{
+    font-size: 22px;
+    transition: 0.5s;
+}
+
+#lista{
+    width: 920px;
+    height: auto;
+    margin: auto;
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: solid 1px gray;
+}
+.pesquisa a{
+    color: black;
+}
+.filiado{
+    float: left;
+    width: 270px;
+    height: 290px;
+    padding: 5px;
+    text-align: center;
+    margin-top: 10px;
+    margin-left: 20px;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border: solid 1px #CDCDCD;
+}
+.filiado p{
+    color: black;
+    margin-bottom: 4px;
+}
+.filiado img{
+    margin: auto;
+    height: 250px;
+    max-width: 100%;
+}

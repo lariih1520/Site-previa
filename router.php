@@ -3,7 +3,7 @@
   $controller = $_GET['controller'];
   $modo = $_GET['modo'];
   
-  echo ($controller.' '.$modo);
+  //echo ($controller.' '.$modo);
 
 switch ($controller) {
 
@@ -58,6 +58,30 @@ switch ($controller) {
                 require_once('controller/filiado_controller.php');
                 $autentica_controller = new ControllerAcompanhante();
                 $autentica_controller->Logar();
+                
+            break;
+                  
+            case 'perfil':
+                require_once('model/filiado_class.php');
+                require_once('controller/filiado_controller.php');
+                $autentica_controller = new ControllerAcompanhante();
+                $autentica_controller->FotoPerfil();
+                
+            break;
+                  
+            case 'foto':
+                require_once('model/filiado_class.php');
+                require_once('controller/filiado_controller.php');
+                $autentica_controller = new ControllerAcompanhante();
+                $autentica_controller->MidiaFiliado(1);
+                
+            break;
+                  
+            case 'video':
+                require_once('model/filiado_class.php');
+                require_once('controller/filiado_controller.php');
+                $autentica_controller = new ControllerAcompanhante();
+                $autentica_controller->MidiaFiliado(2);
                 
             break;
                 

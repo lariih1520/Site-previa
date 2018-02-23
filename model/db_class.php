@@ -20,7 +20,6 @@
         $this->user = "root";
         $this->password = "bcd127";
         $this->db = "db_tonight";
-        
         /*
         $this->server = "localhost";
         $this->user = "tonig231";

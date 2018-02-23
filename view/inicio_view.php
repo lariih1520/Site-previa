@@ -42,7 +42,7 @@
                 
                 <!-- Lista de usuários mulheres -->
                 <div id="mulheres">
-                    <h1 class="titulo"> Mulheres </h1>
+                    <h1 class="titulo"><a href="exibir-todos.php?var=mulheres"> Mulheres &raquo;</a></h1>
                     <div class="content">
                         <div class="menu-carrossel">
                             <a href="#" class="prev1" title="Anterior"> 
@@ -115,7 +115,7 @@
 
                 <!-- Lista de usuários homens -->
                 <div id="homens">
-                    <p class="titulo"> Homens </p>
+                    <p class="titulo"><a href="exibir-todos.php?var=homens"> Homens &raquo;</a></p>
                     <div class="content">
                         <div class="menu-carrossel">
                             <a href="#" class="prev2" title="Anterior"> 

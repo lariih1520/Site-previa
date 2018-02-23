@@ -40,12 +40,14 @@ class Filiado{
         $dia = $dt_nasc[2];
         $mes = $dt_nasc[1];
         $ano = $dt_nasc[0];
-                
+        
+        $anos = $ano_hoje - $ano;
+        
         /* Verificar idade */
-        if($ano > 18){
+        if($anos > 18){
            $idade = true;
             
-        }elseif($ano == 18){
+        }elseif($anos == 18){
 
             if ($mes < $mes_hoje) {
                 $idade = true;
@@ -89,11 +91,11 @@ class Filiado{
                 $_SESSION['cobra'] = $cobra;
                 
             }else{
-                header('location:seja-filiado.php?Erro=Senha');
+                header('location:seja-filiado.php?etapa=2&Erro=Senha');
             }
             
         }else{
-            header('location:seja-filiado.php?Erro=Idade');
+            header('location:seja-filiado.php?etapa=2&Erro=Idade');
         }
         
     }

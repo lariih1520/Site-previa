@@ -19,12 +19,11 @@
         $sexo = $rs->sexo;
         $ddd = $rs->ddd;
         $celular = $rs->celular;
-        $uf_estado = $rs->uf;
-        $estado = $rs->estado;
-        $id_cidade = $rs->id_cidade;
+        $uf = $rs->uf;
         $cidade = $rs->cidade;
         $enteresse = $rs->enteresse;
         
+        $f = "";
         $m = "";
         $h = "";
         $d = "";
@@ -88,7 +87,7 @@
                 </li>
                 <li>
                     <p class="label_dados"> Estado </p>
-                    <span><?php echo $estado ?></span>
+                    <span><?php echo $uf ?></span>
                 </li>
                 <li>
                     <p class="label_dados"> Cidade </p>
@@ -228,44 +227,14 @@
                                 <option value="2"<?php echo $m ?>> Masculino </option>
                         </select>
                     </li>
-                    <li>
-                        <p><label for="cod_estados">Estado </label></p>
-                        <select name="cod_estados" id="cod_estados">
-                            <option value="0"> selecione </option>
-                            <?php
-                                $cont_estado = new ControllerCliente();
-                                $result = $cont_estado->BuscarEstados();
-                                
-                                 if($result != null){
-                                    $cont = 0;
-                                    while($cont < count($result)){
-                                        $id_estado = $result[$cont]->id_estado;
-                                        $estado = $result[$cont]->estado;
-                                        $uf = $result[$cont]->uf;
-                                        
-                                        if($uf_estado == $uf){
-                                            $slctd = 'selected';
-                                        }else{
-                                            $slctd = '';
-                                        }
-
-                            ?>
-                                <option value="<?php echo $uf ?>" <?php echo $slctd ?>> <?php echo $uf ?> </option>
-
-                            <?php
-                                        $cont++;
-                                    }
-                                 }
-                            ?>
-                        </select>
+                    <li><p><label> CEP:  </label></p>
+                         <input type="text" id="cep" name="CEP" maxlength="9">
                     </li>
-                    <li>
-                        <p><label for="cod_cidades"> Cidade </label></p>
-                        <span class="carregando">Aguarde, carregando...</span>
-                        <select name="cod_cidades" id="cod_cidades">
-                            <option value="">-- Escolha um estado --</option>
-                        </select>
-
+                    <li><p><label> UF:  </label></p>
+                         <input type="text" id="uf" name="txtUf" value="<?php echo $uf ?>" maxlength="10">
+                    </li>
+                    <li><p><label> Cidade:</label></p>
+                         <input type="text" id="cidade" name="txtCidade" value="<?php echo $cidade ?>" maxlength="10">
                     </li>
                 </ul>
                 <div class="editar_dados"> 
@@ -276,55 +245,6 @@
             </div>
         </form>
            
-        <?php
-            }
-            
-            if(empty($_GET['editar']) || $_GET['editar'] != 'informacoes'){
-        ?>
-        <div id="informacoes">
-            <ul class="lst_dados_ver">
-                <li>
-                    <p class="label_dados"> Senha </p>
-                    <span>
-                    <?php 
-                        $len = strlen($senha);
-                        $cont = 0;
-                
-                        while($cont < $len){
-                            echo '*';
-                            $cont++;
-                        }
-                    ?>
-                    </span>
-                </li>
-            </ul>
-            <div class="editar_dados"><a href="?perfil=cliente&editar=informacoes#content"> Editar dados </a></div>
-        </div>
-        <?php 
-            }elseif($_GET['editar'] == 'informacoes'){
-        ?>
-        <div id="informacoes">
-        <form action="router.php?controller=cliente&modo=alterar-nivel-dois&id=<?php echo $id ?>" method="post">
-            <ul class="lst_dados">
-                <li>
-                   <p><label> Senha anterior </label></p>
-                    <input type="password" name="txtSenha" value="">
-                </li>
-                <li>
-                   <p><label> Nova senha </label></p>
-                    <input type="password" name="txtSenha" value="">
-                </li>
-                <li>
-                   <p><label> Confirmar senha </label></p>
-                    <input type="password" name="txtSenha" value="">
-                </li>
-            </ul>
-            <div class="editar_dados"> 
-                <input type="submit" value="Salvar dados" class="botao" name="btnSalvar"> | 
-                <a href="?perfil=cliente#content"> Cancelar </a>
-            </div>
-        </form>
-        </div>
         <?php
             }
         ?>
@@ -375,27 +295,91 @@
         </div>
     </section>
     <script src="js/jsapi.js"></script>
-		<script type="text/javascript">
-		  google.load('jquery', '1.3');
-		</script>		
+    <script type="text/javascript">
+      google.load('jquery', '1.3');
+    </script>		
 
-		<script type="text/javascript">
-		$(function(){
-			$('#cod_estados').change(function(){
-				if( $(this).val() ) {
-					$('#cod_cidades').hide();
-					$('.carregando').show();
-					$.getJSON('model/cidades.ajax.php?search=',{cod_estados: $(this).val(), ajax: 'true'}, function(j){
-						var options = '<option value="0"> Selecione </option>';	
-						for (var i = 0; i < j.length; i++) {
-							options += '<option value="' + j[i].cod_cidades + '">' + j[i].nome + '</option>';
-						}	
-						$('#cod_cidades').html(options).show();
-						$('.carregando').hide();
-					});
-				} else {
-					$('#cod_cidades').html('<option value="">– Escolha um estado –</option>');
-				}
-			});
-		});
-		</script>
+    <script type="text/javascript">
+    $(function(){
+        $('#cod_estados').change(function(){
+            if( $(this).val() ) {
+                $('#cod_cidades').hide();
+                $('.carregando').show();
+                $.getJSON('model/cidades.ajax.php?search=',{cod_estados: $(this).val(), ajax: 'true'}, function(j){
+                    var options = '<option value="0"> Selecione </option>';	
+                    for (var i = 0; i < j.length; i++) {
+                        options += '<option value="' + j[i].cod_cidades + '">' + j[i].nome + '</option>';
+                    }	
+                    $('#cod_cidades').html(options).show();
+                    $('.carregando').hide();
+                });
+            } else {
+                $('#cod_cidades').html('<option value="">– Escolha um estado –</option>');
+            }
+        });
+    });
+    </script>
+
+    <script src="js/jquery-3.2.1.min.js" ></script>
+
+    <!-- Adicionando Javascript -->
+    <script type="text/javascript" >
+
+        $(document).ready(function() {
+
+            function limpa_formulário_cep() {
+                // Limpa valores do formulário de cep.
+                $("#cidade").val("");
+                $("#uf").val("");
+            }
+            
+            //Quando o campo cep perde o foco.
+            $("#cep").blur(function() {
+
+                //Nova variável "cep" somente com dígitos.
+                var cep = $(this).val().replace(/\D/g, '');
+
+                //Verifica se campo cep possui valor informado.
+                if (cep != "") {
+
+                    //Expressão regular para validar o CEP.
+                    var validacep = /^[0-9]{8}$/;
+
+                    //Valida o formato do CEP.
+                    if(validacep.test(cep)) {
+
+                        //Preenche os campos com "..." enquanto consulta webservice.
+                        $("#cidade").val("...");
+                        $("#uf").val("...");
+                        
+                        //Consulta o webservice viacep.com.br/
+                        $.getJSON("https://viacep.com.br/ws/"+ cep +"/json/?callback=?", function(dados) {
+
+                            if (!("erro" in dados)) {
+                                
+                                $("#cidade").val(dados.localidade);
+                                $("#uf").val(dados.uf);
+                                $("#frm").attr('action', 'router.php?controller=cliente&modo=inserir');
+                                $("#frm").attr('method', 'post');
+                            } 
+                            else {
+                                
+                                limpa_formulário_cep();
+                                alert("CEP não encontrado.");
+                            }
+                        });
+                    } 
+                    else {
+                        limpa_formulário_cep();
+                        alert("Formato de CEP inválido.");
+                    }
+                } 
+                else {
+                    //cep sem valor, limpa formulário.
+                    limpa_formulário_cep();
+                }
+            });
+        });
+
+    </script>
+    

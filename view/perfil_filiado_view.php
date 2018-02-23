@@ -6,13 +6,12 @@
         header('location:login.php?perfil=filiado');
     }
 
-    if(isset($_GET['codigo'])){
+    if(empty($_SESSION['id_filiado']) and isset($_GET['codigo'])){
         
         include_once('view/perfil/filiado_visualizar.php');
     }
 
    if (!empty($_SESSION['id_filiado'])) {
-       
         include_once('view/perfil/filiado_usuario.php');
    }
 ?>

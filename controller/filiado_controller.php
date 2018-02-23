@@ -120,27 +120,6 @@ class ControllerAcompanhante{
         
     }
     
-    /* Buscar estados */
-    public function BuscarEstados(){
-        require_once('model/filiado_class.php');
-        
-        $filiado_classe = new Acompanhante();
-        $result = $filiado_classe->SelectEstados();
-       
-        return $result;
-    }
-    
-    /* Buscar cidades */
-    public function BuscarCidade(){
-        require_once('model/cliente_class.php');
-        
-        $cliente_class = new Cliente();
-        $result = $cliente_class->SelectCidade();
-        
-        return $result;
-        
-    }
-
     /* Buscar opções de etnias */
     public function BuscarEtnias(){
         require_once('model/filiado_class.php');
@@ -179,6 +158,62 @@ class ControllerAcompanhante{
         return $rs;
     }
     
+    /* Buscar o tipo da conta do usuário */
+    public function BuscarImagensFiliado(){
+        require_once('model/filiado_class.php');
+        $class = new Acompanhante();
+        $rs = $class->SelectImagensFiliado();
+        
+        return $rs;
+    }
+    
+    /* Inserir foto de perfil */
+    public function FotoPerfil(){
+        $id = $_GET['id'];
+        
+        $class = new Acompanhante();
+        $rs = $class->UpdateFotoPerfil($id);
+        
+    }
+    
+    /* Inserir imagens da conta */
+    public function MidiaFiliado($desc){
+        $id = $_GET['id'];
+        $name = $_GET['name'];
+        
+        $class = new Acompanhante();
+        $rs = $class->InsertMidia($id, $name, $desc);
+        
+    }
+    
+    /* Buscar foto perfil */
+    public function BuscarFotoPerfil($id){
+        require_once('model/filiado_class.php');
+        $class = new Acompanhante();
+        
+        $rs = $class->SelectFoto($id);
+        return $rs;
+    }
+
+    /* Buscar estados dos filiados */
+    public function EstadosFiliados(){
+        require_once('model/filiado_class.php');
+        $class = new Acompanhante();
+        
+        $rs = $class->SelectEstadosFiliados();
+        return $rs;
+        
+    }
+    
+    /* Buscar filiados por estado */
+    public function ListarFiliadosEstado($uf){
+        require_once('model/filiado_class.php');
+        $class = new Acompanhante();
+        
+        $rs = $class->SelectFiliadosEstado($uf);
+        return $rs;
+        
+    }
 }
 
 

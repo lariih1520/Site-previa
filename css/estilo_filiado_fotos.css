@@ -1,0 +1,79 @@
+/**
+    Data: 22/02/2018
+**/
+
+.titulo_maior{
+    margin-bottom: 20px;
+}
+#previsualizar{
+    max-width: 100%;
+    max-height: 100%;
+}
+.content_perfil{
+    width: 950px;
+    height: 320px;
+    text-align: center;
+    margin-bottom: 10px;
+    border: solid 1px white;
+}
+.img_perfil{
+    margin: auto;
+    width: 260px;
+    height: 260px;
+    overflow: hidden;
+    margin-bottom: 15px;
+    border-radius: 260px;
+    border: solid 1px black;
+}
+.img_perfil img{
+    max-width: 280px;
+    height: 260px;
+}
+#content_midia{
+    width: 960px;
+    height: auto;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+    border: solid 1px #FFF;
+}
+.enunciado{
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+.imgs_filiado{
+    float: left;
+    width: 300px;
+    height: 360px;
+    margin-right: 8px;
+    margin-left: 8px;
+    margin-bottom: 15px;
+    border: solid 1px white;
+}
+.img{
+    width: 280px;
+    height: 320px;
+    margin: auto;
+    overflow: hidden;
+    text-align: center;
+    margin-bottom: 10px;
+    border: solid 1px #CDCDCD;
+}
+.img img{
+    max-width: auto;
+    height: 320px;
+    margin: auto;
+}
+#content_videos{
+    width: 950px;
+    height: 400px;
+    margin-bottom: 10px;
+    border: solid 1px red;
+}
+
+.botao{
+    width: 100px;
+    margin: auto;
+    text-align: center;
+}
+
