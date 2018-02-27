@@ -1,3 +1,4 @@
+    <span class="voltar"><a href="default.php"> &larr; Voltar </a></span>
     <center><h1 class="titulo"> Gerenciamento da página home </h1></center>
 
     <div id="content_bar">

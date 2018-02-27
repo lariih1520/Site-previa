@@ -40,6 +40,7 @@ switch ($controller) {
     case 'acompanhante':
         switch ($modo){
             case 'inserir':
+                session_start();
                 require_once('model/filiado_class.php');
                 require_once('controller/filiado_controller.php');
                 require_once('controller/filiado.php');
@@ -49,7 +50,14 @@ switch ($controller) {
                  if(!empty($_GET['tipo'])){
                      $controller->CadastrarFiliado();
                          
-                 }
+                 }elseif($_GET['q'] == 'dados-private'){
+                    $controller->CadastrarDadosPag();
+                
+                /* Dados privados e redireciona para pagamento */
+                }elseif($_GET['q'] == 'pagar'){
+                    $controller->CadastrarDadosPag();
+                    
+                }
                
             break;
                 
@@ -64,24 +72,47 @@ switch ($controller) {
             case 'perfil':
                 require_once('model/filiado_class.php');
                 require_once('controller/filiado_controller.php');
-                $autentica_controller = new ControllerAcompanhante();
-                $autentica_controller->FotoPerfil();
+                $controller = new ControllerAcompanhante();
+                $controller->FotoPerfil();
                 
             break;
                   
             case 'foto':
                 require_once('model/filiado_class.php');
                 require_once('controller/filiado_controller.php');
-                $autentica_controller = new ControllerAcompanhante();
-                $autentica_controller->MidiaFiliado(1);
+                $controller = new ControllerAcompanhante();
+                $controller->MidiaFiliado(1);
                 
             break;
                   
             case 'video':
                 require_once('model/filiado_class.php');
                 require_once('controller/filiado_controller.php');
-                $autentica_controller = new ControllerAcompanhante();
-                $autentica_controller->MidiaFiliado(2);
+                $controller = new ControllerAcompanhante();
+                $controller->MidiaFiliado(2);
+                
+            break;
+                
+            case 'alterar':
+                session_start();
+                require_once('model/filiado_class.php');
+                require_once('controller/filiado_controller.php');
+                
+                $controller = new ControllerAcompanhante();
+                
+                /* Dados perfil */
+                if($_GET['q'] == 'dados'){
+                    $controller->AlterarDados();
+                    
+                /* Dados privados e redireciona para perfil */
+                }elseif($_GET['q'] == 'dados-private'){
+                    $controller->AlterarDadosPrivate();
+                
+                /* Dados privados e redireciona para pagamento */
+                }elseif($_GET['q'] == 'pagar'){
+                    $controller->AlterarDadosPrivate();
+                    
+                }
                 
             break;
                 

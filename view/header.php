@@ -14,7 +14,7 @@
             $perfil = 'perfil-filiado.php?';
             
         }else{
-            $perfil = '#';
+            $perfil = 'login.php';
             $lgrf = false;
         }
 

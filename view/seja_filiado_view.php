@@ -8,7 +8,7 @@
 ?>
 
     <h1 class="titulo"> Seja um acompanhante e duvulgue-se! </h1>
-    <p class="centro"> Preencha os dados a seguir para cadastrar-se, essas informações ajudam os clientes a encontrar o seu perfil. Essses são os dados publicos </p>
+    <p class="centro"> Preencha os dados a seguir para cadastrar-se.</p>
     <div class="content_dados_1">
         
         <form action="?etapa=2" method="post">

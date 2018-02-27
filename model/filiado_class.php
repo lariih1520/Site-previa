@@ -7,10 +7,7 @@
 
 class Acompanhante{
     
-    public $id_estado;
     public $estado;
-    public $codigo_uf;
-    public $id_cidade;
     public $cidade;
     public $uf;
     public $nome;
@@ -19,7 +16,10 @@ class Acompanhante{
     public $senha;
     public $confrmSenha;
     public $sexo;
-    public $celular;
+    public $celular1;
+    public $celular2;
+    public $ddd1;
+    public $ddd2;
     public $nasc;
     public $foto;
     public $dia;
@@ -33,6 +33,8 @@ class Acompanhante{
     public $peso;
     public $conect;
     public $nmr;
+    public $cor_cabelo;
+    public $cobrar;
     
     public function __construct(){
         require_once('db_class.php');
@@ -137,12 +139,15 @@ class Acompanhante{
                     $ddd2 = $telddd2[1];
                     $numero2 = $tel2[1];
                     
+                    $filiado->ddd2 = $ddd2;
                     $filiado->celular2 = $numero2;
                     
                 }else{
                     $filiado->celular2 = 'vazio';
                 }
                 
+                $filiado->ddd1= $ddd1;
+                $filiado->celular1 = $numero1;
                 $filiado->estado = $rs['uf'];
                 $filiado->cidade = $rs['cidade'];
                 $filiado->nome = $rs['nome'];
@@ -172,6 +177,8 @@ class Acompanhante{
                     
                 }
                 
+                $filiado->uf = $rs['uf'];
+                $filiado->cidade = $rs['cidade'];
                 $filiado->cobrar = $rs['cobrar'];
                 $filiado->foto = $rs['foto_perfil'];
                 $filiado->etnia = $rs['etnia'];
@@ -185,7 +192,6 @@ class Acompanhante{
                 $filiado->dia = $dia;
                 $filiado->mes = $mes;
                 $filiado->ano = $ano;
-                $filiado->celular1 = $numero1;
                 
             }
             
@@ -253,6 +259,138 @@ class Acompanhante{
             
         }else{
             echo $sql; 
+        }
+        
+    }
+    
+    public function InsertDadosPag($dadosPag){
+        
+        $q = $_GET['q'];
+        $id = $_SESSION['id_filiado'];
+        
+        if($q == 'pagar'){
+            $link = 'contratar.php';
+            
+        }elseif('dados-private'){
+            $link = 'perfil-filiado.php';
+        }
+        
+        $sql = 'select * from tbl_pagamento_filiado where id_filiado = '.$id;
+        
+        mysqli_query($this->conect, $sql);
+        
+        if(mysqli_affected_rows($this->conect) > 0){
+            $dadosPag->id = $id;
+            $update = new Acompanhante();
+            $update->UpdateDadosPag($dadosPag);
+            
+        }else{
+            
+            $sql = 'insert into tbl_pagamento_filiado (
+            id_filiado, nome, sobrenome, telefone, rua, numero, bairro,
+            cidade, uf, cep, desconto, cpf, bandeira_cartao, numero_cartao,
+            cvv, expiracaoMes, expiracaoAno, forma_pagamento)';
+            
+            $sql = $sql.'values ('.$id.', "'.$dadosPag->nome.'", "'.$dadosPag->sobrenome.'",
+            "'.$dadosPag->telefone.'", "'.$dadosPag->rua.'", '.$dadosPag->numero.', "'.$dadosPag->bairro.'",
+            "'.$dadosPag->cidade.'", "'.$dadosPag->uf.'", "'.$dadosPag->cep.'", 0, "'.$dadosPag->cpf.'",
+            "'.$dadosPag->numeroCartao.'", "'.$dadosPag->numeroCartao.'", "'.$dadosPag->cvv.'",
+            '.$dadosPag->mesExpira.', '.$dadosPag->anoExpira.', 1)';
+            
+            echo $sql;
+            /*
+            if(mysqli_query($this->conect, $sql)){
+                
+                header('location:'.$link);
+                
+            }else{
+                header('location:'.$link.'?Erro');
+            }
+            */
+            
+        }
+        
+        
+    }
+    
+    /* Cadastrar novo acompanhante no site */
+    public function UpdateDados($fld){
+        
+        $sql = "update tbl_filiado set ";
+        
+        $sql = $sql."nome = '".$fld->nome."' ";
+        
+        if($fld->nasc != null){
+            $sql = $sql.", nasc = '".$fld->nasc."'";
+        }
+        
+        if($fld->email != null){
+            $sql = $sql.", email = '".$fld->email."'";
+        }
+        
+        if($fld->celular1 != null){
+            $sql = $sql.", celular1 = '".$fld->celular1."'";
+        }
+        
+        if($fld->celular2 != null){
+            $sql = $sql.", celular2 = '".$fld->celular2."'";
+        }
+        
+        if($fld->etnia != null){
+            $sql = $sql.", etnia = ".$fld->etnia."";
+        }
+        
+        if($fld->cor_cabelo != null){
+            $sql = $sql.", id_cabelo = ".$fld->cor_cabelo."";
+        }
+        
+        if($fld->sexo != null){
+            $sql = $sql.", sexo = ".$fld->sexo."";
+        }
+        
+        if($fld->altura != null){
+            $sql = $sql.", altura = ".$fld->altura."";
+        }
+        
+        if($fld->peso != null){
+            $sql = $sql.", peso = ".$fld->peso."";
+        }
+        
+        if($fld->acompanha != null){
+            $sql = $sql.", acompanha = ".$fld->acompanha."";
+        }
+        
+        if($fld->cidade != null){
+            $sql = $sql.", cidade = '".$fld->cidade."'";
+        }
+        
+        if($fld->estado != null){
+            $sql = $sql.", uf = '".$fld->estado."'";
+        }
+        
+        if($fld->cobrar != null){
+            $sql = $sql.", cobrar = ".$fld->cobrar."";
+            
+        }
+        if($fld->apresentacao != null){
+            $sql=$sql.", apresentacao='".$fld->apresentacao."'";
+            
+        }
+        $sql = $sql." where id_filiado = ".$fld->id;
+        
+        if($_GET['q'] == 'pagar'){
+            $redirect = 'pagamento-filiado.php';
+        }else{
+            $redirect = 'perfil-filiado.php';
+        }
+        
+        if(mysqli_query($this->conect, $sql)){
+            //echo $sql; 
+            header('location:'.$redirect);
+             
+        }else{
+            //echo $sql; 
+            header('location:perfil-filiado.php?Erro');
         }
         
     }
@@ -341,6 +479,31 @@ class Acompanhante{
         
     }
     
+    /* Buscar cores de cabelo */
+    public function SelectCorCabelo(){
+        $sql = "select * from tbl_cabelo";
+        
+        if($select = mysqli_query($this->conect, $sql)){
+           
+            $cont = 0;
+            while($rs = mysqli_fetch_array($select)){
+                
+                $cor[] = new Acompanhante();
+                
+                $cor[$cont]->id_cabelo = $rs['id_cabelo'];
+                $cor[$cont]->cor = $rs['cor'];
+                
+                $cont++;
+            }
+            return $cor;
+            
+        }else{
+            return false;
+            
+        }
+        
+    }
+    
     /* Buscar tipo de conta */
     public function SelectTiposConta(){
         
@@ -402,6 +565,7 @@ class Acompanhante{
         }
     }
     
+    /* Buscar fotos do filiado */
     public function SelectImagensFiliado(){
         if(empty($_GET['codigo'])){
             $id = $_SESSION['id_filiado'];
@@ -519,10 +683,12 @@ class Acompanhante{
                         
                        if(mysqli_query($this->conect, $sql)){
                             echo "<img src='midia/".$nome_imagem."' id='previsualizar'>"; 
+                           
+                           $fl = explode('fl', $flname); 
                 ?>
                     <script type="text/javascript">
                         
-                        $('#img<?php echo $numero; ?>').attr('disabled','desabled');  
+                        $('#img<?php echo $fl[1]; ?>').attr('disabled','desabled');  
                        
                     </script>
                     

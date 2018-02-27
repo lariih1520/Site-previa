@@ -52,6 +52,12 @@ nav{
     transition: 0.5s;
     color: lightgray;
 }
+.notificacao{/***** TO DO *****/
+    float: right;
+    position: absolute;
+    background-color: white;
+    border: solid 0.5px black;
+}
 
 #barra_superior span{
     float: right;

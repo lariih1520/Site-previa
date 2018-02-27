@@ -6,6 +6,20 @@
 .titulo{
     margin-bottom: 20px;
 }
+.mensalidade{
+    width: 940px;
+    height: 20px;
+    padding-top: 20px;
+    padding-left: 20px;
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+    border: solid 4px #04B431;
+}
+.mensalidade a{
+    color: #04B431;
+    font-style: italic;
+    text-decoration: underline;
+}
 .content_foto_perfil{
     padding: 8px;
     margin: auto;
@@ -85,13 +99,20 @@
     text-align: center;
     margin-right: 18px;
     margin-top: 18px;
-    border: solid 1px gray;
+    border: solid 1px #CDCDCD;
 }
 .imgs img{
     margin: auto;
     height: 290px;
-    width: auto;
+    max-width: 100%;
     margin-top: 5px;
+}
+
+.imgs a img{
+    margin: auto;
+    height: 220px;
+    width: 220px;
+    margin-top: 40px;
 }
 
 /***************/

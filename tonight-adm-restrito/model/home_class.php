@@ -8,12 +8,13 @@ class Home{
     
     public $id_home;
     public $imagem;
+    public $conect;
     
     public function __construct(){
         require_once('db_class.php');
         
         $conexao = new Mysql_db();
-        $conexao->conectar();
+        $this->conect = $conexao->conectar();
         
     }
     
@@ -21,9 +22,9 @@ class Home{
         
         $sql = 'insert into tbl_home_slide (imagem) values ('.$imagem.')';
         
-        mysql_query($sql);
+        mysqli_query($this->conect, $sql);
         
-        if(mysql_affected_rows() > 0){
+        if(mysqli_affected_rows($this->conect) > 0){
             echo ('Salvo');
             
         }else{
@@ -35,10 +36,10 @@ class Home{
     public function SelectFotos(){
         $sql = 'select * from tbl_home_slide';
         
-        if($select = mysql_query($sql)){
+        if($select = mysqli_query($this->conect, $sql)){
             
             $cont = 0;
-            while($rs = mysql_fetch_array($select)){
+            while($rs = mysqli_fetch_array($select)){
                 $home[] = new Home();
                 
                 $home[$cont]->id_home = $rs['id_home'];
@@ -59,7 +60,7 @@ class Home{
     public function DeleteFotos($id){
         $sql = 'delete from tbl_home_slide where id_home = '.$id;
         
-        if(mysql_query($sql)){
+        if(mysqli_query($this->conect, $sql)){
             
             header('location:adm_home.php?ok');
             

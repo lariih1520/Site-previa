@@ -17,9 +17,11 @@
                     <center><span class="titulo">RESTRITO</span></center>
                     
                     <p><label> Login: </label></p>
+                    <img src="icones/user.png" class="icone">
                     <input type="text" name="txtLogin">
                     
                     <p><label> Senha: </label></p>
+                    <img src="icones/security.png" class="icone">
                     <input type="password" name="txtSenha">
                     
                     <p> <input type="submit" value="Logar" name="btnLogin" class="botao"> </p>

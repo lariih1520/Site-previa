@@ -4,16 +4,16 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title> Tonight - Contratar um acompanhante </title>
+		<title> Tonight - Exibir todos os acompanhantes </title>
 		<meta charset="UTF-8">
 		<meta http-equiv="content-language" content="pt-br" />
 		<meta name="viewport" content="initial-scale=1" />
 		<meta name="author" content="Larissa AP" />
-		<meta name="description" content="Precisa de um ampanhante? Nós temos o que você precisa, basta se cadastrar" />
+		<meta name="description" content="Precisa de um ampanhante? Nós temos o que você precisa, lista de acompanhantes" />
 		<meta name="keywords" content="Acompanhante, Acompanhantes, companhias para festas, cadastre-se" />
         <link rel="icon" type="icone/png" href="imagens/logo.png">
 		<link rel="stylesheet" type="text/css" href="css/estilo_padrao.css" />
-		<link rel="stylesheet" type="text/css" href="css/estilo_contratar.css" />
+		<link rel="stylesheet" type="text/css" href="css/estilo_exibir_todos.css" />
 	</head>
 	<body>
 		<div id="principal">
@@ -24,7 +24,8 @@
             <!-- conteudo -->
             <section id="conteudo">
                 <?php
-                    include_once('view/contratar_view.php');
+                    include_once('controller/filiado_controller.php');
+                    include_once('view/exibir_todos_view.php');
                 ?>
             </section>
             

@@ -36,9 +36,34 @@ class ControllerAcompanhante{
         
     }
     
+    public function CadastrarDadosPag(){
+        
+        $dadosPag = new Acompanhante();
+        
+        $dadosPag->nome = $_POST['txtNome'];
+        $dadosPag->sobrenome = $_POST['txtSobrenome'];
+        $dadosPag->telefone = $_POST['txtTel'];
+        $dadosPag->cep = $_POST['txtCEP'];
+        $dadosPag->rua = $_POST['txtRua'];
+        $dadosPag->numero = $_POST['txtNumero'];
+        $dadosPag->bairro = $_POST['txtBairro'];
+        $dadosPag->cidade = $_POST['txtCidade'];
+        $dadosPag->uf = $_POST['txtUf'];
+        $dadosPag->cpf = $_POST['txtCpf'];
+        $dadosPag->numeroCartao = $_POST['txtNumeroCartao'];
+        $dadosPag->cvv = $_POST['txtCVV'];
+        $dadosPag->mesExpira = $_POST['txtMesExpira'];
+        $dadosPag->anoExpira = $_POST['txtAnoExpira'];
+        
+        $dadosPag->InsertDadosPag($dadosPag);
+        
+        
+    }
+    
     /* Alterar dados do acompanhante */
-    public function Alterar(){
-        $id = $_GET['id'];
+    public function AlterarDados(){
+        
+        $id = $_SESSION['id_filiado'];
         
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
@@ -53,51 +78,84 @@ class ControllerAcompanhante{
             $mes = $_POST['slc_mes'];
             $ano = $_POST['slc_ano'];
 
-            $cliente = new Cliente();
+            $filiado = new Acompanhante();
 
-            $ddd = $_POST['txtDDD'];
-            $numero = $_POST['txtCel'];
+            $ddd1 = $_POST['txtDDD1'];
+            $numero1 = $_POST['txtCel1'];
+            $ddd2 = $_POST['txtDDD2'];
+            $numero2 = $_POST['txtCel2'];
 
-            $cliente->id = $id;
-            $cliente->celular = '('.$ddd.')'.$numero;
-            $cliente->nome = $_POST['txtNome'];
-            $cliente->email = $_POST['txtEmail'];
-            $cliente->sexo = $_POST['slc_sexo'];
-            $cliente->id_cidade = $_POST['cod_cidades'];
-            $cliente->enteresse = $_POST['slc_prefere'];
-            $cliente->nasc = $ano."-".$mes."-".$dia;
+            $filiado->id = $id;
+            $filiado->celular1 = '('.$ddd1.')'.$numero1;
+            $filiado->celular2 = '('.$ddd2.')'.$numero2;
+            $filiado->nome = $_POST['txtNome'];
+            $filiado->email = $_POST['txtEmail'];
+            $filiado->sexo = $_POST['slc_sexo'];
+            $filiado->altura = $_POST['txtAltura'];
+            $filiado->peso = $_POST['txtPeso'];
+            $filiado->estado = $_POST['txtUf'];
+            $filiado->cidade = $_POST['txtCidade'];
+            $filiado->acompanha = $_POST['slc_acompanha'];
+            $filiado->cobrar = $_POST['txtCobrar'];
+            $filiado->apresentacao = $_POST['txtApresentacao'];
+            $filiado->cor_cabelo = $_POST['slc_cor_cabelo'];
+            $filiado->nasc = $ano."-".$mes."-".$dia;
 
             $anos = $ano_hoje - $ano;
-
+            
+            
             if($anos > 18){
-                $cliente->UpdateCliente($cliente);
+                $filiado->UpdateDados($filiado);
 
             }elseif($anos == 18){
 
                 if ($mes < $mes_hoje) {
-                    $cliente->UpdateCliente($cliente);
+                    
+                    $filiado->UpdateDados($filiado);
 
                 } elseif ($mes == $mes_hoje) {
 
                     if ($dia <= $dia_hoje) {
-                        $cliente->UpdateCliente($cliente);
+                        
+                        $cliente->UpdateDados($filiado);
 
                     } else {
-                        header('location:perfil.php?perfil=cliente&erro=idade');
+                        header('location:filiado-dados.php?erro=idade');
                     }
 
                 }else{
-                    header('location:perfil.php?perfil=cliente&erro=idade');
+                    header('location:filiado-dados.php?erro=idade');
                 }
 
             }else{
-                header('location:perfil.php?perfil=cliente&erro=idade');
+                header('location:filiado-dados.php?erro=idade');
 
             }
             
         }
         
         
+    }
+    
+    public function AlterarDadosPrivate(){
+        
+        $dadosPag = new Acompanhante();
+        
+        $dadosPag->nome = $_POST['txtNome'];
+        $dadosPag->sobrenome = $_POST['txtSobrenome'];
+        $dadosPag->telefone = $_POST['txtTel'];
+        $dadosPag->cep = $_POST['txtCEP'];
+        $dadosPag->rua = $_POST['txtRua'];
+        $dadosPag->numero = $_POST['txtNumero'];
+        $dadosPag->bairro = $_POST['txtBairro'];
+        $dadosPag->cidade = $_POST['txtCidade'];
+        $dadosPag->uf = $_POST['txtUf'];
+        $dadosPag->numeroCartao = $_POST['txtNumeroCartao'];
+        $dadosPag->cvv = $_POST['txtCVV'];
+        $dadosPag->mesExpira = $_POST['txtMesExpira'];
+        $dadosPag->anoExpira = $_POST['txtAnoExpira'];
+        
+        $dadosPag->UpdateDadosPag($dadosPag);
     }
     
     /* Buscar usuário de acordo com o id */
@@ -111,6 +169,7 @@ class ControllerAcompanhante{
         
     }
     
+    /* Buscar dados do pagamento */
     public function BuscarDadosPag(){
         require_once('model/filiado_class.php');
         $class = new Acompanhante();

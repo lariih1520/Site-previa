@@ -139,6 +139,11 @@ select{
     max-width: 100%;
 }
 
+.voltar a{
+    color: black;
+    font-size: 22px;
+}
+
 /*_____________*/
 /**** Rodapé ****/
 #rodape{
@@ -168,7 +173,7 @@ select{
 /**********************/
 #content_rest{
     width: 250px;
-    height: 150px;
+    height: 180px;
     margin: auto;
     margin-top: 10%;
     padding: 20px 25px 20px 25px;

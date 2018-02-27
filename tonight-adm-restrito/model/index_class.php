@@ -9,12 +9,13 @@ class Index{
     public $id_index;
     public $imagem;
     public $campo;
+    public $conect;
     
     public function __construct(){
         require_once('db_class.php');
         
         $conexao = new Mysql_db();
-        $conexao->conectar();
+        $this->conect = $conexao->conectar();
         
     }
     
@@ -22,10 +23,10 @@ class Index{
     public function SelectFotos(){
         $sql = 'select * from tbl_index';
         
-        if($select = mysql_query($sql)){
+        if($select = mysqli_query($this->conect, $sql)){
             
             $cont = 0;
-            while($rs = mysql_fetch_array($select)){
+            while($rs = mysqli_fetch_array($select)){
                 $index[] = new Index();
                 
                 $index[$cont]->id_index = $rs['id_index'];
@@ -58,7 +59,7 @@ class Index{
                 
                 $sql = 'update tbl_index set imagem = "'.$pasta.$nome.'" where campo = '.$campo;
 
-                if(mysql_query($sql)){
+                if(mysqli_query($this->conect, $sql)){
 
                     header('location:adm_index.php?ok');
 
@@ -87,7 +88,7 @@ class Index{
             $sql = 'update tbl_index set imagem = "-" where campo > 1';
         }
         
-        if(mysql_query($sql)){
+        if(mysqli_query($this->conect, $sql)){
             
             header('location:adm_index.php?ok');
             

@@ -32,10 +32,23 @@
         
     }
 
+    date_default_timezone_set('America/Sao_Paulo');
+    $dia = (date('d'));
+
+    if($dia == 10){
+        $mensalidade = '<div class="mensalidade">
+        Não esqueça de <a href="filiado-dados.php?editar=pagar-private">efetuar o pagamento </a> referente à este mês! Valor: '.$valor.',00
+        </div>';
+    }else{
+        $mensalidade = '';
+    }
+    
 ?>
 
-    <h1 class="titulo_maior"> Perfil <?php echo $nome ?> </h1>
+    <?php echo $mensalidade ?>
     
+    <h1 class="titulo_maior"> Perfil <?php echo $nome ?> </h1>
+
     <div class="content_foto_perfil"> <!-- *** Foto perfil *** -->
         <div class="foto_perfil">
             <img src="<?php echo $foto ?>">
@@ -43,7 +56,11 @@
         
     </div>
     <div class="content_dados"> <!--  Dados Publicos do acompanhante  -->
-        <p class="titulo"> Dados públicos </p>
+        <p class="titulo"> Dados públicos 
+            <a href="filiado-dados.php?editar=dados">
+            <img src="icones/editar.ico" class="icone" title="editar">
+            </a>
+        </p>
         <p> Estes dados são exibidos aos clientes para que eles possam saber detalhes sobre você </p>
         
         <ul class="lst_dados">
@@ -67,7 +84,11 @@
         </div>
     </div>
     <div class="content_midia"> <!-- ****** Imagens ****** -->
-        <p class="titulo"> Imagens </p>
+        <p class="titulo"> Imagens 
+            <a href="filiado-fotos.php?editar">
+            <img src="icones/editar.ico" class="icone" title="editar">
+            </a>
+        </p>
         <p> Estas imagens serão exibidas no seu perfil, a quantidade de imagens é escolhida de acordo com o seu tipo de conta </p>
         
         <?php
@@ -85,6 +106,15 @@
         <?php
                 $cont++;
                 }
+            }
+            if(count($rs) < $qtd_fotos){
+        ?>
+            <div class="imgs">
+                <a href="filiado-fotos.php">
+                    <img src="imagens/adicionar.png" alt="add imagem" title="adcionar imagem">
+                </a>
+            </div>
+        <?php
             }
         ?>
         
@@ -132,7 +162,10 @@
     ?>
     
     <div class="content_dados_seguranca"> <!-- *** Dados Privados *** -->
-        <p class="titulo"> Dados privados </p>
+        <p class="titulo"> Dados privados <a href="filiado-dados.php?editar=dados-private">
+            <img src="icones/editar.ico" class="icone" title="editar">
+            </a>
+        </p>
         <p> Os dados a seguir são ultilizados <b>apenas para efetuar o pagamento</b> e não serão compartilhados com nenhum outro usuário </p>
         
         <ul class="lst_dados">

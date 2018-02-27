@@ -15,6 +15,12 @@
         $celular1 = $rs->celular1;
         $celular2 = $rs->celular2;
         $apresentacao = $rs->apresentacao;
+        $cobrar = $rs->cobrar;
+        $etnia = $rs->etnia;
+        $uf = $rs->uf;
+        $cidade = $rs->cidade;
+        
+        $tamanhoApresent = strlen($apresentacao);
         
         date_default_timezone_set('America/Sao_Paulo');
         $datetime = (date('Y/m/d H:i'));
@@ -57,11 +63,17 @@
                     <?php echo $apresentacao; ?>
                 </div>
             </div>
+        <?php
+            if($tamanhoApresent < 180){
+        ?>
             <div class="contrate">
                 <a href="contratar.php?acompanhante=<?php echo $id ?>">
                     <p class="botao"> Contrate! </p>
                 </a>
             </div>
+        <?php
+            }
+        ?>    
         </div>
 
         <div id="dados_perfil">
@@ -72,16 +84,26 @@
                 <li> Altura: <?php echo $altura ?></li>
                 <li> Peso:   <?php if($peso){ echo $peso; } ?></li>
                 <li> Sexo:   <?php echo $sexo ?></li>
+                <li> Valor:   <?php echo $cobrar ?>,00 </li>
+                <li> Etnia:   <?php echo $etnia ?> </li>
+                <li> Estado:   <?php echo $uf ?> </li>
+                <li> Cidade:   <?php echo $cidade ?> </li>
             </ul>
-            <!--- Se a apresentação for muito grande
+        <?php
+            if($tamanhoApresent >= 180){
+        ?>
             <div class="contrate">
-                <p class="botao">Contrate!</p>
+                <a href="contratar.php?acompanhante=<?php echo $id ?>">
+                    <p class="botao"> Contrate! </p>
+                </a>
             </div>
-            -->
+        <?php
+            }
+        ?>    
         </div>
         <div class="sugestoes">
             <ul class="lst_dados">
-                <li><p> Acompanha: </p> <?php echo $acompanha ?>  </li>
+                <li> Acompanha: <?php echo $acompanha ?>  </li>
                 <li> Celular 1: <?php echo $celular1 ?> </li>
                 <li> Celular 2:  <?php echo $celular2 ?> </li>
             </ul>
