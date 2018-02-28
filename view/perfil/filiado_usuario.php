@@ -33,9 +33,9 @@
     }
 
     date_default_timezone_set('America/Sao_Paulo');
-    $dia = (date('d'));
+    $diah = (date('d'));
 
-    if($dia == 10){
+    if($diah == 10){
         $mensalidade = '<div class="mensalidade">
         Não esqueça de <a href="filiado-dados.php?editar=pagar-private">efetuar o pagamento </a> referente à este mês! Valor: '.$valor.',00
         </div>';
@@ -123,28 +123,29 @@
     
     <?php
         $dados = new ControllerAcompanhante();
-        $resp = $dados->BuscarDadosPag();
+        $rs = $dados->BuscarDadosPag();
         
-        if($resp != null){
+        if($rs != null){
             $nome = $rs->nome;
             $sobrenome = $rs->sobrenome;
+            $ddd = $rs->ddd;
             $telefone = $rs->telefone;
             $cep = $rs->cep;
             $rua = $rs->rua;
             $numero = $rs->numero;
             $bairro = $rs->bairro;
             $cidade = $rs->cidade;
-            $estado = $rs->estado;
+            $uf = $rs->uf;
             $cpf = $rs->cpf;
             $cvv = $rs->cvv;
             $numero_cartao = $rs->numero_cartao;
             $expiracaoMes = $rs->expiracaoMes;
             $expiracaoAno = $rs->expiracaoAno;
-            $formaPag = $rs->formaPag;
             
         }else{
             $nome = '';
             $sobrenome = '';
+            $ddd = '';
             $telefone = '';
             $cep = '';
             $rua = '';
@@ -157,7 +158,6 @@
             $numero_cartao = '';
             $expiracaoMes = '';
             $expiracaoAno = '';
-            $formaPag = '';
         }
     ?>
     
@@ -171,18 +171,17 @@
         <ul class="lst_dados">
             <li> <p>Nome:              </p><?php echo $nome ?> </li> 
             <li> <p>Sobrenome:         </p><?php echo $sobrenome ?> </li> 
-            <li> <p>Telefone:          </p><?php echo $telefone ?> </li> 
+            <li> <p>Telefone:          </p><?php echo '('.$ddd.')'.$telefone ?> </li> 
             <li> <p>CEP:               </p><?php echo $cep ?> </li> 
             <li> <p>Rua:               </p><?php echo $rua ?> </li> 
             <li> <p>Numero:            </p><?php echo $numero ?> </li> 
             <li> <p>Bairro:            </p><?php echo $bairro ?> </li> 
             <li> <p>Cidade:            </p><?php echo $cidade ?> </li> 
-            <li> <p>Estado:            </p><?php echo $estado ?> </li> 
+            <li> <p>Estado:            </p><?php echo $uf ?> </li> 
             <li> <p>Numero do cartão:  </p><?php echo $numero_cartao ?> </li> 
             <li> <p>CVV:               </p><?php echo $cvv ?> </li> 
             <li> <p>Mês de expiração:  </p><?php echo $expiracaoMes ?> </li> 
             <li> <p>Ano de expiração:  </p><?php echo $expiracaoAno ?> </li> 
-            <li> <p>Forma de pagamento das mensalidades: </p><?php echo $formaPag ?> </li> 
         </ul>
     </div>
 

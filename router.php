@@ -62,6 +62,7 @@ switch ($controller) {
             break;
                 
             case 'logar':
+                session_start();
                 require_once('model/filiado_class.php');
                 require_once('controller/filiado_controller.php');
                 $autentica_controller = new ControllerAcompanhante();

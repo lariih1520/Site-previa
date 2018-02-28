@@ -11,8 +11,9 @@
 		<meta name="author" content="Larissa AP" />
 		<meta name="description" content="Precisa de um ampanhante? Nós temos o que você precisa" />
 		<meta name="keywords" content="Acompanhante, Acompanhantes, companhias para festas" />
+        <link rel="icon" type="icone/png" href="imagens/logo.png">
 		<link rel="stylesheet" type="text/css" href="css/estilo_padrao.css" />
-		
+        
     <?php
         /* Ver perfil do acompanhante */
         if(!empty($_GET['codigo'])){ ?>  

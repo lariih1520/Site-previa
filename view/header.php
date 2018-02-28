@@ -23,7 +23,7 @@
             $lgrf = false;
             session_destroy();
         }
-        
+
     ?>
     
     <nav>

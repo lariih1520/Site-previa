@@ -15,7 +15,7 @@
 }
 #form2 .lst_dados{
     width: 890px;
-    height: 700px;
+    height: 620px;
     margin-top: 18px;
     border: solid 1px white;
 }
@@ -40,4 +40,11 @@
 
 textarea{
     resize: none;
+}
+
+.hashPagSeguro{
+    visibility: hidden;
+}
+.tokenPagamentoCartao{
+    visibility: hidden;
 }

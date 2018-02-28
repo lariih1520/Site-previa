@@ -1,9 +1,10 @@
 <?php
+
     if(!empty($_GET['var'])){ 
         $genero = $_GET['var'];
         
     }else{ 
-        $genero =0;
+        $genero = '0';
     }
 
     $sf = '';
@@ -12,13 +13,41 @@
     $ah = '';
     $ad = '';
 
-    if($genero == 'homens'){
-        $sm = 'selected';
+    if(isset($_GET['slc_etnia'])){
+        $etniafltr = $_GET['slc_etnia'];
+        $cabelofltr = $_GET['slc_cor_cabelo'];
+        $sexo = $_GET['slc_sexo'];
+        $acompanha = $_GET['slc_acompanha'];
         
-    }elseif($genero == 'mulheres'){
-        $sf = 'selected';
+        if($acompanha == 1){
+            $am = 'selected';
+            
+        }elseif($acompanha == 2){
+            $ah = 'selected';
+            
+        }elseif($acompanha == 3){
+            $ad = 'selected';
+            
+        }
+        
+        if($sexo == 1){
+            $sf = 'selected';
+        }elseif($sexo == 2){
+            $sm = 'selected';
+        }
+        
+    }else{
+        $etniafltr = '';
+        $cabelofltr = '';
     }
-    
+
+    if($genero == 'mulheres'){
+        $sf = 'selected';
+        
+    }elseif($genero == 'homens'){
+        $sm = 'selected';
+    }
+
 ?>
 
 <div id="filtro">
@@ -39,8 +68,7 @@
                         $id_et = $rs[$cont]->id_etnia;
                         $etnia = $rs[$cont]->etnia;
 
-
-                        if($etniafld == $etnia){
+                        if($etniafltr == $id_et){
                             $id_et = 'value="'.$id_et.'" selected';
 
                         }else{
@@ -72,7 +100,7 @@
                             $id_cabelo = $rs[$cont]->id_cabelo;
                             $cor = $rs[$cont]->cor;
 
-                            if($cor == $id_cabelo){
+                            if($cabelofltr == $id_cabelo){
                                 $id_cabelo = 'value="'.$id_cabelo.'" selected';
 
                             }else{
@@ -106,31 +134,57 @@
         </li>
         <li class="pesquisa">
             <p onclick="form.submit();">
-            <img src="icones/pesquisa.png" class="icone" alt="pesquisar">
+            <img src="icones/pesquisa.png" class="icone" title="Pesquisar" alt="pesquisar">
             </p>
         </li>
+        <li> <a href="?"> Limpar </a> </li>
     </ul>
     </form>
 </div>
 
 
 <div id="lista_acompanhantes">
+    <?php
+
+    if(isset($_GET['slc_etnia'])){
+        
+        $pesq = new ControllerAcompanhante();
+        $rs = $pesq->BuscarFiliadosFiltro();
+        $msg = 'Não há filiados com estas caracteristicas';
+        
+    }else{
+        
+        $controller = new ControllerAcompanhante();
+        $rs = $controller->ListarFiliados();
+        $msg = "Ainda não há filiados";
+    }
     
-    <div class="acompanhante">
-        <img src="imagens/usuario.jpg">
-        <p> Nome: Estado: </p>
+    if($rs != false){
+        $cont = 0;
+        while($cont < count($rs)){
         
-    </div>
+            $id = $rs[$cont]->id;
+            $nome = $rs[$cont]->nome;
+            $foto = $rs[$cont]->foto;
+            $uf   = $rs[$cont]->uf;
+?>
     <div class="acompanhante">
-        <img src="imagens/usuario.jpg">
-        <p> Nome: Estado: </p>
-        
+        <a href="perfil-filiado.php?codigo=<?php echo $id ?>">
+            <img src="<?php echo $foto ?>">
+            <p> Nome:<?php echo $nome ?></p>
+            <p> Estado: <?php echo $uf ?> </p>
+        </a>
     </div>
-    <div class="acompanhante">
-        <img src="imagens/usuario.jpg">
-        <p> Nome: Estado: </p>
+    
+<?php
+            $cont++;
+        }
+    }else{
         
-    </div>
+        echo '<center> '.$msg.' </center>';
+        
+    }
+?>
     
     <div style="clear: both;"></div>
 </div>

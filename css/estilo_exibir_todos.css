@@ -4,7 +4,7 @@
 
 #filtro{
     width: 840px;
-    height: 50px;
+    height: 100px;
     margin: auto;
     border: solid 1px white;
 }
@@ -17,7 +17,9 @@
     font-size: 18px;
     border: solid 1px white;
 }
-
+.lst_filtro li a{    
+    color: black;
+}
 #lista_acompanhantes{
     width: 950px;
     height: auto;
@@ -29,7 +31,7 @@
 .acompanhante{
     float: left;
     width: 290px;
-    height: 340px;
+    height: 360px;
     text-align: center;
     margin-left: 12px;
     padding-top: 10px;
@@ -39,9 +41,11 @@
     margin: auto;
     width: 270px;
     height: 300px;
+    margin-bottom: 4px;
 }
 .acompanhante p {
     color: white;
+    margin-bottom: 4px;
 }
 .pesquisa{
     cursor: pointer;

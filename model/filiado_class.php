@@ -7,11 +7,18 @@
 
 class Acompanhante{
     
-    public $estado;
     public $cidade;
     public $uf;
     public $nome;
     public $sobrenome;
+    public $cpf;
+    public $cpfdc;
+    public $cvv;
+    public $cvvdc;
+    public $numero_cartao;
+    public $numero_cartaodc;
+    public $expiracaoMes;
+    public $expiracaoAno;
     public $email;
     public $senha;
     public $confrmSenha;
@@ -35,6 +42,7 @@ class Acompanhante{
     public $nmr;
     public $cor_cabelo;
     public $cobrar;
+    public $acompanha;
     
     public function __construct(){
         require_once('db_class.php');
@@ -111,7 +119,17 @@ class Acompanhante{
             $id = $_GET['codigo'];
         }
         
-        $sql = 'call VwDadosFiliado('.$id.')';
+        //$sql = 'call VwDadosFiliado('.$id.')';
+        $sql = 'select fi.*, et.etnia, ca.cor as cabelo, tc.foto,
+                tc.titulo, tc.valor as valor_conta, tc.video
+                from tbl_filiado as fi
+                inner join tbl_etnia as et
+                on fi.etnia = et.id_etnia
+                inner join tbl_tipo_conta as tc
+                on tc.id_tipo_conta = fi.id_tipo_conta
+                left join tbl_cabelo as ca
+                on fi.id_cabelo = ca.id_cabelo
+                where fi.id_filiado = '.$id.'';
         
         if($select = mysqli_query($this->conect, $sql)){
             
@@ -195,10 +213,9 @@ class Acompanhante{
                 
             }
             
-            mysqli_close($this->conect);
-            
             return $filiado;
             
+            mysqli_close($this->conect);
             
         } else {
             
@@ -263,6 +280,7 @@ class Acompanhante{
         
     }
     
+    /* Cadastrar dados do pagamento */
     public function InsertDadosPag($dadosPag){
         
         $q = $_GET['q'];
@@ -288,28 +306,37 @@ class Acompanhante{
             
             $sql = 'insert into tbl_pagamento_filiado (
             id_filiado, nome, sobrenome, telefone, rua, numero, bairro,
-            cidade, uf, cep, desconto, cpf, bandeira_cartao, numero_cartao,
-            cvv, expiracaoMes, expiracaoAno, forma_pagamento)';
+            cidade, uf, cep, desconto, cpf, numero_cartao,
+            cvv, expiracaoMes, expiracaoAno)';
             
             $sql = $sql.'values ('.$id.', "'.$dadosPag->nome.'", "'.$dadosPag->sobrenome.'",
             "'.$dadosPag->telefone.'", "'.$dadosPag->rua.'", '.$dadosPag->numero.', "'.$dadosPag->bairro.'",
             "'.$dadosPag->cidade.'", "'.$dadosPag->uf.'", "'.$dadosPag->cep.'", 0, "'.$dadosPag->cpf.'",
-            "'.$dadosPag->numeroCartao.'", "'.$dadosPag->numeroCartao.'", "'.$dadosPag->cvv.'",
-            '.$dadosPag->mesExpira.', '.$dadosPag->anoExpira.', 1)';
+            "'.$dadosPag->numeroCartao.'", "'.$dadosPag->cvv.'",
+            "'.$dadosPag->mesExpira.'", "'.$dadosPag->anoExpira.'")';
             
-            echo $sql;
-            /*
             if(mysqli_query($this->conect, $sql)){
                 
-                header('location:'.$link);
+            ?>
+                <script>
+                    window.location.href = "<?php echo $link ?>";
+                </script>
+
+            <?php
                 
             }else{
-                header('location:'.$link.'?Erro');
+            ?>
+                <script>
+                    window.location.href = "<?php echo $link.'?Erro' ?>";
+                </script>
+
+            <?php
+                //echo $sql;
+                //header('location:'.$link.'?Erro');
             }
-            */
+            
             
         }
-        
         
     }
     
@@ -385,12 +412,77 @@ class Acompanhante{
         }
         
         if(mysqli_query($this->conect, $sql)){
-            //echo $sql; 
-            header('location:'.$redirect);
-             
+                
+        ?>
+            <script>
+                window.location.href = "<?php echo $redirect ?>";
+            </script>
+
+        <?php
+
         }else{
-            //echo $sql; 
-            header('location:perfil-filiado.php?Erro');
+        ?>
+            <script>
+                window.location.href = "perfil-filiado.php?Erro' ?>";
+            </script>
+
+        <?php
+            //echo $sql;
+            //header('location:'.$link.'?Erro');
+        }
+        
+        
+    }
+    
+    /* Alterar Dados do Pagamento */
+    public function UpdateDadosPag($dadosPag){
+        $q = $_GET['q'];
+        
+        if($q == 'pagar'){
+            $link = 'contratar.php';
+            
+        }elseif('dados-private'){
+            $link = 'perfil-filiado.php';
+        }
+        
+        $id = $dadosPag->id;
+        $sql = 'select * from tbl_pagamento_filiado where id_filiado = '.$id;
+        
+        mysqli_query($this->conect, $sql);
+        
+        if(mysqli_affected_rows($this->conect) == 0){
+            $dadosPag->id = $id;
+            $update = new Acompanhante();
+            $update->UpdateDados($dadosPag);
+            
+        }else{
+            $sql = 'update tbl_pagamento_filiado set nome = "'.$dadosPag->nome.'",
+            sobrenome = "'.$dadosPag->sobrenome.'", telefone = "'.$dadosPag->telefone.'", rua = "'.$dadosPag->rua.'",
+            numero = '.$dadosPag->numero.', bairro = "'.$dadosPag->bairro.'", cidade = "'.$dadosPag->cidade.'",
+            uf = "'.$dadosPag->uf.'", cep = "'.$dadosPag->cep.'",
+            cpf = "'.$dadosPag->cpf.'", numero_cartao = "'.$dadosPag->numeroCartao.'", cvv = "'.$dadosPag->cvv.'",
+            expiracaoMes = "'.$dadosPag->mesExpira.'", expiracaoAno = "'.$dadosPag->anoExpira.'" ';
+
+            if(mysqli_query($this->conect, $sql)){
+                
+            ?>
+                <script>
+                    window.location.href = "<?php echo $link ?>";
+                </script>
+
+            <?php
+                
+            }else{
+            ?>
+                <script>
+                    window.location.href = "<?php echo $link.'?Erro' ?>";
+                </script>
+
+            <?php
+                //echo $sql;
+                //header('location:'.$link.'?Erro');
+            }
+            
         }
         
     }
@@ -400,7 +492,14 @@ class Acompanhante{
         
         $id = $_SESSION['id_filiado'];
         
-        $sql = 'call VwDadosPag('.$id.')';
+        //$sql = 'call VwDadosPag('.$id.')';
+        $sql = 'select pf.*, tp.valor 
+                from tbl_filiado as fi
+                inner join tbl_pagamento_filiado as pf
+                on fi.id_filiado = pf.id_filiado
+                inner join tbl_tipo_conta as tp
+                on fi.id_tipo_conta = tp.id_tipo_conta
+                where fi.id_filiado = '.$id;
         
         if($select = mysqli_query($this->conect, $sql)){
             
@@ -410,41 +509,57 @@ class Acompanhante{
                 
                 $dados->nome = $rs['nome'];
                 $dados->sobrenome = $rs['sobrenome'];
-                $dados->telefone = $rs['telefone'];
+                
+                $tel = explode(')', $rs['telefone']);
+                
+                $telddd = explode('(', $tel[0]);
+                $ddd = $telddd[1];
+                $numero = $tel[1];
+                
+                $dados->ddd = $ddd;
+                $dados->telefone = $numero;
                 $dados->cep = $rs['cep'];
                 $dados->rua = $rs['rua'];
                 $dados->numero = $rs['numero'];
                 $dados->bairro = $rs['bairro'];
                 $dados->cidade = $rs['cidade'];
-                $dados->estado = $rs['estado'];
+                $dados->uf = $rs['uf'];
                 
-                $lencpf = strlen($rs['cpf']);
-                
+                $lencpf = strlen(base64_decode($rs['cpf']));
                 $cont = 0;
-                while($cont < count($lencpf)){
+                $cpf = '';
+                while($cont < $lencpf){
                     $cpf = $cpf.'*';
                     $cont++;
                 }
-                
                 $dados->cpf = $cpf;
-                $dados->cvv = $rs['cvv'];
+                $dados->cpfdc = base64_decode($rs['cpf']);
                 
-                $lennmr = strlen($rs['numero_cartao']);
-                
+                $lencvv = strlen(base64_decode($rs['cvv']));
                 $cont = 0;
-                while($cont < count($lennmr)){
-                    $nmr = $cpf.'*';
+                $cvv = '';
+                while($cont < $lencvv){
+                    $cvv = $cvv.'*';
                     $cont++;
                 }
+                $dados->cvv = $cvv;
+                $dados->cvvdc = base64_decode($rs['cvv']);
                 
+                $lennmr = strlen(base64_decode($rs['numero_cartao']));
+                $cont = 0;
+                $nmr = '';
+                while($cont < $lennmr){
+                    $nmr = $nmr.'*';
+                    $cont++;
+                }
                 $dados->numero_cartao = $nmr;
+                $dados->numero_cartaodc = base64_decode($rs['numero_cartao']);
                 
-                $dados->expiracaoMes = $rs['expiracaoMes'];
-                $dados->expiracaoMes = $rs['expiracaoMes'];
-                $dados->formaPag = $rs['forma_pagamento'];
+                $dados->expiracaoMes = base64_decode($rs['expiracaoMes']);
+                $dados->expiracaoAno = base64_decode($rs['expiracaoAno']);
             
-                mysqli_close($this->conect);
                 return $dados;
+                mysqli_close($this->conect);
             }
             
         }else{
@@ -599,6 +714,97 @@ class Acompanhante{
             return false;
         }
         
+    }
+    
+    /* Listar todos os filiados do site */
+    public function SelectFiliados(){
+        
+        $sql = "select * from tbl_filiado where conta_ativa = 1";
+        if($select = mysqli_query($this->conect, $sql)){
+            
+            $cont = 0;
+            while($rs = mysqli_fetch_array($select)){
+                $filiados[] = new Acompanhante();
+
+                $filiados[$cont]->id = $rs['id_filiado'];
+                $filiados[$cont]->nome = $rs['nome'];
+                $filiados[$cont]->foto = $rs['foto_perfil'];
+                $filiados[$cont]->uf = $rs['uf'];
+                
+                $cont++;
+            }
+            
+            return $filiados;
+            
+        }else{
+            return false;
+            
+        }
+        
+    }
+    
+    /* Filtrar e listar todos os filiados do site */
+    public function SelectFiliadosFiltro($filtro){
+        $sql = "select * from tbl_filiado ";
+        $ant = 0;
+        
+        if($filtro->etnia != 0){
+            $sql = $sql.' where etnia = '.$filtro->etnia;
+            $ant = 1;
+        }
+        
+        if($filtro->cor_cabelo != 0){
+            if($ant == 1){ $sql = $sql.' and '; }
+            else{ $ant = 1; $sql = $sql.' where '; }
+            
+            $sql = $sql.' id_cabelo = '.$filtro->cor_cabelo;
+            
+        }
+        
+        if($filtro->sexo != 0){
+            if($ant == 1){ $sql = $sql.' and '; }
+            else{ $ant = 1; $sql = $sql.' where '; }
+            
+            $sql = $sql.' sexo = '.$filtro->sexo;
+        }
+        
+        if($filtro->acompanha != 0){
+            if($ant == 1){ $sql = $sql.' and '; }
+            else{ $ant = 1; $sql = $sql.' where '; }
+            
+            $sql = $sql.' acompanha = '.$filtro->acompanha;
+        }
+        
+        if($ant == 1){ $sql = $sql.' and '; }
+        else{ $sql = $sql.' where '; }
+        
+        $sql = $sql." conta_ativa = 1";
+        
+        if($select = mysqli_query($this->conect, $sql)){
+            if(mysqli_affected_rows($this->conect) > 0){
+                $cont = 0;
+                while($rs = mysqli_fetch_array($select)){
+                    $filiados[] = new Acompanhante();
+
+                    $filiados[$cont]->id = $rs['id_filiado'];
+                    $filiados[$cont]->nome = $rs['nome'];
+                    $filiados[$cont]->foto = $rs['foto_perfil'];
+                    $filiados[$cont]->uf = $rs['uf'];
+
+                    $cont++;
+                }
+                //echo $sql;
+                return $filiados;
+                
+            }else{
+                return false;
+            }
+            
+        }else{
+            //echo $sql;
+            return false;
+            
+        }
     }
     
     /* Atualizar foto de perfil */

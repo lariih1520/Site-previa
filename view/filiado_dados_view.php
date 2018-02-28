@@ -283,24 +283,24 @@
         }
         
         $dados = new ControllerAcompanhante();
-        $resp = $dados->BuscarDadosPag();
+        $rs = $dados->BuscarDadosPag();
             
-        if($resp != null){
+        if($rs != null){
             $nome = $rs->nome;
             $sobrenome = $rs->sobrenome;
+            $ddd = $rs->ddd;
             $telefone = $rs->telefone;
             $cep = $rs->cep;
             $rua = $rs->rua;
             $numero = $rs->numero;
             $bairro = $rs->bairro;
             $cidade = $rs->cidade;
-            $estado = $rs->estado;
-            $cpf = $rs->cpf;
-            $cvv = $rs->cvv;
-            $numero_cartao = $rs->numero_cartao;
+            $estado = $rs->uf;
+            $cpf = $rs->cpfdc;
+            $cvv = $rs->cvvdc;
+            $numero_cartao = $rs->numero_cartaodc;
             $expiracaoMes = $rs->expiracaoMes;
             $expiracaoAno = $rs->expiracaoAno;
-            $formaPag = $rs->formaPag;
             $modo= 'modo=alterar';
                 
         }else{
@@ -318,10 +318,10 @@
             $numero_cartao = '';
             $expiracaoMes = '';
             $expiracaoAno = '';
-            $formaPag = '';
             $modo= 'modo=inserir';
         }
-?>
+?>  
+     
     <form action="router.php?controller=acompanhante&<?php echo $modo.'&'.$q ?>" method="post" id="form2">
         <ul class="lst_dados">
             <li> <p>Nome: </p>
@@ -331,19 +331,21 @@
                 <input type="text" name="txtSobrenome" value="<?php echo $sobrenome ?>" maxlength="30">
             </li> 
             <li> <p>Telefone: </p>
-                <input type="text" name="txtTel" value="<?php echo $telefone ?>" maxlength="13">
+                <input type="text" name="txtDDD" value="<?php echo $ddd ?>" maxlength="2" size="2" placeholder="DDD">
+                <input type="text" name="txtTel" value="<?php echo $telefone ?>" maxlength="8">
             </li> 
-            <li> <p>CPF:  </p>
-                <input type="text" name="txtCpf" value="<?php echo $cpf ?>" maxlength="">
+            <li> <p>CPF (apenas numeros): </p>
+                <input type="text" name="txtCpf" value="<?php echo $cpf ?>" maxlength="11" id="cardCPF">
+                <input type="text" name="txtHash" class="hashPagSeguro">
             </li> 
-            <li> <p>CEP:  </p>
-                <input type="text" name="txtCEP" id="cep" value="<?php echo $cep ?>" maxlength="9">
+            <li> <p>CEP (apenas numeros):  </p>
+                <input type="text" name="txtCEP" id="cep" value="<?php echo $cep ?>" maxlength="8">
             </li> 
             <li> <p>Rua: </p>
                 <input type="text" name="txtRua" id="rua" value="<?php echo $rua ?>" readonly>
             </li> 
             <li> <p>Numero: </p>
-                <input type="text" name="txtNumero" value="<?php echo $numero ?>" maxlength="4">
+                <input type="text" name="txtNumero" value="<?php echo $numero ?>" maxlength="4" size="2">
             </li> 
             <li> <p>Bairro: </p>
                 <input type="text" name="txtBairro" id="bairro" value="<?php echo $bairro ?>" readonly>
@@ -355,19 +357,20 @@
                 <input type="text" name="txtUf" id="uf" value="<?php echo $estado ?>" readonly>
             </li> 
             <li> <p>Numero do cartão: </p>
-                <input type="text" name="txtNumeroCartao" value="<?php echo $numero_cartao ?>" maxlength="">
-            </li> 
-            <li> <p>CVV: </p>
-                <input type="text" name="txtCVV" value="<?php echo $cvv ?>" maxlength="">
+                <input type="text" name="txtNumeroCartao" value="<?php echo $numero_cartao ?>" maxlength="16" id="numCartao">
             </li> 
             <li> <p>Mês de expiração: </p>
-                <input type="text" name="txtMesExpira" value="<?php echo $expiracaoMes ?>" maxlength="">
+                <input type="text" name="txtMesExpira" value="<?php echo $expiracaoMes ?>" maxlength="2" size="2" id="pagamentoMes">
             </li> 
             <li> <p>Ano de expiração: </p>
-                <input type="text" name="txtAnoExpira" value="<?php echo $expiracaoAno ?>" maxlength="">
+                <input type="text" name="txtAnoExpira" value="<?php echo $expiracaoAno ?>" maxlength="4" size="4" id="pagamentoAno">
             </li> 
-            <li> <p>Forma de pagamento das mensalidades: </p>
-                <input type="text" name="txt" value="<?php echo $formaPag ?>" maxlength="">
+            <li> <p>CVV: </p>
+                <input type="text" name="txtCVV" value="<?php echo $cvv ?>" maxlength="4" id="cvv">
+                <input type="text" name="txtCVV" value="<?php echo $cvv ?>" maxlength="4" class="tokenPagamentoCartao">
+            </li> 
+            <li class="retornoTeste">
+                <p>  </p>
             </li>
         </ul>
         <p><input type="submit" name="btnSalvar" value="<?php echo $botao; ?>" class="botao"></p>
@@ -451,4 +454,45 @@
 
         </script>
     
+<?php
+
+  if($_GET['editar'] == 'pagar-private'){  
+      $id_sessao = uniqid(time());
+?>
+
+
+    <!-- Em Produção: 
+
+    <script type="text/javascript" src=
+    "https://stc.pagseguro.uol.com.br/pagseguro/api/v2/checkout/pagseguro.directpayment.js">
+    </script>-->
+
+    <!-- Em Sandbox: -->
+    <script type="text/javascript" src="pagseguro/pagseguro-master/pagSeguro.js"></script>
+
+    <script type="text/javascript" src=
+        "https://stc.sandbox.pagseguro.uol.com.br/pagseguro/api/v2/checkout/pagseguro.directpayment.js">
+
+        $(document).ready(function() { //recebe codigo da dessão e seta o sessão id
+
+            $.ajax({
+                type : 'post',
+                dataTyp : 'json',
+                async : false,
+                timeout: 20000,
+                success: function(data){
+                    PagSeguroDirectPayment.setSessionId(<?php echo $id_sessao ?>);
+                }
+            });
+
+        });
+    </script>
+
+<?php
+
+  }
+
+?>
+
+
     

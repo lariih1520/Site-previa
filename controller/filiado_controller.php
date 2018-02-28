@@ -36,24 +36,41 @@ class ControllerAcompanhante{
         
     }
     
+    /* Cadastrar dados para realização de pagamento */
     public function CadastrarDadosPag(){
         
         $dadosPag = new Acompanhante();
         
         $dadosPag->nome = $_POST['txtNome'];
         $dadosPag->sobrenome = $_POST['txtSobrenome'];
-        $dadosPag->telefone = $_POST['txtTel'];
+        $ddd = $_POST['txtDDD'];
+        $dadosPag->telefone = '('.$ddd.')'.$_POST['txtTel'];
         $dadosPag->cep = $_POST['txtCEP'];
         $dadosPag->rua = $_POST['txtRua'];
         $dadosPag->numero = $_POST['txtNumero'];
         $dadosPag->bairro = $_POST['txtBairro'];
         $dadosPag->cidade = $_POST['txtCidade'];
         $dadosPag->uf = $_POST['txtUf'];
-        $dadosPag->cpf = $_POST['txtCpf'];
-        $dadosPag->numeroCartao = $_POST['txtNumeroCartao'];
-        $dadosPag->cvv = $_POST['txtCVV'];
-        $dadosPag->mesExpira = $_POST['txtMesExpira'];
-        $dadosPag->anoExpira = $_POST['txtAnoExpira'];
+        
+        $cpf = strlen($_POST['txtCpf']);
+        
+        $n = 1;
+        $cont = 0;
+        while($cont < $cpf){
+            $n = $n + 1;
+            $cont++;
+        }
+        
+        if($n != 44){
+            //echo $n;
+            header('location:filiado-dados.php?Erro=cpf');
+        }
+        
+        $dadosPag->cpf = base64_encode($_POST['txtCpf']);
+        $dadosPag->numeroCartao = base64_encode($_POST['txtNumeroCartao']);
+        $dadosPag->cvv = base64_encode($_POST['txtCVV']);
+        $dadosPag->mesExpira = base64_encode($_POST['txtMesExpira']);
+        $dadosPag->anoExpira = base64_encode($_POST['txtAnoExpira']);
         
         $dadosPag->InsertDadosPag($dadosPag);
         
@@ -137,23 +154,42 @@ class ControllerAcompanhante{
         
     }
     
+    /* Alterar dados privados */
     public function AlterarDadosPrivate(){
         
         $dadosPag = new Acompanhante();
         
+        $dadosPag->id = $_SESSION['id_filiado'];
         $dadosPag->nome = $_POST['txtNome'];
         $dadosPag->sobrenome = $_POST['txtSobrenome'];
-        $dadosPag->telefone = $_POST['txtTel'];
+        $ddd = $_POST['txtDDD'];
+        $dadosPag->telefone = '('.$ddd.')'.$_POST['txtTel'];
         $dadosPag->cep = $_POST['txtCEP'];
         $dadosPag->rua = $_POST['txtRua'];
         $dadosPag->numero = $_POST['txtNumero'];
         $dadosPag->bairro = $_POST['txtBairro'];
         $dadosPag->cidade = $_POST['txtCidade'];
         $dadosPag->uf = $_POST['txtUf'];
-        $dadosPag->numeroCartao = $_POST['txtNumeroCartao'];
-        $dadosPag->cvv = $_POST['txtCVV'];
-        $dadosPag->mesExpira = $_POST['txtMesExpira'];
-        $dadosPag->anoExpira = $_POST['txtAnoExpira'];
+        
+        $cpf = strlen($_POST['txtCpf']);
+        
+        $n = 1;
+        $cont = 0;
+        while($cont < $cpf){
+            $n = $n + 1;
+            $cont++;
+        }
+        
+        if($n != 44){
+            //echo $n;
+            header('location:filiado-dados.php?Erro=cpf');
+        }
+        
+        $dadosPag->cpf = base64_encode($_POST['txtCpf']);
+        $dadosPag->numeroCartao = base64_encode($_POST['txtNumeroCartao']);
+        $dadosPag->cvv = base64_encode($_POST['txtCVV']);
+        $dadosPag->mesExpira = base64_encode($_POST['txtMesExpira']);
+        $dadosPag->anoExpira = base64_encode($_POST['txtAnoExpira']);
         
         $dadosPag->UpdateDadosPag($dadosPag);
     }
@@ -223,6 +259,29 @@ class ControllerAcompanhante{
         $class = new Acompanhante();
         $rs = $class->SelectImagensFiliado();
         
+        return $rs;
+    }
+    
+    /* Buscar todos os filiados */
+    public function ListarFiliados(){
+        require_once('model/filiado_class.php');
+        
+        $filiados = new Acompanhante();
+        $rs = $filiados->SelectFiliados();
+        return $rs;
+    }
+    
+    public function BuscarFiliadosFiltro(){
+        require_once('model/filiado_class.php');
+        
+        $pesq = new Acompanhante();
+        
+        $pesq->etnia = $_GET['slc_etnia'];
+        $pesq->cor_cabelo = $_GET['slc_cor_cabelo'];
+        $pesq->sexo = $_GET['slc_sexo'];
+        $pesq->acompanha = $_GET['slc_acompanha'];
+        
+        $rs = $pesq->SelectFiliadosFiltro($pesq);
         return $rs;
     }
     
