@@ -23,10 +23,32 @@
             
             <!-- conteudo -->
             <section id="conteudo">
-                <?php
+            <?php
+                if($_GET['editar'] == 'pagar-private' & empty($_GET['forma'])){
+            ?>
+                <h1 class="titulo_maior"> Quase lá! </h1>
+                <div class="formas_pag">
+                    <div class="seleciona">
+                        <a href="filiado-dados.php?editar=pagar-private&forma=boleto">
+                            <p> Escolher a opção: </p>
+                            Boleto
+                        </a>
+                    </div>
+                    <div class="seleciona">
+                        <a href="filiado-dados.php?editar=pagar-private&forma=card">
+                            <p> Escolher a opção: </p>
+                            Cartão de crédito
+                        </a>
+                    </div>
+                </div>
+            <?php
+                }else{
+                    
                     include_once('controller/filiado_controller.php');
                     include_once('view/filiado_dados_view.php');
-                ?>
+                        
+                }
+            ?>
             </section>
             
             <!-- rodape -->

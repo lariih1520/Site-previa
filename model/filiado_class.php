@@ -44,6 +44,7 @@ class Acompanhante{
     public $cobrar;
     public $acompanha;
     public $formaPagar;
+    public $id_transfer;
     
     public function __construct(){
         require_once('db_class.php');
@@ -434,6 +435,7 @@ class Acompanhante{
     public function UpdateDadosPag($dadosPag){
         $q = $_GET['q'];
         $forma = $dadosPag->formaPagar;
+        $id = $_SESSION['id_filiado'];
         
         if($q == 'pagar'){
             $link = 'pagar-mensalidade.php?confirmar&forma='.$forma;
@@ -453,13 +455,28 @@ class Acompanhante{
             $update->UpdateDados($dadosPag);
             
         }else{
-            $sql = 'update tbl_pagamento_filiado set nome = "'.$dadosPag->nome.'",
-            sobrenome = "'.$dadosPag->sobrenome.'", telefone = "'.$dadosPag->telefone.'", rua = "'.$dadosPag->rua.'",
-            numero = '.$dadosPag->numero.', bairro = "'.$dadosPag->bairro.'", cidade = "'.$dadosPag->cidade.'",
-            uf = "'.$dadosPag->uf.'", cep = "'.$dadosPag->cep.'",
-            cpf = "'.$dadosPag->cpf.'", numero_cartao = "'.$dadosPag->numeroCartao.'", cvv = "'.$dadosPag->cvv.'",
-            expiracaoMes = "'.$dadosPag->mesExpira.'", expiracaoAno = "'.$dadosPag->anoExpira.'" ';
-
+            if($forma == 'card'){
+                $sql = 'update tbl_pagamento_filiado set nome = "'.$dadosPag->nome.'",
+                sobrenome = "'.$dadosPag->sobrenome.'", telefone = "'.$dadosPag->telefone.'",
+                rua = "'.$dadosPag->rua.'",
+                numero = '.$dadosPag->numero.', bairro = "'.$dadosPag->bairro.'",
+                cidade = "'.$dadosPag->cidade.'",
+                uf = "'.$dadosPag->uf.'", cep = "'.$dadosPag->cep.'",
+                cpf = "'.$dadosPag->cpf.'", numero_cartao = "'.$dadosPag->numeroCartao.'",
+                cvv = "'.$dadosPag->cvv.'",
+                expiracaoMes = "'.$dadosPag->mesExpira.'",
+                expiracaoAno = "'.$dadosPag->anoExpira.'" where id_filiado ='.$id;
+                
+            }elseif($forma == 'boleto'){
+                $sql = 'update tbl_pagamento_filiado set nome = "'.$dadosPag->nome.'",
+                sobrenome = "'.$dadosPag->sobrenome.'", telefone = "'.$dadosPag->telefone.'",
+                rua = "'.$dadosPag->rua.'",
+                numero = '.$dadosPag->numero.', bairro = "'.$dadosPag->bairro.'",
+                cidade = "'.$dadosPag->cidade.'",
+                uf = "'.$dadosPag->uf.'", cep = "'.$dadosPag->cep.'",
+                cpf = "'.$dadosPag->cpf.'" where id_filiado ='.$id;
+            }
+            
             if(mysqli_query($this->conect, $sql)){
                 
             ?>
@@ -491,20 +508,23 @@ class Acompanhante{
         $id = $_SESSION['id_filiado'];
         
         //$sql = 'call VwDadosPag('.$id.')';
-        $sql = 'select pf.*, tp.valor 
+        $sql = 'select pf.*, tp.valor, m.id_transferencia 
                 from tbl_filiado as fi
                 inner join tbl_pagamento_filiado as pf
                 on fi.id_filiado = pf.id_filiado
                 inner join tbl_tipo_conta as tp
                 on fi.id_tipo_conta = tp.id_tipo_conta
+                left join tbl_mensalidade as m
+                on m.id_filiado = fi.id_filiado
                 where fi.id_filiado = '.$id;
-        
+
         if($select = mysqli_query($this->conect, $sql)){
             
             while($rs = mysqli_fetch_array($select)){
                 
                 $dados = new Acompanhante();
                 
+                $dados->id_transfer = $rs['id_transferencia'];
                 $dados->nome = $rs['nome'];
                 $dados->sobrenome = $rs['sobrenome'];
                 
@@ -994,4 +1014,36 @@ class Acompanhante{
         
     }
     
+    /* Insere a existencia do pagamento no banco de dados */
+    public function InsertMensalidadePag($tipo, $dados){
+        $id = $_SESSION['id_filiado'];
+        $data = $dados['date'];
+        $valor = $dados['valor'];
+        $status = 1; 
+        $desconto = $dados['desconto'];
+        $codigo = $dados['code'];
+        $referencia = $dados['referencia'];
+        $forma = $tipo;
+        
+        $sql = 'insert into tbl_mensalidade (id_filiado, data_hora, valor, status , desconto, referencia, code, forma)';
+        $sql=$sql.'values('.$id.', "'.$data.'", "'.$valor.'", '.$status.', '.$desconto.', "'.$referencia.'", "'.$codigo.'", "'.$forma.'")';
+        
+        if(mysqli_query($this->conect, $sql)){
+            
+            return true;
+            
+        }else{
+            return false;
+        }
+        
+    }
+    
+    /* Atualizar status do pagamento */
+    public function UpdateStatusPag($status){
+        $sql = 'update tbl_mensalidade set status = '.$status;
+        
+        mysqli_query($this->conect, $sql);
+        //TO DO: CRIAR UMA TABELA DE NOTIFICAÇÃO DE ERROS
+    }
+           
 }

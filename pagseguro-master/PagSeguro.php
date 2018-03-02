@@ -36,7 +36,8 @@ class Pagamento{
 
     public function efetuaPagamentoCartao($dados) {
 
-		$data['token'] ='894B0178743C4806BE5ADA11F1129820'; //token sandbox ou produção
+		//$data['token'] ='2C2D9B3A420B4CBFB96E39ACD3DA30DA'; //token produção
+		$data['token'] ='894B0178743C4806BE5ADA11F1129820'; //token sandbox 
 		$data['paymentMode'] = 'default';
 		$data['senderHash'] = $dados['hash']; //gerado via javascript
 		$data['creditCardToken'] = $dados['creditCardToken']; //gerado via javascript
@@ -65,7 +66,7 @@ class Pagamento{
 		$data['currency'] = 'BRL';
 		$data['itemId1'] = '01';
 		$data['itemQuantity1'] = '1';
-		$data['itemDescription1'] = 'Descrição do item';
+		$data['itemDescription1'] = 'Mensalidade do usuario';
 		$data['reference'] = $dados['reference']; 
 		$data['shippingAddressRequired'] = 'false';
 		$data['itemAmount1'] = $dados['itemAmount1'];
@@ -93,7 +94,7 @@ class Pagamento{
 		curl_close($curl);
 
 		$xml = simplexml_load_string($xml);
-        var_dump($xml);
+        //var_dump($xml);
 
 		//echo $xml -> paymentLink;
 		$code =  $xml -> code;
@@ -110,9 +111,9 @@ class Pagamento{
 
 	public function efetuaPagamentoBoleto($dados) {
 
-
-		$data['token'] ='seu token do pagseguro disponível no login sandbox'; //token sandbox test
-		$data['paymentMode'] = 'boleto';
+		//$data['token'] ='2C2D9B3A420B4CBFB96E39ACD3DA30DA'; //token produção
+		$data['token'] ='894B0178743C4806BE5ADA11F1129820'; //token sandbox
+		$data['paymentMode'] = 'default';
 		$data['hash'] = $dados['hash'];
 		$data['paymentMethod'] = 'boleto';
 		$data['receiverEmail'] = 'bellussiroger1@gmail.com';
@@ -120,28 +121,26 @@ class Pagamento{
 		$data['senderAreaCode'] = $dados['senderAreaCode'];
 		$data['senderPhone'] = $dados['senderPhone'];
 		$data['senderEmail'] = $dados['senderEmail'];
-		if($dados['senderCPF'] != null){$data['senderCPF'] = $dados['senderCPF'];}
+		$data['senderCPF'] = $dados['senderCPF'];
 		$data['currency'] = 'BRL';
-		$data['itemId1'] = $dados['itemId'];
-		$data['itemQuantity1'] =$dados['itemQuantity'];
-		$data['itemDescription1'] = $dados['itemDescription'];
+		$data['itemId1'] = '01';
+		$data['itemQuantity1'] = '1';
+		$data['itemDescription1'] = 'Mensalidade usuario';
 		$data['reference'] = $dados['reference'];
 		$data['shippingAddressRequired'] = 'false';
 		$data['itemAmount1'] = $dados['itemAmount'];
 
-		
 		$emailPagseguro = "bellussiroger1@gmail.com";
 
 		$data = http_build_query($data);
+		//$url = 'https://ws.pagseguro.uol.com.br/v2/sessions'; //URL real
 		$url = 'https://ws.sandbox.pagseguro.uol.com.br/v2/transactions'; //URL de teste
-
 
 		$curl = curl_init();
 
-		$headers = array('Content-Type: application/x-www-form-urlencoded; charset=ISO-8859-1'
-			);
+		$headers = array('Content-Type: application/x-www-form-urlencoded; charset=ISO-8859-1');
 
-		curl_setopt($curl, CURLOPT_URL, $url . "?email=" . $emailPagseguro);
+		curl_setopt($curl, CURLOPT_URL, $url . "?email=".$emailPagseguro);
 		curl_setopt($curl, CURLOPT_POST, true);
 		curl_setopt( $curl,CURLOPT_HTTPHEADER, $headers );
 		curl_setopt( $curl,CURLOPT_RETURNTRANSFER, true );
@@ -155,14 +154,12 @@ class Pagamento{
 
 		$xml= simplexml_load_string($xml);
 
-
+        //var_dump($xml);
 		//echo $xml -> paymentLink;
 		$boletoLink =  $xml -> paymentLink;
 		$code =  $xml -> code;
 		$date =  $xml -> date;
 		
-		//aqui eu ja trato o xml e pego o dado que eu quero, vc pode dar um var_dump no $xml e ver qual dado quer
-
 		$retornoBoleto = array(
 				'paymentLink' => $boletoLink,
 				'date' => $date,
@@ -172,6 +169,8 @@ class Pagamento{
 		return $retornoBoleto;
 
 	}
+    
+    
 }
 
 ?>

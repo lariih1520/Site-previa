@@ -40,7 +40,7 @@
             <!-- conteudo -->
             <section id="conteudo">
                 <?php
-                    
+                
                 include_once('view/perfil_filiado_view.php'); 
                         
                 ?>

@@ -5,6 +5,7 @@
     $rs = $dados->BuscarDadosPag();
 
     if($rs != null){
+        $id_transfer = $rs->id_transfer;
         $nome = $rs->nome;
         $sobrenome = $rs->sobrenome;
         $ddd = $rs->ddd;
@@ -25,7 +26,6 @@
         /*** Se não houverem dados o usuário é redirecionado para a página para preenche-los ***/
         header('location:filiado-dados.php?editar=pagar-private');
     }
-
 
     /******** Se o form for acionado ********/
     if(isset($_GET['realizar'])){
@@ -73,34 +73,93 @@
                 'billingAddressPostalCode' => $cep,
                 'billingAddressCity' => $cidade,
                 'billingAddressState' => $estado,
-                'reference' => 'Mensalidade '.time(),
+                'reference' => 'mensal'.$id_transfer.date('y-m-d'),
                 'itemAmount1' => $valor.'.00',
             ];
                 
-            $retorno = new Pagamento();
-            $resp = $retorno->efetuaPagamentoCartao($dados);
+            $pag = new Pagamento();
+            $retorno = $pag->efetuaPagamentoCartao($dados);
 
-            if($resp != 0){
-                echo $resp['date'];
-                /*
+            if($retorno != null){
+                $dadosPagBd = [
+                    'date' => date('Y/m/d H:i'),
+                    'valor' => $valor.'.00',
+                    'desconto' => 0,
+                    'code' => $retorno['code'],
+                    'referencia' => $dados['reference']
+                ];
+                
                 $controller = new ControllerAcompanhante();
-                $controller->Pagamento('Cartao'); Criar */
+                $resp = $controller->InserirMensalidadePag('card', $dadosPagBd);
+                
+                if($resp == true){
+            ?>
+                <script>
+                    window.location.href = "perfil-filiado.php?Sucesso=sucesso";
+                </script>
 
+            <?php
+                }
             }
-
+                
         /************ Se o pagamento for realizado via cartão ***********/
         }elseif($_GET['realizar'] == 'boleto'){
             
             $hash = $_POST['txtHash'];
-
+            
+            $rspst = $dados->BuscarDadosPag();
+            
+            if($rspst != null){
+                $id_transfer = $rspst->id_transfer;
+            }
+            
+            $rsp = $dados->BuscarDadosUsuario();
+            if($rsp != null){
+                $email = $rsp->email;
+            }
+            
+            $res = $dados->BuscarTipoConta();
+            if($res != null){
+                $valor = $res->valor;
+            }
+            
+            $dados = [
+                'hash' => $hash ,
+                'senderName' => $nome.' '.$sobrenome,
+                'senderAreaCode' => $ddd,
+                'senderPhone' => $telefone,
+                'senderEmail' => $email,
+                'senderCPF' => $cpf,
+                'reference' => 'mensal'.$id_transfer.date('y-m-d'),
+                'itemAmount' => $valor.'.00',
+            ];
+            
             $pag = new Pagamento();
-            $retorno = $pag->efetuaPagamentoBoleto();
+            $retorno = $pag->efetuaPagamentoBoleto($dados);
 
             if($retorno != null){
-
+                $dadosPagBd = [
+                    'date' => date('Y/m/d H:i'),
+                    'valor' => $valor.'.00',
+                    'desconto' => 0,
+                    'code' => $retorno['code'],
+                    'referencia' => $dados['reference']
+                ];
+                
                 $controller = new ControllerAcompanhante();
-                $controller->Pagamento('boleto');
+                $resp = $controller->InserirMensalidadePag('boleto', $dadosPagBd);
+                
+                if($resp == true){
+            ?>
 
+                <script>
+                    window.location.href = "<?php echo $retorno['paymentLink'] ?>";
+                </script>
+
+            <?php
+                }
+                //header('location:'.$retorno['paymentLink']);
+                
             }
             
         }
@@ -122,10 +181,12 @@
             GetBrand();
 
             GerarToken();
+            
+            setTimeout(function(){
+                GerarIdentificador()
 
-            //$('#tokenPagamentoCartao').val('ddd');
-            //$('#frmPag').submit();
-
+                $('#frmPag').submit();
+            }, 3000);
         });
         
     </script>
@@ -144,9 +205,14 @@
         <script type="text/javascript">
             
             $(document).ready(function() {
-                
+                 
                 SetarIdSession();
-
+                
+                setTimeout(function(){
+                    GerarIdentificador()
+                    $('#frmPag').submit();
+                    
+                }, 3000);
             });
                 
         </script>
@@ -155,46 +221,16 @@
         }
     }
     
-
-    $forma = 0;
-
-    if(!empty($_GET['forma'])){
-        $forma = $_GET['forma'];
-    }
-
-    //gera o código de sessão obrigatório para gerar identificador (hash)
-    $p = new Pagamento();
-    $idSessao = $p->iniciaPagamentoAction();
                
 ?>
-    <!-- Este forme é necessário para que os parâmetros sejam passados para php -->
-    <form action="?realizar=<?php echo $forma ?>" method="post" id="frmPag">
-        
-        <input type="text" id="idSessao" value="<?php echo $idSessao ?>" name="txtIdSessao">
-        
-        <input type="text" id="hashPagSeguro" value="" name="txtHash">
-        
-        <input type="text" id="BandeiraPagSeguroName" value="" name="txtBandeiraName">
-        
-        <input type="text" id="BandeiraPagSeguroBin" value="" name="txtBandeiraBin">
-        
-        <input type="text" id="tokenPagamentoCartao" value="" name="txtToken">
-
-        <input type="text" id="numCartao" value="<?php echo $nmr_cartao ?>" name="txtNumCartao">
-        
-        <input type="text" id="cvv" value="<?php echo $cvv ?>" name="txtCvv">
-        
-        <input type="text" id="expiraMes" value="<?php echo $expiracaoMes ?>" name="txtExpiraMes">
-        
-        <input type="text" id="expiraAno" value="<?php echo $expiracaoAno ?>" name="txtExpiraAno">
-        
-        <input type="submit" onclick="GerarIdentificador();" class="botao" value="Autorizar pagamento" name="btnAuto">
-        
-    </form>
         
 <!--
 ************************ CLASSES REFERENTES AO PAGSEGURO **************************
-
+    
+    <script type="text/javascript" src=
+    "https://stc.pagseguro.uol.com.br/pagseguro/api/v2/checkout/pagseguro.directpayment.js">
+    </script>
+    
     <!--    Em Sandbox: -->
     <script type="text/javascript" src=
     "https://stc.sandbox.pagseguro.uol.com.br/pagseguro/api/v2/checkout/pagseguro.directpayment.js">
@@ -260,21 +296,65 @@
 
 
 <?php
+    if(isset($_GET['transaction_id'])){
+        $pagamento = $PagSeguro->getStatusByReference($_GET['codigo']);
+
+        $pagamento->codigo_pagseguro = $_GET['transaction_id'];
+        
+        if($pagamento->status==3 || $pagamento->status==4){
+            //ATUALIZAR DADOS DA VENDA, COMO DATA DO PAGAMENTO E STATUS DO PAGAMENTO
+            $controller = new ControllerAcompanhante();
+            $controller->AtualizeStatusPag(3);
+
+        }else{
+            //ATUALIZAR NA BASE DE DADOS
+            $controller = new ControllerAcompanhante();
+            $controller->AtualizeStatusPag($pagamento->status);
+        }
+    }
 
     /******** MOSTRAR GIF CARREGANDO ********/
 
-    if(!empty($_GET)){
 ?>
 
     <div class="imgcarregando">
-<!--       <img src="icones/carregando.gif">-->
+       <img src="icones/carregando.gif">
     </div>
 
 <?php   
+
+    $forma = 0;
+
+    if(!empty($_GET['forma'])){
+        $forma = $_GET['forma'];
     }
+
+    //gera o código de sessão obrigatório para gerar identificador (hash)
+    $p = new Pagamento();
+    $idSessao = $p->iniciaPagamentoAction();
+               
 ?>
+    <!-- Este forme é necessário para que os parâmetros sejam passados para php -->
+    <form action="?realizar=<?php echo $forma ?>" method="post" id="frmPag" class="hide">
+        
+        <input type="text" id="idSessao" value="<?php echo $idSessao ?>" name="txtIdSessao">
+        
+        <input type="text" id="hashPagSeguro" value="" name="txtHash">
+        
+        <input type="text" id="BandeiraPagSeguroName" value="" name="txtBandeiraName">
+        
+        <input type="text" id="BandeiraPagSeguroBin" value="" name="txtBandeiraBin">
+        
+        <input type="text" id="tokenPagamentoCartao" value="" name="txtToken">
 
-
-
-
-
+        <input type="text" id="numCartao" value="<?php echo $nmr_cartao ?>" name="txtNumCartao">
+        
+        <input type="text" id="cvv" value="<?php echo $cvv ?>" name="txtCvv">
+        
+        <input type="text" id="expiraMes" value="<?php echo $expiracaoMes ?>" name="txtExpiraMes">
+        
+        <input type="text" id="expiraAno" value="<?php echo $expiracaoAno ?>" name="txtExpiraAno">
+        
+<!--        <input type="submit" class="botao" value="Autorizar pagamento" name="btnAuto"> -->
+        
+    </form>

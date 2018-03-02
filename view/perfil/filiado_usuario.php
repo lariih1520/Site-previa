@@ -35,7 +35,7 @@
     date_default_timezone_set('America/Sao_Paulo');
     $diah = (date('d'));
 
-    if($diah == 01){
+    if($diah == 02){
         $mensalidade = '<div class="mensalidade">
         Não esqueça de <a href="filiado-dados.php?editar=pagar-private">efetuar o pagamento </a> referente à este mês! Valor: '.$valor.',00
         </div>';

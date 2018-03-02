@@ -51,7 +51,7 @@ class ControllerAcompanhante{
         $dadosPag->bairro = $_POST['txtBairro'];
         $dadosPag->cidade = $_POST['txtCidade'];
         $dadosPag->uf = $_POST['txtUf'];
-        $dadosPag->formaPagar = $_POST['forma'];
+        $dadosPag->formaPagar = $_GET['forma'];
         
         $cpf = strlen($_POST['txtCpf']);
         
@@ -68,11 +68,14 @@ class ControllerAcompanhante{
         }
         
         $dadosPag->cpf = base64_encode($_POST['txtCpf']);
-        $dadosPag->numeroCartao = base64_encode($_POST['txtNumeroCartao']);
-        $dadosPag->cvv = base64_encode($_POST['txtCVV']);
-        $dadosPag->mesExpira = base64_encode($_POST['txtMesExpira']);
-        $dadosPag->anoExpira = base64_encode($_POST['txtAnoExpira']);
         
+        if($_GET['forma'] == 'card'){
+        
+            $dadosPag->numeroCartao = base64_encode($_POST['txtNumeroCartao']);
+            $dadosPag->cvv = base64_encode($_POST['txtCVV']);
+            $dadosPag->mesExpira = base64_encode($_POST['txtMesExpira']);
+            $dadosPag->anoExpira = base64_encode($_POST['txtAnoExpira']);
+        }
         $dadosPag->InsertDadosPag($dadosPag);
         
         
@@ -171,7 +174,7 @@ class ControllerAcompanhante{
         $dadosPag->bairro = $_POST['txtBairro'];
         $dadosPag->cidade = $_POST['txtCidade'];
         $dadosPag->uf = $_POST['txtUf'];
-        $dadosPag->formaPagar = $_POST['forma'];
+        $dadosPag->formaPagar = $_GET['forma'];
         
         $cpf = $_POST['txtCpf'];
         $n = strlen($_POST['txtCpf']);
@@ -184,18 +187,20 @@ class ControllerAcompanhante{
             $cont++;
         }
         
-        if($soma != 44){
-            //echo '<br>'.$n;
+        /*if($soma != 44 or $soma != 55){
+            echo '<br>'.$n;
             $q = $_GET['q'];
             header('location:filiado-dados.php?editar=pagar-private&q='.$q.'&Erro=cpf');
-        }
+        }*/
         
         $dadosPag->cpf = base64_encode($_POST['txtCpf']);
-        $dadosPag->numeroCartao = base64_encode($_POST['txtNumeroCartao']);
-        $dadosPag->cvv = base64_encode($_POST['txtCVV']);
-        $dadosPag->mesExpira = base64_encode($_POST['txtMesExpira']);
-        $dadosPag->anoExpira = base64_encode($_POST['txtAnoExpira']);
         
+        if($_GET['forma'] == 'card'){
+            $dadosPag->numeroCartao = base64_encode($_POST['txtNumeroCartao']);
+            $dadosPag->cvv = base64_encode($_POST['txtCVV']);
+            $dadosPag->mesExpira = base64_encode($_POST['txtMesExpira']);
+            $dadosPag->anoExpira = base64_encode($_POST['txtAnoExpira']);
+        }
         $dadosPag->UpdateDadosPag($dadosPag);
     }
     
@@ -337,9 +342,24 @@ class ControllerAcompanhante{
         return $rs;
         
     }
+    
+    /* Inserir status de pagamento da mensalidade */
+    public function InserirMensalidadePag($tipo, $dados){
+        require_once('model/filiado_class.php');
+        
+        $class = new Acompanhante();
+        $resp = $class->InsertMensalidadePag($tipo, $dados);
+        return $resp;
+    }
+    
+    /* Atualizar Status de pagamento */
+    public function AtualizeStatusPag($status){
+        
+        $class = new Acompanhante();
+        $class->UpdateStatusPag($status);
+        
+    }
+    
 }
 
-
 ?>
-
-

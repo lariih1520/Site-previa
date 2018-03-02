@@ -7,7 +7,7 @@
     if (empty($_GET)) {
 ?>
 
-    <h1 class="titulo"> Seja um acompanhante e duvulgue-se! </h1>
+    <h1 class="titulo"> Seja um acompanhante e divulgue-se! </h1>
     <p class="centro"> Preencha os dados a seguir para cadastrar-se.</p>
     <div class="content_dados_1">
         
@@ -297,54 +297,3 @@
 ?>
 
 </div>
-
-
-<!-- ************* Dados cartão *************
-
-    <h1 class="titulo"> Quase lá! </h1>
-    <div class="content_dados_3">
-            <p> Os dados a seguir são referentes ao titular do cartão </p>
-        
-        /*<form action="router.php?controller=acompanhante&modo=inserir">*/
-        
-            <form method="get" action="." id="frm">
-            <ul class="lst_dados_1">
-                <li> <p> CPF </p>
-                    <input type="text" name="txtCep" maxlength=""> </li>
-                <li> <p> Numero do cartão </p>
-                    <input type="text" name="txtNmrCard" maxlength=""> </li>
-                <li> <p> cvv </p>
-                    <input type="text" name="txtCVV" maxlength=""> </li>
-                <li> <p> Mês de expiração </p>
-                    <input type="text" name="txtMesInsp" maxlength=""> </li>
-                <li> <p> Ano de espiração </p>
-                    <input type="text" name="txtAnoInsp" maxlength=""> </li>
-                <li> <p> Nome </p>
-                    <input type="text" name="txtNome" maxlength=""> </li>
-                <li> <p> Sobrenome </p>
-                    <input type="text" name="txtSobrenome" maxlength=""> </li>
-                <li> <p> E-mail </p>
-                    <input type="text" name="txtEmail" maxlength=""> </li>
-                <li> <p> Telefone </p>
-                    <input type="text" name="txtDddTel" maxlength="2" size="2">
-                    <input type="text" name="txtTel" maxlength="" size="8"> </li>
-                <li> <p> CEP </p>
-                    <input type="text" name="txtCep" id="cep" size="10" maxlength="9"> </li>
-                <li> <p> Estado </p>
-                    <input type="text" name="txtEstado" id="uf"> </li>
-                <li> <p> Cidade </p>
-                    <input type="text" name="txtCidade" id="cidade"> </li>
-                <li> <p> Rua </p>
-                    <input type="text" name="txtRua" id="rua"> </li>
-                <li> <p> N° </p>
-                    <input type="text" name="txtNmr" maxlength="5" size="4"> </li>
-                <li> <p> Bairro </p>
-                    <input type="text" name="txtBairro" maxlength="5" id="bairro"> </li>
-                
-                    <input type="text" name="txtTipoConta" value="<?php echo $tipo ?>" style="display:none;">
-
-            </ul>
-            <p><input type="submit" value="Concluido!" class="botao" name="btnSalvar"></p>
-        </form>
-    </div>
--->
