@@ -1,9 +1,4 @@
-//SE NÃO GERAR O ID DA SESSÃO E SETAR ESSE ID NO setSessionId NADA VAI FUNCIONAR
-//DEVE-SE GERAR A IDENTIFICAÇÃO DO USUÁRIO TAMBÉM
-//SE FOR CARTÃO DE CRÉDITO DEVE-SE GERAR O TOKEN DO CARTÃO
 
-$(document).ready(function() {
-   
     identificador = PagSeguroDirectPayment.getSenderHash();
     $(".hashPagSeguro").val(identificador);
 
@@ -69,5 +64,3 @@ $(document).ready(function() {
 
     }
 	
-});
-	  

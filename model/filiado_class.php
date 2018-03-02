@@ -43,6 +43,7 @@ class Acompanhante{
     public $cor_cabelo;
     public $cobrar;
     public $acompanha;
+    public $formaPagar;
     
     public function __construct(){
         require_once('db_class.php');
@@ -65,10 +66,7 @@ class Acompanhante{
                 $id = $rs['id_filiado'];
                 $foto_perfil = $rs['foto_perfil'];
             }
-            if(empty($_SESSION)){
-                session_start();
-                
-            }
+            
             $_SESSION['id_filiado'] = $id;
             
             if(empty($foto_perfil)){
@@ -138,12 +136,6 @@ class Acompanhante{
                 
                 $filiado = new Acompanhante();
                 
-                $data = explode('-', $rs['nasc']);
-                
-                $ano = $data[0];
-                $mes = $data[1];
-                $dia = $data[2];
-                
                 $tel1 = explode(')', $rs['celular1']);
                 
                 $telddd1 = explode('(', $tel1[0]);
@@ -194,6 +186,12 @@ class Acompanhante{
                     $filiado->acompanha = 'Homens';
                     
                 }
+                
+                $data = explode('-', $rs['nasc']);
+                
+                $ano = $data[0];
+                $mes = $data[1];
+                $dia = $data[2];
                 
                 $filiado->uf = $rs['uf'];
                 $filiado->cidade = $rs['cidade'];
@@ -285,11 +283,12 @@ class Acompanhante{
         
         $q = $_GET['q'];
         $id = $_SESSION['id_filiado'];
+        $forma = $dadosPag->formaPagar;
         
         if($q == 'pagar'){
-            $link = 'contratar.php';
+            $link = 'pagar-mensalidade.php?confirmar&forma='.$forma;
             
-        }elseif('dados-private'){
+        }elseif($q == 'dados-private'){
             $link = 'perfil-filiado.php';
         }
         
@@ -325,9 +324,10 @@ class Acompanhante{
             <?php
                 
             }else{
+                $link = $link.'?Erro';
             ?>
                 <script>
-                    window.location.href = "<?php echo $link.'?Erro' ?>";
+                    window.location.href = "<?php echo $link ?>";
                 </script>
 
             <?php
@@ -347,7 +347,7 @@ class Acompanhante{
         
         $sql = $sql."nome = '".$fld->nome."' ";
         
-        if($fld->nasc != null){
+        if($fld->nasc != null and $fld->nasc != 0){
             $sql = $sql.", nasc = '".$fld->nasc."'";
         }
         
@@ -363,27 +363,27 @@ class Acompanhante{
             $sql = $sql.", celular2 = '".$fld->celular2."'";
         }
         
-        if($fld->etnia != null){
+        if($fld->etnia != 0){
             $sql = $sql.", etnia = ".$fld->etnia."";
         }
         
-        if($fld->cor_cabelo != null){
+        if($fld->cor_cabelo != 0){
             $sql = $sql.", id_cabelo = ".$fld->cor_cabelo."";
         }
         
-        if($fld->sexo != null){
+        if($fld->sexo != 0){
             $sql = $sql.", sexo = ".$fld->sexo."";
         }
         
-        if($fld->altura != null){
+        if($fld->altura != null and $fld->altura != 0){
             $sql = $sql.", altura = ".$fld->altura."";
         }
         
-        if($fld->peso != null){
+        if($fld->peso != null and $fld->peso != 0){
             $sql = $sql.", peso = ".$fld->peso."";
         }
         
-        if($fld->acompanha != null){
+        if($fld->acompanha != null and $fld->acompanha != 0){
             $sql = $sql.", acompanha = ".$fld->acompanha."";
         }
         
@@ -395,7 +395,7 @@ class Acompanhante{
             $sql = $sql.", uf = '".$fld->estado."'";
         }
         
-        if($fld->cobrar != null){
+        if($fld->cobrar != null and $fld->cobrar != 0){
             $sql = $sql.", cobrar = ".$fld->cobrar."";
             
         }
@@ -405,43 +405,40 @@ class Acompanhante{
         }
         $sql = $sql." where id_filiado = ".$fld->id;
         
-        if($_GET['q'] == 'pagar'){
-            $redirect = 'pagamento-filiado.php';
-        }else{
-            $redirect = 'perfil-filiado.php';
-        }
-        
+                
         if(mysqli_query($this->conect, $sql)){
                 
         ?>
             <script>
-                window.location.href = "<?php echo $redirect ?>";
+                window.location.href = "perfil-filiado.php";
             </script>
 
         <?php
 
         }else{
+        
         ?>
             <script>
-                window.location.href = "perfil-filiado.php?Erro' ?>";
+                window.location.href = "perfil-filiado.php?ERRO";
             </script>
 
         <?php
+            
             //echo $sql;
             //header('location:'.$link.'?Erro');
         }
-        
         
     }
     
     /* Alterar Dados do Pagamento */
     public function UpdateDadosPag($dadosPag){
         $q = $_GET['q'];
+        $forma = $dadosPag->formaPagar;
         
         if($q == 'pagar'){
-            $link = 'contratar.php';
+            $link = 'pagar-mensalidade.php?confirmar&forma='.$forma;
             
-        }elseif('dados-private'){
+        }elseif($q =='dados-private'){
             $link = 'perfil-filiado.php';
         }
         
@@ -473,9 +470,10 @@ class Acompanhante{
             <?php
                 
             }else{
+                $link = $link.'?Erro';
             ?>
                 <script>
-                    window.location.href = "<?php echo $link.'?Erro' ?>";
+                    window.location.href = "<?php echo $link ?>";
                 </script>
 
             <?php

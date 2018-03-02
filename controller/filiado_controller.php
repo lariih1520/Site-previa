@@ -51,6 +51,7 @@ class ControllerAcompanhante{
         $dadosPag->bairro = $_POST['txtBairro'];
         $dadosPag->cidade = $_POST['txtCidade'];
         $dadosPag->uf = $_POST['txtUf'];
+        $dadosPag->formaPagar = $_POST['forma'];
         
         $cpf = strlen($_POST['txtCpf']);
         
@@ -170,19 +171,23 @@ class ControllerAcompanhante{
         $dadosPag->bairro = $_POST['txtBairro'];
         $dadosPag->cidade = $_POST['txtCidade'];
         $dadosPag->uf = $_POST['txtUf'];
+        $dadosPag->formaPagar = $_POST['forma'];
         
-        $cpf = strlen($_POST['txtCpf']);
+        $cpf = $_POST['txtCpf'];
+        $n = strlen($_POST['txtCpf']);
         
-        $n = 1;
+        $soma = 0;
         $cont = 0;
-        while($cont < $cpf){
-            $n = $n + 1;
+        while($cont < $n){
+            $soma = $soma + $cpf[$cont];
+            
             $cont++;
         }
         
-        if($n != 44){
-            //echo $n;
-            header('location:filiado-dados.php?Erro=cpf');
+        if($soma != 44){
+            //echo '<br>'.$n;
+            $q = $_GET['q'];
+            header('location:filiado-dados.php?editar=pagar-private&q='.$q.'&Erro=cpf');
         }
         
         $dadosPag->cpf = base64_encode($_POST['txtCpf']);

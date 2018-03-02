@@ -1,8 +1,7 @@
 /**
     Data: 24/02/2018
 **/
-
-
+   
 #editar_dados{
     width: 900px;
     margin: auto;
@@ -15,9 +14,22 @@
 }
 #form2 .lst_dados{
     width: 890px;
-    height: 620px;
+    height: 674px;
     margin-top: 18px;
     border: solid 1px white;
+}
+.hide{
+    visibility: hidden;
+}
+.select_forma_pagar{
+    margin-top: 5px;
+}
+.select_forma_pagar select{
+    font-size: 16px;
+}
+.imgcarregando{
+    margin: auto;
+    text-align: center;
 }
 .lst_dados li{
     float: left;
@@ -40,11 +52,4 @@
 
 textarea{
     resize: none;
-}
-
-.hashPagSeguro{
-    visibility: hidden;
-}
-.tokenPagamentoCartao{
-    visibility: hidden;
 }

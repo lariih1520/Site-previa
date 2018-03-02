@@ -1,5 +1,8 @@
 <?php
-    if($_GET['editar'] == 'pagar-private'){
+    if(empty($_GET['editar'])){
+        header('location:perfil-filiado.php');
+    }
+    elseif($_GET['editar'] == 'pagar-private'){
         $titulo = 'Preencha os dados a seguir para realizar o pagamento';
         $botao = 'Próximo';
     }else{
@@ -89,7 +92,7 @@
                 <input type="text" name="txtNome" value="<?php echo $nome ?>" maxlength="20">
             </li>
             <li> <p> E-mail: </p>       
-                <input type="text" name="txtEmail" value="<?php echo $email ?>" maxlength="30">
+                <input type="text" name="txtEmail" value="<?php echo $email ?>" maxlength="100">
             </li>
             <li><p> *Celular 1: </p> 
                 <input type="text" name="txtDDD1" maxlength="2" size="1" value="<?php echo $ddd1 ?>" placeholder="00" >
@@ -335,8 +338,7 @@
                 <input type="text" name="txtTel" value="<?php echo $telefone ?>" maxlength="8">
             </li> 
             <li> <p>CPF (apenas numeros): </p>
-                <input type="text" name="txtCpf" value="<?php echo $cpf ?>" maxlength="11" id="cardCPF">
-                <input type="text" name="txtHash" class="hashPagSeguro">
+                <input type="text" name="txtCpf" value="<?php echo $cpf ?>" maxlength="11">
             </li> 
             <li> <p>CEP (apenas numeros):  </p>
                 <input type="text" name="txtCEP" id="cep" value="<?php echo $cep ?>" maxlength="8">
@@ -357,23 +359,37 @@
                 <input type="text" name="txtUf" id="uf" value="<?php echo $estado ?>" readonly>
             </li> 
             <li> <p>Numero do cartão: </p>
-                <input type="text" name="txtNumeroCartao" value="<?php echo $numero_cartao ?>" maxlength="16" id="numCartao">
+                <input type="text" name="txtNumeroCartao" value="<?php echo $numero_cartao ?>" maxlength="16">
             </li> 
             <li> <p>Mês de expiração: </p>
-                <input type="text" name="txtMesExpira" value="<?php echo $expiracaoMes ?>" maxlength="2" size="2" id="pagamentoMes">
+                <input type="text" name="txtMesExpira" value="<?php echo $expiracaoMes ?>" maxlength="2" size="2">
             </li> 
             <li> <p>Ano de expiração: </p>
-                <input type="text" name="txtAnoExpira" value="<?php echo $expiracaoAno ?>" maxlength="4" size="4" id="pagamentoAno">
+                <input type="text" name="txtAnoExpira" value="<?php echo $expiracaoAno ?>" maxlength="4" size="4">
             </li> 
             <li> <p>CVV: </p>
                 <input type="text" name="txtCVV" value="<?php echo $cvv ?>" maxlength="4" id="cvv">
-                <input type="text" name="txtCVV" value="<?php echo $cvv ?>" maxlength="4" class="tokenPagamentoCartao">
             </li> 
-            <li class="retornoTeste">
-                <p>  </p>
+        <?php
+            if($_GET['editar'] == 'pagar-private'){
+        ?>
+            <li>
+                <p> Forma de pagamento </p>
+                <p class="select_forma_pagar">
+                <select name="forma">
+                    <option value="boleto"> Boleto </option>
+                    <option value="card">   Cartão de crédito </option>
+                </select>
+                </p>
             </li>
+        <?php
+            }
+        ?>          
         </ul>
-        <p><input type="submit" name="btnSalvar" value="<?php echo $botao; ?>" class="botao"></p>
+        <p><input type="submit" name="btnSalvar" value="<?php echo $botao; ?>" class="botao"> 
+            <a href="perfil-filiado.php"> Cancelar </a>
+        </p>
+        
     </form>
         
 <?php
@@ -454,45 +470,5 @@
 
         </script>
     
-<?php
-
-  if($_GET['editar'] == 'pagar-private'){  
-      $id_sessao = uniqid(time());
-?>
-
-
-    <!-- Em Produção: 
-
-    <script type="text/javascript" src=
-    "https://stc.pagseguro.uol.com.br/pagseguro/api/v2/checkout/pagseguro.directpayment.js">
-    </script>-->
-
-    <!-- Em Sandbox: -->
-    <script type="text/javascript" src="pagseguro/pagseguro-master/pagSeguro.js"></script>
-
-    <script type="text/javascript" src=
-        "https://stc.sandbox.pagseguro.uol.com.br/pagseguro/api/v2/checkout/pagseguro.directpayment.js">
-
-        $(document).ready(function() { //recebe codigo da dessão e seta o sessão id
-
-            $.ajax({
-                type : 'post',
-                dataTyp : 'json',
-                async : false,
-                timeout: 20000,
-                success: function(data){
-                    PagSeguroDirectPayment.setSessionId(<?php echo $id_sessao ?>);
-                }
-            });
-
-        });
-    </script>
-
-<?php
-
-  }
-
-?>
-
 
     

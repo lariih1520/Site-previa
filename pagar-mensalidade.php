@@ -13,7 +13,7 @@
 		<meta name="keywords" content="Acompanhante, Acompanhantes, companhias para festas, cadastre-se" />
         <link rel="icon" type="icone/png" href="imagens/logo.png">
 		<link rel="stylesheet" type="text/css" href="css/estilo_padrao.css" />
-		<link rel="stylesheet" type="text/css" href="css/estilo_contratar.css" />
+		<link rel="stylesheet" type="text/css" href="css/estilo_filiado_dados.css" />
 	</head>
 	<body>
 		<div id="principal">
@@ -23,9 +23,15 @@
             
             <!-- conteudo -->
             <section id="conteudo">
+                
                 <?php
-                    include_once('view/contratar_view.php');
+                    include_once('pagseguro-master/PagSeguro.php');
+                
+                    include_once('controller/filiado_controller.php');
+                    
+                    include_once('view/pagar_mensalidade_view.php');
                 ?>
+                
             </section>
             
             <!-- rodape -->
