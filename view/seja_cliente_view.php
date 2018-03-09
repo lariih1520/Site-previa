@@ -5,19 +5,19 @@
     ?>
     <div id="divisao">
     <div class="titulo"> Cadastre-se para contratar um dos nossos aompanhantes! </div>
-    <form method="get" action="." id="frm" class="cont_alinhar">
+    <form method="post" action="router.php?controller=cliente&modo=inserir" id="frm" class="cont_alinhar">
         <ul class="lst_cadastrar_dados">
             <li> 
                  <p> Nome:</p>
-                 <input type="text" name="txtNome" placeholder="Ex: Usuario" required oninvalid="setCustomValidity('Preencha o nome')">
+                 <input type="text" name="txtNome" maxlength="50" pattern="[a-zA-Z]+" placeholder="Ex: Usuario" required oninvalid="setCustomValidity('Preencha o nome (apenas letras)')" onchange="try{setCustomValidity('')}catch(e){}">
             </li>
             <li>
                  <p> E-mail:</p>
-                 <input type="email" name="txtEmail" placeholder="Ex: usuario@email.com" required oninvalid="setCustomValidity('Preencha o e-mail')">
+                 <input type="email" name="txtEmail" placeholder="Ex: usuario@email.com" required oninvalid="setCustomValidity('Preencha o e-mail')" onchange="try{setCustomValidity('')}catch(e){}">
             </li>
             <li>
                  <p> Sexo:</p>
-                <select name="slc_sexo" required>
+                <select name="slc_sexo">
                     <option value="0"> Selecione </option>
                     <option value="1"> Feminino </option>
                     <option value="2"> Masculino </option>
@@ -25,21 +25,21 @@
             </li>
             <li>
                  <p> Senha:</p>
-                 <input type="password" name="txtSenha" maxlength="10" required oninvalid="setCustomValidity('Escolha uma senha')">
+                 <input type="password" name="txtSenha" maxlength="10" pattern=".{6,10}" required oninvalid="setCustomValidity('Escolha uma senha (de 6 à 10 caracteres)')" onchange="try{setCustomValidity('')}catch(e){}">
             </li>
             <li>
                  <p> Confirmar senha:</p>
-                 <input type="password" name="txtConfrmSenha" maxlength="10" required oninvalid="setCustomValidity('Confirme a senha')">
+                 <input type="password" name="txtConfrmSenha" maxlength="10" pattern=".{6,10}" required oninvalid="setCustomValidity('Senhas não coincidem')" onchange="try{setCustomValidity('')}catch(e){}">
             </li>
             <li>
                  <p> Celular:</p>
-                 <input type="text" name="txtDDD" maxlength="2" size="1" placeholder="00" value="" required oninvalid="setCustomValidity('Preencha o ddd')">
-                 <input type="text" name="txtCel" maxlength="9" size="10" placeholder="12348765" value="" required oninvalid="setCustomValidity('Preencha o celular')">
+                 <input type="text" name="txtDDD" maxlength="2" size="1" placeholder="00" pattern="[0-9]+" required oninvalid="setCustomValidity('Preencha o ddd (apenas numeros)')" onchange="try{setCustomValidity('')}catch(e){}">
+                 <input type="text" name="txtCel" maxlength="9" size="10" placeholder="12348765" pattern="[0-9]+" required oninvalid="setCustomValidity('Preencha o celular (apenas numeros)')" onchange="try{setCustomValidity('')}catch(e){}">
             </li>
         </ul>
         <ul class="lst_cadastrar_dados">
             <li><p> CEP:  </p>
-                 <input type="text" id="cep" name="CEP" maxlength="9">
+                 <input type="text" id="cep" pattern="[0-9]+" name="CEP" maxlength="9">
             </li>
             <li><p> UF:  </p>
                  <input type="text" id="uf" name="txtUf" maxlength="10">
@@ -173,7 +173,7 @@
     <script src="js/jquery-3.2.1.min.js" ></script>
 
     <!-- Adicionando Javascript -->
-    <script type="text/javascript" >
+    <script>
 
         $(document).ready(function() {
 
@@ -209,8 +209,6 @@
                                 
                                 $("#cidade").val(dados.localidade);
                                 $("#uf").val(dados.uf);
-                                $("#frm").attr('action', 'router.php?controller=cliente&modo=inserir');
-                                $("#frm").attr('method', 'post');
                             } 
                             else {
                                 

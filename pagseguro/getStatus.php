@@ -4,7 +4,7 @@
 	if(isset($_GET['codigo'])){
 		$PagSeguro = new PagSeguro();
 		$P = $PagSeguro->getStatusByReference($_GET['codigo']);
-		echo $PagSeguro->getStatusText($P->status);
+		echo $PagSeguro->getStatusText($P);
 	}else{
 	    echo "Parâmetro \"reference\" não informado!";
 	}

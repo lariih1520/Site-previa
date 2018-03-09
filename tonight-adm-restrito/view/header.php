@@ -5,5 +5,10 @@
     
 </div>
 <div class="barra">
-    <a href="../inicio.php"> Sair </a>
+    <a href="index.php"> Home </a>
+    &#124;
+    <a href="?sair"> Sair </a>
 </div>
+<?php
+    date_default_timezone_set('America/Sao_Paulo');
+?>

@@ -1,0 +1,60 @@
+/**
+    Data: 06/03/2018
+    Objetivo: Estilo pagina de planos da conta de usuários
+**/
+
+#ver_planos{
+    width: 900px;
+    height: 250px;
+    margin: auto;
+    margin-top: 20px;
+    margin-bottom: 30px;
+    overflow-y: scroll;
+    border: solid 1px #CDCDCD;
+}
+
+.lst_planos{
+    width: 860px;
+    height: 50px;
+    margin: auto;
+    margin-top: 5px;
+    padding-top: 5px;
+    border-bottom: solid 1px black;
+}
+
+.lst_planos li{
+    float: left;
+    max-width: 200px;
+    min-width: 120px;
+    height: 40px;
+    margin: auto;
+    margin-left: 5px;
+    padding: 4px;
+}
+.lst_planos li p{
+    font-weight: bold;
+}
+.lst_planos li a{
+    cursor: pointer;
+}
+#adicionar{
+    margin-top: 10px;
+    margin-right: 10px;
+    text-align: right;
+}
+.icone{
+    width: 40px;
+    height: 40px;
+}
+#editar_planos{
+    width: 900px;
+    height: 250px;
+    margin: auto;
+    border: solid 1px white;
+}
+.titulo{
+    margin-bottom: 10px;
+}
+.margem{
+    margin-top: 15px;
+}

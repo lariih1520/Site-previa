@@ -1,0 +1,77 @@
+/**
+    Data:05/03/2018
+    Objeyivo: Estilo pág listar clientes
+**/
+body{
+    background-color: black;
+}
+
+#visualizar{
+    width: 950px;
+    height: 400px;
+    margin: auto;
+    border: solid 1px white;
+}
+
+.lst_dados_usuario{
+    width: 900px;
+    height: 300px;
+    margin: auto;
+    margin-top: 10px;
+    padding-top: 5px;
+    border: solid 1px white;
+}
+.lst_dados_usuario li{
+    float: left;
+    height: 35px;
+    min-width: 280px;
+    padding-top: 4px;
+    padding-bottom: 5px;
+    padding-left: 10px;
+    margin-left: 5px;
+    margin-bottom: 2px;
+    font-size: 16px;
+    text-transform: capitalize;
+    border: solid 1px #CDCDCD;
+}
+.lst_dados_usuario li p{
+    font-weight: bold;
+}
+.foto_perfil{
+    width: 180px;
+    height: 180px;
+    margin-left: 30px;
+    border: solid 1px #CDCDCD;
+}
+.foto_perfil img{
+    max-width: 180px;
+    height: 180px;
+}
+#hospedes{
+    width: 920px;
+    height: 300px;
+    margin: auto;
+    margin-top: 20px;
+    overflow-y: scroll;
+    border: solid 1px gray;
+}
+
+.lst_hospedes{
+    width:890px; 
+    height:auto;
+    margin: auto;
+    border: solid 1px #CDCDCD;
+}
+.lst_hospedes tr{
+    height: 30px;
+    font-size: 20px;
+}
+.lst_hospedes tr td{
+    padding-left: 10px;
+    padding-right: 10px;
+}
+.tbl_titulo{
+    color: white;
+    text-align: center;
+    background-color: black;
+}

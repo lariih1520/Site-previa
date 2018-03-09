@@ -13,7 +13,7 @@
     $ah = '';
     $ad = '';
 
-    if(isset($_GET['slc_etnia'])){
+    if(isset($_GET['buscar'])){
         $etniafltr = $_GET['slc_etnia'];
         $cabelofltr = $_GET['slc_cor_cabelo'];
         $sexo = $_GET['slc_sexo'];
@@ -137,6 +137,7 @@
             <img src="icones/pesquisa.png" class="icone" title="Pesquisar" alt="pesquisar">
             </p>
         </li>
+        <input type="text" value="pesquisa" name="buscar" class="hide">
         <li> <a href="?"> Limpar </a> </li>
     </ul>
     </form>
@@ -145,11 +146,29 @@
 
 <div id="lista_acompanhantes">
     <?php
-
-    if(isset($_GET['slc_etnia'])){
+    
+    if(isset($_GET['var'])){
+        echo '<script> form.submit(); </script>';
         
+    }
+                        
+    if(isset($_GET['buscar'])){
+        
+        $etnia = $_GET['slc_etnia'];
+        $corCabelo = $_GET['slc_cor_cabelo'];
+        $sexo = $_GET['slc_sexo'];
+        $acompanha = $_GET['slc_acompanha'];
+        
+        $dadospesq = [
+            'etnia' => $etnia,
+            'cor_cabelo' => $corCabelo,
+            'sexo' => $sexo,
+            'acompanha' => $acompanha 
+        ];
+            
         $pesq = new ControllerAcompanhante();
-        $rs = $pesq->BuscarFiliadosFiltro();
+        $rs = $pesq->BuscarFiliadosFiltro($dadospesq);
+        
         $msg = 'Não há filiados com estas caracteristicas';
         
     }else{

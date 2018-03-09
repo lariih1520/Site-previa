@@ -23,6 +23,11 @@
         $cidade = $rs->cidade;
         $enteresse = $rs->enteresse;
         
+        if($rs->nmrenteresse == 1 or $rs->nmrenteresse == 2){
+            $nmrenteresse = $rs->nmrenteresse;    
+        }else{
+            $nmrenteresse = null;
+        }
         $f = "";
         $m = "";
         $h = "";
@@ -75,7 +80,7 @@
                 </li>
                 <li>
                     <p class="label_dados"> Celular </p>
-                    <span><?php echo $celular ?></span>
+                    <span><?php echo '('.$ddd.') '.$celular ?></span>
                 </li>
                 <li>
                     <p class="label_dados"> Nascimento </p>
@@ -99,6 +104,7 @@
                 </li>
             </ul>
             <div class="editar_dados"><a href="?perfil=cliente&editar=dados&codigo=<?php echo $id ?>#content"> Editar dados </a></div>
+            <div style="clear:both;"></div>
         </div>
         
         <?php
@@ -252,41 +258,30 @@
             <h1 class="titulo"> Sugestões </h1>
             <ul class="lst_sugestoes">
                 <?php
-                    $sugestoes = '';
+                    include_once('controller/filiado_controller.php');
+                    $controller = new ControllerAcompanhante();
+                
+                    $resp = $controller->BuscarFiliadosSexo($nmrenteresse, null, 3);
                         
-                    if($sugestoes != ''){
+                    if($resp != ''){
+                        
+                        $cont = 0;
+                        while($cont < count($resp)){   
                 ?>
                 <li>
-                    <a href="perfil.php">
+                    <a href="perfil-filiado.php?codigo=<?php echo $resp[$cont]->id ?>">
                         <span class="perfil_sugestao">
-                             <p> Nome: </p>
-                             <p> Estado: </p>
-                             <p> Idade: </p>
+                             <p> Nome:   <?php echo $resp[$cont]->nome ?> </p>
+                             <p> Estado: <?php echo $resp[$cont]->uf ?> </p>
+                             <p> Idade:  <?php echo $resp[$cont]->idade ?> </p>
                         </span>
-                        <img src="imagens/free-wallpaper.jpg" class="img_peril">
-                    </a>
-                </li>
-                <li> 
-                    <a href="perfil.php">
-                        <span class="perfil_sugestao">
-                             <p> Nome: </p>
-                             <p> Estado: </p>
-                             <p> Idade: </p>
-                        </span>
-                        <img src="imagens/back.png" class="img_peril">
-                    </a>
-                </li>
-                <li> 
-                   <a href="perfil.php">
-                        <span class="perfil_sugestao">
-                             <p> Nome: </p>
-                             <p> Estado: </p>
-                             <p> Idade: </p>
-                        </span>
-                        <img src="imagens/logo.png" class="img_peril">
+                        <img src="<?php echo $resp[$cont]->foto ?>" class="img_peril">
                     </a>
                 </li>
                 <?php
+                            $cont++;
+                        }
+                        
                     }else{
                         echo '<center>Ainda não há sugestões</center>';
                     }

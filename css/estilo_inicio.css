@@ -98,6 +98,9 @@ a,img {
     background-color: #FAFAFA;
     border: solid 1px gray;
 }
+.carrossel ul li a{
+    color: black;
+}
 .titulo a{
     color: black;
 }
@@ -118,7 +121,17 @@ a,img {
 }
 .apresentacao{
     float: left;
-    margin: 15px 0px 0px 10px;
+    width: 120px;
+    height: 165px;
+    border: solid 1px transparent;
+    margin: 5px 0px 0px 5px;
+}
+.apresentacao p{
+    margin-top: 10px;
+    margin-bottom: 2px;
+}
+.apresentacao span{
+    font-size: 20px;
 }
 .menu-carrossel {
 	float: left;
@@ -127,7 +140,7 @@ a,img {
 	text-align: center;
     margin-top: 10px;
     line-height: 180px;
-	border:solid 1px black;
+	border:solid 0px black;
     background-color: black;
 }
 /*** Fim da estilização do carrossel ***/

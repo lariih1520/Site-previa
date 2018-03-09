@@ -9,15 +9,15 @@
 	if(isset($_POST['notificationType']) && $_POST['notificationType'] == 'transaction'){
 		$PagSeguro = new PagSeguro();
 		$response = $PagSeguro->executeNotification($_POST);
-        
+        $code = $_POST['notificationCode'];
         $controller = new ControllerAcompanhante();
         
 		if( $response->status==3 || $response->status==4 ){
             
-            $controller->AtualizeStatusPag(3);
+            $controller->AtualizeStatusPag(3, $code);
             
 		}else{
-            $controller->AtualizeStatusPag(1);
+            $controller->AtualizeStatusPag(1, $code);
             
 			//PAGAMENTO PENDENTE
 			//echo $PagSeguro->getStatusText($PagSeguro->status);

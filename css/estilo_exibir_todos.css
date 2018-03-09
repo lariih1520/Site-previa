@@ -9,6 +9,10 @@
     border: solid 1px white;
 }
 
+.lst_filtro{
+    padding-bottom: 10px;
+    border-bottom: solid 1px gray;
+}
 .lst_filtro li{
     float: left;
     height: 30px;

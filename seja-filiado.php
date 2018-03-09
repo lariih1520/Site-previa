@@ -6,7 +6,6 @@
 	<head>
 		<title> Tonight - Cadastre-se e seja um de nossos acompanhantes </title>
 		<meta charset="UTF-8">
-		<meta http-equiv="content-language" content="pt-br" />
 		<meta name="viewport" content="initial-scale=1" />
 		<meta name="author" content="Larissa AP" />
 		<meta name="description" content="Seja um de nossos acompanhantes e divulgue-se, basta se cadastrar" />
@@ -23,6 +22,7 @@
             
             <!-- conteudo -->
             <section id="conteudo">
+                <?php include_once('controller/filiado.php'); ?>
                 <?php include_once('view/seja_filiado_view.php'); ?>
             </section>
             
@@ -31,7 +31,7 @@
 		</div>
         
         <script src="js/jquery-3.2.1.min.js" ></script>
-        <script type="text/javascript" >
+        <script>
             
             function addClass(opt){
                 

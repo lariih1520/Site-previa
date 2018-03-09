@@ -47,14 +47,21 @@ switch ($controller) {
                 
                 $controller = new ControllerAcompanhante();
                 
-                 if(!empty($_GET['tipo'])){
-                     $controller->CadastrarFiliado();
-                         
-                 }elseif($_GET['q'] == 'dados-private'){
+                if(isset($_POST['txtTipo'])){
+                    if(!empty($_POST['txtTipo'])){
+                         $controller->CadastrarFiliado();
+                        //echo 'isset';
+                    }else{
+                        //echo 'nao isset';
+                        header('location:seja-filiado.php?etapa=2&escolha=plano');
+                    }
+                }
+                
+                if(!empty($_GET['q']) and $_GET['q'] == 'dados-private'){
                     $controller->CadastrarDadosPag();
                 
                 /* Dados privados e redireciona para pagamento */
-                }elseif($_GET['q'] == 'pagar'){
+                }elseif(!empty($_GET['q']) and $_GET['q'] == 'pagar'){
                     $controller->CadastrarDadosPag();
                     
                 }
@@ -94,6 +101,15 @@ switch ($controller) {
                 
             break;
                 
+            case 'plano':
+                session_start();
+                require_once('model/filiado_class.php');
+                require_once('controller/filiado_controller.php');
+                $controller = new ControllerAcompanhante();
+                $controller->AlterarPlano();
+                
+            break;
+                
             case 'alterar':
                 session_start();
                 require_once('model/filiado_class.php');
@@ -114,6 +130,15 @@ switch ($controller) {
                     $controller->AlterarDadosPrivate();
                     
                 }
+                
+            break;
+                
+            case 'excluir':
+                session_start();
+                require_once('model/filiado_class.php');
+                require_once('controller/filiado_controller.php');
+                $controller = new ControllerAcompanhante();
+                $controller->ExcluirAcompanhante();
                 
             break;
                 

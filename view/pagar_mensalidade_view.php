@@ -1,4 +1,5 @@
 <?php
+    date_default_timezone_set('America/Sao_Paulo');
 
     /***** Buscar dados do usuário ******/
     $dados = new ControllerAcompanhante();
@@ -16,6 +17,7 @@
         $bairro = $rs->bairro;
         $cidade = $rs->cidade;
         $estado = $rs->uf;
+        $desconto = $rs->desconto;
         $cpf = $rs->cpfdc;
         $cvv = $rs->cvvdc;
         $nmr_cartao = $rs->numero_cartaodc;
@@ -26,7 +28,45 @@
         /*** Se não houverem dados o usuário é redirecionado para a página para preenche-los ***/
         header('location:filiado-dados.php?editar=pagar-private');
     }
+ 
 
+    $forma = 0;
+
+    if(!empty($_GET['forma'])){
+        $forma = $_GET['forma'];
+    }
+
+    //gera o código de sessão obrigatório para gerar identificador (hash)
+    $p = new Pagamento();
+    $idSessao = $p->iniciaPagamentoAction();
+               
+?>
+    <!-- Este forme é necessário para que os parâmetros sejam passados para php -->
+    <form action="?realizar=<?php echo $forma ?>" method="post" id="frmPag" class="hide">
+        
+        <input type="text" id="idSessao" value="<?php echo $idSessao ?>" name="txtIdSessao">
+        
+        <input type="text" id="hashPagSeguro" value="" name="txtHash">
+        
+        <input type="text" id="BandeiraPagSeguroName" value="" name="txtBandeiraName">
+        
+        <input type="text" id="BandeiraPagSeguroBin" value="" name="txtBandeiraBin">
+        
+        <input type="text" id="tokenPagamentoCartao" value="" name="txtToken">
+
+        <input type="text" id="numCartao" value="<?php echo $nmr_cartao ?>" name="txtNumCartao">
+        
+        <input type="text" id="cvv" value="<?php echo $cvv ?>" name="txtCvv">
+        
+        <input type="text" id="expiraMes" value="<?php echo $expiracaoMes ?>" name="txtExpiraMes">
+        
+        <input type="text" id="expiraAno" value="<?php echo $expiracaoAno ?>" name="txtExpiraAno">
+        
+<!--        <input type="submit" class="botao" value="Autorizar pagamento" name="btnAuto"> -->
+        
+    </form>
+
+<?php  
     /******** Se o form for acionado ********/
     if(isset($_GET['realizar'])){
         
@@ -44,12 +84,17 @@
             if($rsp != null){
                 $email = $rsp->email;
                 $nasc = $rsp->dia.'/'.$rsp->mes.'/'.$rsp->ano;
-                echo $nasc;
+                
+            }
+            
+            $pagMes = $controller->getStatusPagamento();
+            if($pagMes > 1){
+                $valor = $pagMes * $valor;
             }
             
             $res = $dados->BuscarTipoConta();
             if($res != null){
-                $valor = $res->valor;
+                $valor = $res->valor - $desconto;
             }
             
             $dados = [
@@ -81,10 +126,12 @@
             $retorno = $pag->efetuaPagamentoCartao($dados);
 
             if($retorno != null){
+                var_dump($retorno);
+                
                 $dadosPagBd = [
                     'date' => date('Y/m/d H:i'),
-                    'valor' => $valor.'.00',
-                    'desconto' => 0,
+                    'valor' => $valor,
+                    'desconto' => $desconto,
                     'code' => $retorno['code'],
                     'referencia' => $dados['reference']
                 ];
@@ -100,6 +147,7 @@
 
             <?php
                 }
+                
             }
                 
         /************ Se o pagamento for realizado via cartão ***********/
@@ -118,9 +166,14 @@
                 $email = $rsp->email;
             }
             
+            pagMes = $controller->getStatusPagamento();
+            if($pagMes > 1){
+                $valor = $pagMes * $valor;
+            }
+            
             $res = $dados->BuscarTipoConta();
             if($res != null){
-                $valor = $res->valor;
+                $valor = $res->valor - $desconto;
             }
             
             $dados = [
@@ -140,8 +193,8 @@
             if($retorno != null){
                 $dadosPagBd = [
                     'date' => date('Y/m/d H:i'),
-                    'valor' => $valor.'.00',
-                    'desconto' => 0,
+                    'valor' => $valor,
+                    'desconto' => $desconto,
                     'code' => $retorno['code'],
                     'referencia' => $dados['reference']
                 ];
@@ -172,7 +225,7 @@
          
 ?>
     <script src="js/jquery-3.2.1.min.js" ></script>
-    <script type="text/javascript">
+    <script>
         
         $(document).ready(function() {
             
@@ -183,10 +236,10 @@
             GerarToken();
             
             setTimeout(function(){
-                GerarIdentificador()
-
+                GerarIdentificador();
+                
                 $('#frmPag').submit();
-            }, 3000);
+            }, 4000);
         });
         
     </script>
@@ -202,14 +255,14 @@
          
 ?>
         <script src="js/jquery-3.2.1.min.js" ></script>
-        <script type="text/javascript">
+        <script>
             
             $(document).ready(function() {
                  
                 SetarIdSession();
                 
                 setTimeout(function(){
-                    GerarIdentificador()
+                    GerarIdentificador();
                     $('#frmPag').submit();
                     
                 }, 3000);
@@ -226,17 +279,17 @@
         
 <!--
 ************************ CLASSES REFERENTES AO PAGSEGURO **************************
-    
+ --> 
     <script type="text/javascript" src=
     "https://stc.pagseguro.uol.com.br/pagseguro/api/v2/checkout/pagseguro.directpayment.js">
     </script>
     
-    <!--    Em Sandbox: -->
-    <script type="text/javascript" src=
+    <!--    Em Sandbox:
+    <script src=
     "https://stc.sandbox.pagseguro.uol.com.br/pagseguro/api/v2/checkout/pagseguro.directpayment.js">
     </script>
-
-    <script type="text/javascript">
+    -->
+    <script>
 
     function SetarIdSession(){
         
@@ -250,7 +303,6 @@
         identificador = PagSeguroDirectPayment.getSenderHash();
         $("#hashPagSeguro").val(identificador);
         
-        $('#frmPag').submit();
     }
 
     function GetBrand(){
@@ -321,40 +373,3 @@
        <img src="icones/carregando.gif">
     </div>
 
-<?php   
-
-    $forma = 0;
-
-    if(!empty($_GET['forma'])){
-        $forma = $_GET['forma'];
-    }
-
-    //gera o código de sessão obrigatório para gerar identificador (hash)
-    $p = new Pagamento();
-    $idSessao = $p->iniciaPagamentoAction();
-               
-?>
-    <!-- Este forme é necessário para que os parâmetros sejam passados para php -->
-    <form action="?realizar=<?php echo $forma ?>" method="post" id="frmPag" class="hide">
-        
-        <input type="text" id="idSessao" value="<?php echo $idSessao ?>" name="txtIdSessao">
-        
-        <input type="text" id="hashPagSeguro" value="" name="txtHash">
-        
-        <input type="text" id="BandeiraPagSeguroName" value="" name="txtBandeiraName">
-        
-        <input type="text" id="BandeiraPagSeguroBin" value="" name="txtBandeiraBin">
-        
-        <input type="text" id="tokenPagamentoCartao" value="" name="txtToken">
-
-        <input type="text" id="numCartao" value="<?php echo $nmr_cartao ?>" name="txtNumCartao">
-        
-        <input type="text" id="cvv" value="<?php echo $cvv ?>" name="txtCvv">
-        
-        <input type="text" id="expiraMes" value="<?php echo $expiracaoMes ?>" name="txtExpiraMes">
-        
-        <input type="text" id="expiraAno" value="<?php echo $expiracaoAno ?>" name="txtExpiraAno">
-        
-<!--        <input type="submit" class="botao" value="Autorizar pagamento" name="btnAuto"> -->
-        
-    </form>

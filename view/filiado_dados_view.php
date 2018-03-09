@@ -1,8 +1,5 @@
 <?php
-    if(empty($_GET['editar'])){
-        header('location:perfil-filiado.php');
-    }
-    elseif($_GET['editar'] == 'pagar-private'){
+    if($_GET['editar'] == 'pagar-private'){
         $titulo = 'Preencha os dados a seguir para realizar o pagamento';
         $botao = 'Próximo';
     }else{
@@ -14,7 +11,7 @@
     <h1 class="titulo_maior"> <?php echo $titulo ?> </h1>
     <div id="editar_dados">
 <?php 
-    if($_GET['editar'] == 'dados' || empty($_GET['editar'])){
+    if($_GET['editar'] == 'dados'){
         
             $controller = new ControllerAcompanhante();
             $rs = $controller->BuscarDadosUsuario();
@@ -309,6 +306,7 @@
         }else{
             $nome = '';
             $sobrenome = '';
+            $ddd = '';
             $telefone = '';
             $cep = '';
             $rua = '';
@@ -425,15 +423,78 @@
 <?php
         }
         
-    }
+    }elseif(isset($_GET['editar']) == 'tipo-conta'){
+        
+        $dados = new ControllerAcompanhante();
+        $resp = $dados->BuscarDadosUsuario();
+        
+        if($resp != null){
+            $senha = $resp->senha;
+        }
+        
+        $result = $dados->BuscarTipoConta();
+        
+        if($result != null){
+            $id_tipo_conta = $result->id_tipo_conta;
+        }
+        
+        $rs = $dados->BuscarTiposConta();
+        
+        
+?>
+        
+    <form id="frmPlano" method="post" action="router.php?controller=acompanhante&modo=plano">
+        <p class="titulo"> Plano: </p>
+        
+        <div id="planos">
+<?php
+        if($rs != null){
+            $cont = 0;
+            $total = count($rs);
+            while($cont < count($rs)){
+                
+                if($id_tipo_conta == $rs[$cont]->tipo_conta){
+                    $classe = 'selected';
+                }else{
+                    $classe = '';
+                }
+?>    
+            <a href="#" onclick="PegarPlano('<?php echo $rs[$cont]->tipo_conta ?>', '<?php echo $cont ?>', '<?php echo $total ?>');">
+                <div class="tipo_conta <?php echo $classe ?>" id="conta<?php echo $cont ?>">
+                        <?php echo $rs[$cont]->titulo ?>
+                </div>
+            </a>
+<?php
+                $cont++;
+            }
+        }
+?> 
+        </div>
+        
+        <p> Digite sua senha: </p>
+        <input type="password" name="txtSenha" id="senhaDigit" required>
+        <span id="alerta"> Senha invalida </span>
+        <p class="hide"><input type="text" name="txtSenha" value="<?php echo $senha ?>" id="senha"></p>
+        
+        <p class="hide"><input type="text" name="txtTipo" id="tipoConta"></p>
+        
+        <p>
+            <input type="submit" name="btnAlterar" value="Salvar" class="botao desabilitado" disabled id="salvar">
+            <a href="perfil-filiado.php"> Cancelar </a>
+        </p>
+    
+    </form>
+        
+<?php
+        }
+    
 ?>
         
     </div>
-    
         <script src="js/jquery-3.2.1.min.js" ></script>
 
         <!-- Adicionando Javascript -->
-        <script type="text/javascript" >
+        <script >
 
             $(document).ready(function() {
 
@@ -499,7 +560,44 @@
                     }
                 });
             });
-
+            
+            function PegarPlano(id, value, total){
+                div = '#conta' + value;
+                
+                $('#tipoConta').val(id);
+                
+                $(div).css('border', 'double 4px red');
+                
+                cont = 0;
+                while(cont <= total){
+                    
+                    if(cont != value){
+                        divs = '#conta' + cont;
+                    
+                        $(divs).css('border', 'solid 1px #CDCDCD');
+                    }
+                
+                    cont++;
+                }
+                
+            }
+            
+            $('#senhaDigit').focusout(function(){
+                
+                senha = $('#senha').val();
+                senhaDigit = $('#senhaDigit').val();
+                
+                if(senhaDigit == senha){
+                   
+                    $('#alerta').css('visibility', 'hidden');
+                    document.getElementById('salvar').disabled = ""; 
+                    $('#salvar').removeClass('desabilitado');
+                }else{
+                    $('#alerta').css('visibility', 'visible');
+                }
+                
+            });
+            
         </script>
     
 

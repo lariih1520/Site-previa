@@ -47,9 +47,6 @@
     margin: auto;
     margin-top: 20px;
 }
-.hide{
-    visibility: hidden;
-}
 .select_forma_pagar{
     margin-top: 5px;
 }
@@ -81,4 +78,36 @@
 
 textarea{
     resize: none;
+}
+
+#planos{
+    width: 930px;
+    height: 210px;
+    padding: 10px;
+    margin-top: 5px;
+    border: solid 1px white;
+}
+.tipo_conta{
+    float: left;
+    width: 270px;
+    height: 180px;
+    padding: 10px;
+    margin-left: 10px;; 
+    border: solid 1px gray;
+}
+.hide{
+    display: none;
+}
+.desabilitado{
+    color: black;
+    background-color: #CDCDCD;
+    border: solid 1px black;
+}
+.selected{
+    border: double 4px red;
+}
+#alerta{
+    color: #8A0808;
+    visibility: hidden;
+    margin-bottom: 2px;
 }

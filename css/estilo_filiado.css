@@ -119,6 +119,19 @@
     margin-top: 40px;
 }
 
+/***** Videos *****/
+.videos{
+    float: left;
+    max-width: 400px;
+    height: 310px;
+    overflow: hidden;
+    text-align: center;
+    margin-right: 18px;
+    margin-top: 20px;
+    padding-top: 15px;
+    border: solid 1px #CDCDCD;
+}
+
 /***************/
 
 .content_dados_seguranca{
@@ -170,3 +183,23 @@
     height: 1px;
     margin-bottom: 5px;
 }
+#delete_conta a{
+    color: black;
+}
+#delete_conta a p{
+    margin-bottom: 10px;
+}
+#delete_conta{
+    color: black;
+    width: 940px;
+    height: 20px;
+    padding: 10px;
+    margin-left: 5px;
+    margin-bottom: 10px;
+    font-size: 16px;
+    border: solid 1px #CDCDCD;
+}
+.hiden{
+    display: none;
+}
+

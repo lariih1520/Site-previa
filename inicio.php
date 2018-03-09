@@ -6,8 +6,6 @@
 	<head>
 		<title> Tonight - Página inicial </title>
 		<meta charset="UTF-8">
-		<meta http-equiv="content-language" content="pt-br" />
-		<meta name="viewport" content="initial-scale=1" />
 		<meta name="author" content="Larissa AP" />
 		<meta name="description" content="Precisa de um ampanhante? Nós temos o que você precisa" />
 		<meta name="keywords" content="Acompanhante, Acompanhantes, companhias para festas" />
@@ -15,8 +13,8 @@
 		<link rel="stylesheet" type="text/css" href="css/estilo_inicio.css" />
         <link rel="icon" type="icone/png" href="imagens/logo.png">
         <script src="js/jquery.min.js"></script>
-		<script type="text/javascript" src="js/jcarousellite.js"></script>
-        <script type="text/javascript">
+		<script src="js/jcarousellite.js"></script>
+        <script>
 		
 			function setaImagem(){
 				var settings = {
@@ -102,7 +100,10 @@
             
             <!-- conteudo -->
             <section id="conteudo">
-                <?php include_once('view/inicio_view.php'); ?>
+                <?php 
+                    include_once('controller/filiado_controller.php'); 
+                    include_once('view/inicio_view.php'); 
+                ?>
             </section>
             
             <!-- rodape -->

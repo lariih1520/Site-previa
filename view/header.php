@@ -2,7 +2,7 @@
         
         if(!empty($_SESSION['id_cliente'])){
             $lgrc = true;
-            $perfil = 'perfil-filiado.php?';
+            $perfil = 'perfil-cliente.php?';
             
         }else{
             $perfil = '';
@@ -13,8 +13,8 @@
             $lgrf = true;
             $perfil = 'perfil-filiado.php?';
             
-        }else{
-            $perfil = 'login.php';
+        }elseif(empty($_SESSION['id_cliente'])){
+            $perfil = 'login.php?';
             $lgrf = false;
         }
 
@@ -31,24 +31,24 @@
             <?php
                 if ($lgrc == true || $lgrf == true) {
             ?>
-            <a href="inicio.php?sair">
-                <img src="icones/power.png" class="icon">
+            <a href="inicio?sair">
+                <img src="icones/power.png" class="icon" alt="Sair">
             </a>
             <?php
                 }
             ?>
             <a href="<?php echo $perfil ?>notification">
-                <img src="icones/sino.png" class="icon">
+                <img src="icones/sino.png" class="icon" alt="Notificações">
             </a>
             <a href="<?php echo $perfil ?>confirguracoes">
-                <img src="icones/config.png" class="icon">
+                <img src="icones/config.png" class="icon" alt="Configuraçãoes">
             </a>
         </div>
     </nav>
     <header>
         <div id="content_header"> 
             <div id="content_logo">
-                <a href="index.php">
+                <a href="index">
                    <img src="imagens/logo.png" id="logo" title="Tonight" alt="logo tonight">
                 </a>
             </div>
@@ -56,7 +56,7 @@
                 <li><a href="inicio.php"> Home </a></li>
                 <li><a href="localidade.php"> Filtrar por estado </a></li>
                 <?php
-                    if($lgrc == false || $lgrf == false){
+                    if($lgrc == false and $lgrf == false){
                 ?>
                 <li><a href="seja-cliente.php"> Cadastre-se </a></li>
                 
@@ -71,7 +71,7 @@
                     if($lgrc == false && $lgrf == false){
                 ?>
                 <div class="botao_header">
-                    <a href="login.php"> Fazer login </a>
+                    <a href="login"> Fazer login </a>
                 </div>
                 <div class="tipo_login">
                     <p><a href="login.php?login=cliente"> Sou cliente </a></p>

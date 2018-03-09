@@ -7,6 +7,7 @@
     <html>
         <head>
             <title> Login RESTRITO </title>
+            <link rel="icon" type="icone/png" href="../imagens/logo.png">
             <link rel="stylesheet" type="text/css" href="css/estilo_padrao.css" />
         </head>
         <body>
@@ -35,11 +36,11 @@
 <?php
             
         }else{
-            header("Location:../ERRO.php");
+            header("Location:../index.php");
         }
         
     }else{
-        header("Location:../ERRO.php");
+        header("Location:../login.php");
     }
 
 ?>

@@ -12,11 +12,12 @@
         $peso = $rs->peso;
         $sexo = $rs->sexo;
         $acompanha = $rs->acompanha;
-        $celular1 = $rs->celular1;
-        $celular2 = $rs->celular2;
+        $celular1 = '('.$rs->ddd1.')'.$rs->celular1;
+        $celular2 = '('.$rs->ddd2.')'.$rs->celular2;
         $apresentacao = $rs->apresentacao;
         $cobrar = $rs->cobrar;
         $etnia = $rs->etnia;
+        $idetnia = $rs->idetnia;
         $uf = $rs->uf;
         $cidade = $rs->cidade;
         
@@ -57,7 +58,7 @@
         <div class="perfil">
             <div id="pefil">
                 <div class="foto_perfil">
-                    <img src="<?php echo $foto ?>">
+                    <img src="<?php echo $foto ?>" alt="Foto perfil">
                 </div>
                 <div class="apresentacao">
                     <?php echo $apresentacao; ?>
@@ -66,11 +67,14 @@
         <?php
             if($tamanhoApresent < 180){
         ?>
+<!--        DISCOMENTAR QUANDO ESTIVER PRONTO
+
             <div class="contrate">
-                <a href="contratar.php?acompanhante=<?php echo $id ?>">
+                <a href="contratar.php?codigo=<?php echo $id ?>">
                     <p class="botao"> Contrate! </p>
                 </a>
             </div>
+-->
         <?php
             }
         ?>    
@@ -84,7 +88,7 @@
                 <li> Altura: <?php echo $altura ?></li>
                 <li> Peso:   <?php if($peso){ echo $peso; } ?></li>
                 <li> Sexo:   <?php echo $sexo ?></li>
-                <li> Valor:   <?php echo $cobrar ?>,00 </li>
+                <li> Valor:  R$ <?php echo $cobrar ?>,00 </li>
                 <li> Etnia:   <?php echo $etnia ?> </li>
                 <li> Estado:   <?php echo $uf ?> </li>
                 <li> Cidade:   <?php echo $cidade ?> </li>
@@ -92,25 +96,29 @@
         <?php
             if($tamanhoApresent >= 180){
         ?>
+            
+            
+<!--        DISCOMENTAR QUANDO ESTIVER PRONTO
+
             <div class="contrate">
                 <a href="contratar.php?acompanhante=<?php echo $id ?>">
                     <p class="botao"> Contrate! </p>
                 </a>
             </div>
+-->
         <?php
             }
         ?>    
         </div>
         <div class="sugestoes">
             <ul class="lst_dados">
-                <li> Acompanha: <?php echo $acompanha ?>  </li>
+                <li> Atende: <?php echo $acompanha ?>  </li>
                 <li> Celular 1: <?php echo $celular1 ?> </li>
                 <li> Celular 2:  <?php echo $celular2 ?> </li>
             </ul>
         </div>
     </div>
     
-
     <div id="midia">
 <?php
     $rs = $controller->BuscarImagensFiliado();
@@ -131,7 +139,76 @@
         <div style="clear:both;"></div>
     </div>
 
+    <div id="midia">
+<?php
+    $rs = $controller->BuscarVideosFiliado();
+    
+    if($rs != false){
+        $cont = 0;
+        
+        while($cont < count($rs)){
+?>
+        <div class="videos_filiado">
+            <video width="350" height="300" controls loop controlsList="nodownload">
+                    <source src="<?php echo $rs[$cont]->video ?>" type="video/mp4">
+                    <object width="400" height="260">
+                        <param name="allowFullScreen" value="true"/>
+                        <param name="allowscriptaccess" value="always"/>
+                    </object>
+            </video>
+        </div>
+<?php
+            $cont++;
+        }
+    }
+?>
+        <div style="clear:both;"></div>
+    </div>
+
+<?php
+    
+    if($sexo == "Masculino"){
+        $sexo = 2;
+    }elseif($sexo == "Feminino"){
+        $sexo = 1;
+    }
+
+    $controller = new ControllerAcompanhante();
+    $resp = $controller->BuscarFiliadosSexo($sexo, $idetnia, 3, $id);
+
+    if($resp != null){
+?>
+
     <div id="sugestoes">
         <p class="titulo">Sugestões</p>
-        <div> </div>
+        <ul class="lst_sugestoes">
+        
+        <?php
+            $cont = 0;
+            while($cont < count($resp)){
+        ?>
+        
+            <li>
+                <a href="perfil-filiado.php?codigo=<?php echo $resp[$cont]->id ?>">
+                    <span class="perfil_sugestao">
+                         <p> Nome: <?php echo $resp[$cont]->nome ?></p>
+                         <p> Estado: <?php echo $resp[$cont]->uf ?></p>
+                         <p> Idade: <?php echo $resp[$cont]->idade ?></p>
+                    </span>
+                </a>
+                <img src="<?php echo $resp[$cont]->foto  ?>" alt="Foto" class="img_peril">
+            </li>
+        
+        <?php
+                $cont++;
+            }
+            
+        ?>
+        
+        </ul>        
     </div>
+
+<?php
+              
+    }
+?>

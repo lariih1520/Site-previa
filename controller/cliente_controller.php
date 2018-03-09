@@ -45,7 +45,7 @@ class ControllerCliente{
                 $numero = $_POST['txtCel'];
 
                 $cliente->celular = '('.$ddd.')'.$numero;
-                $cliente->nome = $_POST['txtNome'];
+                $cliente->nome = ucfirst($_POST['txtNome']);
                 $cliente->email = $_POST['txtEmail'];
                 $cliente->senha = $_POST['txtSenha'];
                 $cliente->sexo = $_POST['slc_sexo'];
@@ -118,7 +118,7 @@ class ControllerCliente{
 
             $cliente->id = $id;
             $cliente->celular = '('.$ddd.')'.$numero;
-            $cliente->nome = $_POST['txtNome'];
+            $cliente->nome = ucfirst($_POST['txtNome']);
             $cliente->email = $_POST['txtEmail'];
             $cliente->sexo = $_POST['slc_sexo'];
             $cliente->uf = $_POST['txtUf'];

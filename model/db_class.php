@@ -15,24 +15,27 @@
     public $conexao;
 
     public function __construct(){
-        /*
+        
         $this->server = "localhost";
         $this->user = "root";
         $this->password = "bcd127";
         $this->db = "db_tonight";
-        */
+        /*
         $this->server = "localhost";
         $this->user = "tonig231";
         $this->password = "9pL6q34mWu";
         $this->db = "tonig231_tonight";
-        
+        */
     }
 
     public function conectar(){
         
         if ($conexao = mysqli_connect($this->server, $this->user, $this->password, $this->db) or die ('Erro de conexão')) {
-            
-          return $conexao;
+            mysqli_query($conexao, "SET NAMES 'utf8'");
+            mysqli_query($conexao, 'SET character_set_connection=utf8');
+            mysqli_query($conexao, 'SET character_set_client=utf8');
+            mysqli_query($conexao, 'SET character_set_results=utf8');
+            return $conexao;
             
         } else {
           echo("Erro de conexão");

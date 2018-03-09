@@ -33,15 +33,28 @@
     }
 
     date_default_timezone_set('America/Sao_Paulo');
-    $diah = (date('d'));
+    $diah = date('d');
+    
+    $pagMes = $controller->getStatusPagamento();
+        
+    if($pagMes == 1 and $diah == '10'){
 
-    if($diah == 02){
         $mensalidade = '<div class="mensalidade">
         Não esqueça de <a href="filiado-dados.php?editar=pagar-private">efetuar o pagamento </a> referente à este mês! Valor: '.$valor.',00
         </div>';
-    }else{
+
+    }elseif($pagMes == 0){
         $mensalidade = '';
+
+    }elseif($pagMes > 1){
+        $deve = $valor * $pagMes;
+        $mensalidade = '<div class="mensalidade">
+        Não esqueça de <a href="filiado-dados.php?editar=pagar-private">efetuar o pagamento </a>
+        referente à '.$pagMes.' meses de atraso ou sua conta será <span style="color:#8A0808">desativada!</span>
+        Valor: <b>'.$deve.',00 </b>
+        </div>';
     }
+        
     
 ?>
 
@@ -51,14 +64,14 @@
 
     <div class="content_foto_perfil"> <!-- *** Foto perfil *** -->
         <div class="foto_perfil">
-            <img src="<?php echo $foto ?>">
+            <img src="<?php echo $foto ?>" alt="Foto perfil">
         </div>
         
     </div>
     <div class="content_dados"> <!--  Dados Publicos do acompanhante  -->
         <p class="titulo"> Dados públicos 
             <a href="filiado-dados.php?editar=dados">
-            <img src="icones/editar.ico" class="icone" title="editar">
+            <img src="icones/editar.ico" class="icone" title="editar" alt="Editar">
             </a>
         </p>
         <p> Estes dados são exibidos aos clientes para que eles possam saber detalhes sobre você </p>
@@ -85,8 +98,8 @@
     </div>
     <div class="content_midia"> <!-- ****** Imagens ****** -->
         <p class="titulo"> Imagens 
-            <a href="filiado-fotos.php?editar">
-            <img src="icones/editar.ico" class="icone" title="editar">
+            <a href="filiado-fotos.php?editar=fotos">
+            <img src="icones/editar.ico" class="icone" title="editar" alt="Editar">
             </a>
         </p>
         <p> Estas imagens serão exibidas no seu perfil, a quantidade de imagens é escolhida de acordo com o seu tipo de conta </p>
@@ -100,7 +113,7 @@
                 while($cont < count($rs)){
         ?>
             <div class="imgs">
-                <img src="<?php echo $rs[$cont]->foto ?>">
+                <img src="<?php echo $rs[$cont]->foto ?>" alt="Fotos">
             </div>
         
         <?php
@@ -108,6 +121,52 @@
                 }
             }
             if(count($rs) < $qtd_fotos){
+        ?>
+            <div class="imgs">
+                <a href="filiado-fotos.php">
+                    <img src="imagens/adicionar.png" alt="add imagem" title="adcionar imagem">
+                </a>
+            </div>
+        <?php
+            }
+        ?>
+        
+        
+        
+        <div style="clear: both;"></div> 
+    </div>
+
+    <div class="content_midia"> <!-- ****** Videos ****** -->
+        <p class="titulo"> Videos 
+            <a href="filiado-fotos.php?editar=videos">
+            <img src="icones/editar.ico" class="icone" title="editar" alt="Editar">
+            </a>
+        </p>
+        <p> Estes videos serão exibidos no seu perfil, a quantidade é escolhida de acordo com o seu tipo de conta </p>
+        
+        <?php
+            $controller = new ControllerAcompanhante();
+            $rs = $controller->BuscarVideosFiliado();
+            
+            if($rs != false){
+                $cont = 0;
+                while($cont < count($rs)){
+        ?>
+            <div class="videos">
+                <video width="350" height="300" controls loop controlsList="nodownload">
+                    <source src="<?php echo $rs[$cont]->video ?>" type="video/mp4">
+                    <object width="400" height="260">
+                        <param name="allowFullScreen" value="true"/>
+                        <param name="allowscriptaccess" value="always"/>
+                    </object>
+                </video>
+            </div>
+        
+        <?php
+                $cont++;
+                }
+            }
+            if(count($rs) < $qtd_videos){
         ?>
             <div class="imgs">
                 <a href="filiado-fotos.php">
@@ -185,7 +244,7 @@
         </ul>
     </div>
 
-    <div class="sua_conta"> <!-- ****** Tipo de conta ****** -->
+    <div class="sua_conta" id="tipo_conta"> <!-- ****** Tipo de conta ****** -->
         <p class="titulo"> Seu tipo de conta </p>
 
         <div class="tipo_conta">
@@ -197,6 +256,51 @@
         
         <div class="clear"></div>
         
-        <p class="clear"> Alterar tipo de conta &raquo; </p>
+        <p class="clear"><a href="filiado-dados.php?editar=tipo-conta"> Alterar tipo de conta &raquo; </a></p>
         
     </div>
+
+    <div id="delete_conta">
+        <a href="#delete_conta" onclick="ShowCampoSenha()">
+            <p> Exclur conta </p>
+        </a>
+        <div class="hide" id="abrirCampos">
+            <p id="text"> Digite sua senha para continuar: </p>
+            <input type="password" name="txtSenha" id="txtSenha" placeholder="senha">
+            <input type="password" name="senha" id="senha" value="<?php echo $senha ?>" class="hiden">
+            <input type="submit" name="btnConfirmar" value="Confirmar" id="confirmar" onclick="confirmDelete()" class="botao">
+            <a href="perfil-filiado.php"> Cancelar </a>
+            <p> (Esta ação não pode ser desfeita) </p>
+        </div>
+    </div>
+    <script src="js/jquery-3.2.1.min.js" ></script>
+    <script>
+        
+        function ShowCampoSenha(){
+            $('#abrirCampos').removeClass('hide');
+            $('#delete_conta').css('height', '100px');
+            
+        }
+        
+        function confirmDelete(){
+            
+            txtsenha = $('#txtSenha').val();
+            senha = $('#senha').val();
+            
+            if(txtsenha == senha){
+                decisao = confirm('Deseja realmente exluir sua conta?')
+
+                if(decisao){
+                    window.location.href = "router.php?controller=acompanhante&modo=excluir";
+
+                }else{
+                    return false;
+                }
+            }else{
+                $('#text').html('Senha invalida');
+            }
+        }
+        
+    </script>
+
+

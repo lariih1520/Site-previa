@@ -1,5 +1,11 @@
     <?php 
-    
+        $redirect = '';
+        if(isset($_GET['redirect'])){
+            if($_GET['redirect'] == 'contrate' and !empty($_GET['cod'])){
+                    $redirect = '&redirect='.$_GET['cod'];
+            }
+        }
+
         if(isset($_GET['login'])){
             
             if($_GET['login'] == 'cliente' || $_GET['login'] == 'acompanhante'){
@@ -16,19 +22,19 @@
     
     ?>
 
-    <form action="router.php?controller=<?php echo($modo); ?>&modo=logar" method="post" id="login">
+    <form action="router.php?controller=<?php echo($modo); ?>&modo=logar<?php echo $redirect ?>" method="post" id="login">
         
         <h1 class="titulo centro"> 
             <?php
                 if($modo == 'cliente'){
                     echo("Fazer login como cliente");
                     $desc = "Faça o login e contrate um dos nossos acompanhantes.";
-                    $link = "seja-cliente.php";
+                    $link = "seja-cliente";
                     
                 }else{
                     echo("Fazer login como acompanhante");
                     $desc = "Faça o login para que você possa ser contratado como acompanhante.";
-                    $link = "seja-filiado.php";
+                    $link = "seja-filiado";
                 }
             ?>
             

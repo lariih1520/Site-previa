@@ -15,7 +15,14 @@ h1{
 a{
     text-decoration: none;
 }
-
+::selection{
+    color: white;
+    background-color: #000;
+}
+::-moz-selection{
+    color: white;
+    background-color: #000;
+}
 body{
     overflow-x: hidden;
 }
@@ -216,6 +223,15 @@ header{
 }
 .centro{text-align: center;}
 .lado{ float: left;}
+
+.hide{
+    visibility: hidden;
+}
+
+.desabilit{
+    cursor: not-allowed;.
+}
+
 /*___________*/
 /*** INPUT ***/
 input{

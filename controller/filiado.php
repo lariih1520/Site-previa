@@ -83,7 +83,17 @@ class Filiado{
                 }
                 $_SESSION['etnia'] = $etnia;
                 $_SESSION['sexo'] = $sexo;
-                $_SESSION['altura'] = $altura;
+                
+                $termo = ',';
+
+                $pattern = '/' . $termo . '/';
+                if (preg_match($pattern, $altura)) {
+                    $alt = explode(',', $altura);
+                    
+                    $alturadb = $alt[0].'.'.$alt[1];
+                }
+                
+                $_SESSION['altura'] = $alturadb;
                 $_SESSION['peso'] = $peso;
                 $_SESSION['acompanha'] = $acompanha;
                 $_SESSION['cidade'] = $cidade;
@@ -91,11 +101,11 @@ class Filiado{
                 $_SESSION['cobra'] = $cobra;
                 
             }else{
-                header('location:seja-filiado.php?etapa=2&Erro=Senha');
+                header('location:seja-filiado.php?Erro=Senha#erro');
             }
             
         }else{
-            header('location:seja-filiado.php?etapa=2&Erro=Idade');
+            header('location:seja-filiado.php?Erro=Idade#erro');
         }
         
     }

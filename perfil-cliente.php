@@ -6,7 +6,6 @@
 	<head>
 		<title> Tonight - Perfil do usuário </title>
 		<meta charset="UTF-8">
-		<meta http-equiv="content-language" content="pt-br" />
 		<meta name="viewport" content="initial-scale=1" />
 		<meta name="author" content="Larissa AP" />
 		<meta name="description" content="Precisa de um ampanhante? Nós temos o que você precisa" />

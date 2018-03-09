@@ -6,7 +6,6 @@
 	<head>
 		<title> Tonight - Contratar um acompanhante </title>
 		<meta charset="UTF-8">
-		<meta http-equiv="content-language" content="pt-br" />
 		<meta name="viewport" content="initial-scale=1" />
 		<meta name="author" content="Larissa AP" />
 		<meta name="description" content="Precisa de um ampanhante? Nós temos o que você precisa, basta se cadastrar" />

@@ -20,7 +20,7 @@
         }
 
     ?>
-    <span class="voltar"><a href="default.php"> &larr; Voltar </a></span>
+    <span class="voltar"><a href="index.php"> &larr; Voltar </a></span>
     <h1 class="titulo_maior"> Adm imagens da pagina inicial do site </h1>
     <div id="editar_capa">
         <div class="content">

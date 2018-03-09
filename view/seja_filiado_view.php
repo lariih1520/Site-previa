@@ -1,10 +1,10 @@
 <div id="estilo">
 
 <?php
-    include_once('controller/filiado.php');
+    
     $filiado = new Filiado();
     
-    if (empty($_GET)) {
+    if (empty($_GET['Etapa'])) {
 ?>
 
     <h1 class="titulo"> Seja um acompanhante e divulgue-se! </h1>
@@ -15,7 +15,8 @@
         <ul class="lst_dados_1">
             
             <li><p> *Nome: </p> 
-                <input type="text" name="txtNome" maxlength="" required oninvalid="setCustomValidity('Preencha o nome')"></li>
+                <input type="text" name="txtNome" maxlength="50" pattern="[a-zA-Z\s]+" required oninvalid="setCustomValidity('Preencha o nome (Apenas letras)')" onchange="try{setCustomValidity('')}catch(e){}">
+            </li>
             
             <li><p> *Data de nascimeto: </p> 
                 
@@ -74,22 +75,25 @@
             </li>
             
             <li><p> *Senha: </p> 
-                <input type="password" name="txtSenha" maxlength="" required oninvalid="setCustomValidity('Preencha a senha')"></li>
+                <input type="password" name="txtSenha" maxlength="10" pattern=".{6,10}" required oninvalid="setCustomValidity('Escolha uma senha (de 6 à 10 caracteres)')" onchange="try{setCustomValidity('')}catch(e){}">
+            </li>
             
             <li><p> *Confirmar senha: </p> 
-                <input type="password" name="txtConfrmSenha" maxlength="" required oninvalid="setCustomValidity('Confirme a senha')"></li>
+                <input type="password" name="txtConfrmSenha" maxlength="10" required oninvalid="setCustomValidity('Senhas não coincidem')" onchange="try{setCustomValidity('')}catch(e){}">
+            </li>
             
             <li><p> *E-mail: </p> 
-                <input type="text" name="txtEmail" maxlength="" required oninvalid="setCustomValidity('Preencha o e-mail')"></li>
+                <input type="text" name="txtEmail" maxlength="100" required oninvalid="setCustomValidity('Preencha o campo e-mail')" onchange="try{setCustomValidity('')}catch(e){}">
+            </li>
             
             <li><p> *Celular 1: </p> 
-                <input type="text" name="txtDDD1" maxlength="2" size="1" placeholder="00" required oninvalid="setCustomValidity('Preencha o ddd')">
-                <input type="text" name="txtCel1" maxlength="9" size="10" placeholder="12348765" required oninvalid="setCustomValidity('Preencha o celular')">
+                <input type="text" name="txtDDD1" maxlength="2" size="1" pattern="[0-9]+" placeholder="00" required oninvalid="setCustomValidity('Preencha o ddd (apenas numeros)')" onchange="try{setCustomValidity('')}catch(e){}">
+                <input type="text" name="txtCel1" maxlength="9" size="10" pattern="[0-9]+" placeholder="12348765" required oninvalid="setCustomValidity('Preencha o celular (apenas numeros)')" onchange="try{setCustomValidity('')}catch(e){}">
             </li>
             
             <li><p> Celular 2 (opcional): </p> 
-                <input type="text" name="txtDDD2" maxlength="2" size="1" required placeholder="00">
-                <input type="text" name="txtCel2" maxlength="9" size="10" required placeholder="12348765">
+                <input type="text" name="txtDDD2" maxlength="2" size="1" pattern="[0-9]+" placeholder="00" oninvalid="setCustomValidity('Preencha o ddd (apenas numeros)')">
+                <input type="text" name="txtCel2" maxlength="9" size="10" pattern="[0-9]+" placeholder="12348765" oninvalid="setCustomValidity('Preencha o celular (apenas numeros)')" >
             </li>
             
             <li><p> *Etnia: </p> 
@@ -121,10 +125,12 @@
             </li>
             
             <li><p> Peso (opcional): </p> 
-                <input type="text" name="txtPeso" maxlength="3" size="3" > KG </li>
+                <input type="text" name="txtPeso" maxlength="3" size="4" > KG 
+            </li>
             
             <li><p> *Altura: </p> 
-                <input type="text" name="txtAltura" maxlength="4" size="3" required oninvalid="setCustomValidity('Preencha o campo altura')"></li>
+                <input type="text" name="txtAltura" pattern="[1-2]{1},[0-9]{2}" maxlength="4" size="3" required oninvalid="setCustomValidity('Preencha o campo altura(Ex:1,70)')" onchange="try{setCustomValidity('')}catch(e){}">
+            </li>
             
             <li><p> *Acompanha: </p> 
                 <select name="slc_acompanha" required>
@@ -135,17 +141,33 @@
                 </select>
             </li>
             <li><p> CEP:  </p>
-                 <input type="text" id="cep" name="CEP" maxlength="9">
+                 <input type="text" id="cep" name="CEP" pattern="[0-9]+" maxlength="9">
             </li>
             <li><p> UF:  </p>
-                 <input type="text" id="uf" name="txtUf" maxlength="10">
+                 <input type="text" id="uf" name="txtUf" placeholder="Preencha o CEP" readonly>
             </li>
             <li><p> Cidade:</p>
-                 <input type="text" id="cidade" name="txtCidade" maxlength="10">
+                 <input type="text" id="cidade" name="txtCidade" placeholder="Preencha o CEP" readonly>
             </li>
             <li><p> *Valor que deseja cobrar: </p> 
-                <input type="text" name="txtValor" maxlength="6" required size="5" oninvalid="setCustomValidity('Escolha o valor que deseja cobrar')">,00
+                <input type="text" name="txtValor" maxlength="6" required size="5" pattern="[0-9]+" oninvalid="setCustomValidity('Escolha o valor que deseja cobrar (apenas números)')" onchange="try{setCustomValidity('')}catch(e){}">,00
             </li>
+            
+            <?php
+                if(isset($_GET['Erro'])){
+                    if($_GET['Erro'] == 'Senha')
+                        $msg = 'Senhas não coincidem';
+                    elseif($_GET['Erro'] == 'Idade')
+                        $msg = 'Pessoas com menos de 18 anos não podem se cadastrar';
+                    elseif($_GET['Erro'] == 'cadastro')
+                        $msg = 'Não foi possivel realizar o cadastro tente mais tarde';
+            ?>
+                <li id="erro">
+                    <?php echo $msg ?>
+                </li>
+            <?php
+                }
+            ?>
             
         </ul>
             <input type="submit" value="Próximo &raquo;" class="botao right" name="btnProx">
@@ -155,7 +177,7 @@
         <script src="js/jquery-3.2.1.min.js" ></script>
 
         <!-- Adicionando Javascript -->
-        <script type="text/javascript" >
+        <script>
 
             $(document).ready(function() {
 
@@ -244,39 +266,44 @@
                 $celular2, $etnia, $sexo, $altura, $peso, $acompanha, $cidade, $estado, $cobra);
             
         }
-        
-        $tipo = '';
-        if(isset($_GET['tipo'])){
-            $tipo = '&tipo='.$_GET['tipo'];
-        }
 ?>
 
     <h1 class="titulo"> Escolha o tipo da conta! </h1>
     <div class="content_dados_2">
-        <form action="router.php?controller=acompanhante&modo=inserir<?php echo $tipo ?>" method="post">
+        <form action="router.php?controller=acompanhante&modo=inserir" method="post">
             
-            <p class="sobre_pag"> Valor mensal dia 10 <br>
+            <p class="sobre_pag"> Escolha uma das contas a seguir: <br>
             
         <?php
             require_once('controller/filiado_controller.php');
             $controller = new ControllerAcompanhante();
             $rs = $controller->BuscarTiposConta();
             
+            if(isset($_GET['escolha'])){
+                
+                $classe = 'escolha';
+            }
+            
             if($rs != null){
                 $cont = 0;
+                $total = count($rs);
                 while($cont < count($rs)){
         ?>
-            <a href="?etapa=2&tipo=<?php echo $rs[$cont]->tipo_conta ?>">
-            <div class="tipo_conta">
+            <a href="#estilo" onclick="PegarPlano('<?php echo $rs[$cont]->tipo_conta ?>', '<?php echo $cont ?>', '<?php echo $total ?>');">
+            <div class="tipo_conta <?php echo $classe ?>" id="conta<?php echo $cont ?>">
+                
                 <p class="titulo"> <?php echo $rs[$cont]->titulo ?> </p>
                 <p class="valor"> Preço: <?php echo $rs[$cont]->valor ?>,00 / Mês </p>
                 <p> Quantidade de fotos: <?php echo $rs[$cont]->qtd_fotos ?> </p>
                 <p> Quantidade de videos: <?php echo $rs[$cont]->qtd_videos ?> </p>
+                <p> Cobrança: mensalmente dia 10 </p>
             </div>
             </a>
         <?php 
                     $cont++;
                 }
+            }else{
+                echo 'Não foram encontrados planos';
             }
         ?>            
             <div class="termos">
@@ -285,15 +312,44 @@
                     echo $rs;
                 ?>
             </div>
+            <p class="hide"><input type="text" name="txtTipo" id="tipoConta"></p>
             <div class="termos_confirmar">
                 <p><input type="checkbox" name="ckTermos" onclick="termos()" id="check"> Li e concordo com os termos </p>
                 <input type="submit" value="Concluir" name="btnProx2" disabled class="botao desabilitado" id="btnConcordo">
             </div>
         </form>
     </div>
-
+        
 <?php
-    } 
+        }
+    
 ?>
+        <script src="js/jquery-3.2.1.min.js" ></script>
 
+        <!-- Adicionando Javascript -->
+        <script >
+
+            function PegarPlano(id, value, total){
+                div = '#conta' + value;
+                
+                $('#tipoConta').val(id);
+                
+                $(div).css('border', 'double 4px red');
+                
+                cont = 0;
+                while(cont <= total){
+                    
+                    if(cont != value){
+                        divs = '#conta' + cont;
+                    
+                        $(divs).css('border', 'solid 1px #CDCDCD');
+                    }
+                
+                    cont++;
+                }
+                
+            }
+            
+        </script>
+    
 </div>

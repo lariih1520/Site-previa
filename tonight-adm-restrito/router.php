@@ -57,6 +57,38 @@
             }
         break;
 
+        case 'plano':
+            switch ($modo){
+                case 'alterar':
+                    include_once('model/plano_class.php');
+                    include_once('controller/planos_controller.php');
+                    
+                    $controller = new ControllerPlanos();
+                    $controller->Alterar();
+                    
+                    break;
+                    
+                case 'add':
+                    include_once('model/plano_class.php');
+                    include_once('controller/planos_controller.php');
+                    
+                    $controller = new ControllerPlanos();
+                    $controller->Adicionar();
+                    
+                    break;
+                    
+                case 'del':
+                    include_once('model/plano_class.php');
+                    include_once('controller/planos_controller.php');
+                    
+                    $controller = new ControllerPlanos();
+                    $controller->ExcluirPlano();
+                    
+                    break;
+                    
+            }
+        break;
+
     }
 
 ?>

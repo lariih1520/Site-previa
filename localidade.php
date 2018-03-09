@@ -6,7 +6,6 @@
 	<head>
 		<title> Tonight - Filtrar acompanhantes por cidade </title>
 		<meta charset="UTF-8">
-		<meta http-equiv="content-language" content="pt-br" />
 		<meta name="viewport" content="initial-scale=1" />
 		<meta name="author" content="Larissa AP" />
 		<meta name="description" content="Precisa de um ampanhante? Nós temos o que você precisa" />
@@ -22,9 +21,9 @@
             <?php include_once('view/header.php'); ?>
             
             <!-- conteudo -->
-            <section id="conteudo">
+            <div id="conteudo">
                 <?php include_once('view/locais_view.php'); ?>
-            </section>
+            </div>
             
             <!-- rodape -->
             <?php include_once('view/footer.html'); ?>

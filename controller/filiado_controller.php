@@ -2,7 +2,7 @@
 /**
     Data: 17/02/2018
     Objetivo: Controle de dados de acompanhantes
-    Arquivos relacionados: router.php, seja-acompanhante.php, filiado_class.php
+    Arquivos relacionados: router.php, seja-acompanhante.php, filiado_class.php (A maioria)
 **/
 
 class ControllerAcompanhante{
@@ -24,16 +24,11 @@ class ControllerAcompanhante{
     /* cadastrar filiado */
     public function CadastrarFiliado(){
         
-        if($_GET['tipo'] <= 3 && $_GET['tipo'] > 0){
-            $tipo_conta = $_GET['tipo'];
-            
-            $acompanhante = new Acompanhante();
-            $acompanhante->InsertFiliado($tipo_conta);
-            
-        }else{
-            header('location: seja-cliente.php?Erro=tipo-conta-invalido');
-        }        
-        
+        $tipo_conta = $_POST['txtTipo'];
+
+        $acompanhante = new Acompanhante();
+        $acompanhante->InsertFiliado($tipo_conta);
+             
     }
     
     /* Cadastrar dados para realização de pagamento */
@@ -158,6 +153,27 @@ class ControllerAcompanhante{
         
     }
     
+    /* Alterar plano */
+    public function AlterarPlano(){
+        
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            
+            if($_POST['txtTipo'] != null){
+                $filiado = new Acompanhante();
+                $filiado->UpdatePlano();
+                
+            }else{
+                header('location:filiado-dados.php');
+            }
+            
+        }else{
+            header('location:filiado-dados.php');
+
+        }
+        
+        
+    }
+    
     /* Alterar dados privados */
     public function AlterarDadosPrivate(){
         
@@ -202,6 +218,14 @@ class ControllerAcompanhante{
             $dadosPag->anoExpira = base64_encode($_POST['txtAnoExpira']);
         }
         $dadosPag->UpdateDadosPag($dadosPag);
+    }
+    
+    public function ExcluirAcompanhante(){
+        require_once('model/filiado_class.php');
+        
+        $class = new Acompanhante();
+        $class->DeleteAcompanhante();
+        
     }
     
     /* Buscar usuário de acordo com o id */
@@ -254,7 +278,7 @@ class ControllerAcompanhante{
         return $rs;
     }
     
-    /* Buscar o tipo da conta do usuário */
+    /* Buscar o TIPO da CONTA do USUÁRIO */
     public function BuscarTipoConta(){
         require_once('model/filiado_class.php');
         $class = new Acompanhante();
@@ -263,7 +287,7 @@ class ControllerAcompanhante{
         return $rs;
     }
     
-    /* Buscar o tipo da conta do usuário */
+    /* Buscar imagens do usuário */
     public function BuscarImagensFiliado(){
         require_once('model/filiado_class.php');
         $class = new Acompanhante();
@@ -272,7 +296,16 @@ class ControllerAcompanhante{
         return $rs;
     }
     
-    /* Buscar todos os filiados */
+    /* Buscar videos do usuário */
+    public function BuscarVideosFiliado(){
+        require_once('model/filiado_class.php');
+        $class = new Acompanhante();
+        $rs = $class->SelectVideosFiliado();
+        
+        return $rs;
+    }
+    
+    /* Buscar TODOS os filiados */
     public function ListarFiliados(){
         require_once('model/filiado_class.php');
         
@@ -281,17 +314,13 @@ class ControllerAcompanhante{
         return $rs;
     }
     
-    public function BuscarFiliadosFiltro(){
+    /* Buscar FILTRO através de características */
+    public function BuscarFiliadosFiltro($dadospesq){
         require_once('model/filiado_class.php');
         
         $pesq = new Acompanhante();
         
-        $pesq->etnia = $_GET['slc_etnia'];
-        $pesq->cor_cabelo = $_GET['slc_cor_cabelo'];
-        $pesq->sexo = $_GET['slc_sexo'];
-        $pesq->acompanha = $_GET['slc_acompanha'];
-        
-        $rs = $pesq->SelectFiliadosFiltro($pesq);
+        $rs = $pesq->SelectFiliadosFiltro($dadospesq);
         return $rs;
     }
     
@@ -358,6 +387,26 @@ class ControllerAcompanhante{
         $class = new Acompanhante();
         $class->UpdateStatusPag($status);
         
+    }
+    
+    /* Pegar status do pagamento */
+    public function getStatusPagamento(){
+        require_once('model/filiado_class.php');
+        
+        $class = new Acompanhante();
+        $rs = $class->getStatusPagamento();
+        
+        return $rs;
+    }
+    
+    /* Buscar filiado pelo sexo e etnia */
+    public function BuscarFiliadosSexo($sexo, $etnia, $limit, $id){
+        require_once('model/filiado_class.php');
+        
+        $class = new Acompanhante();
+        
+        $rs = $class->SelectFiliadosSexo($sexo, $etnia, $limit, $id);
+        return $rs;
     }
     
 }

@@ -35,7 +35,7 @@ class Cliente{
     
     public function Login($cliente){
         $sql = "select * from tbl_cliente where email = '".$cliente->email."' ";
-        $sql = $sql." and senha =  '".$cliente->senha."'";
+        $sql = $sql." and senha = '".$cliente->senha."'";
         
         $select = mysqli_query($this->conect, $sql);
         
@@ -52,18 +52,34 @@ class Cliente{
             
             mysqli_close($this->conect);
             
+            if(!empty($_GET['redirect'])){
+                $cod = $_GET['redirect'];
+                $redirect = 'contratar.php?codigo='.$cod;
+                
+            }else{
+                $redirect = 'perfil-cliente.php';
+            }
+            
             ?>
                 <script>
-                    window.location.href = "perfil-cliente.php";
+                    window.location.href = "<?php echo $redirect ?>";
                 </script>
             <?php
             //header('location:perfil-cliente.php');
             
         }else{
             mysqli_close($this->conect);
+            if(!empty($_GET['redirect'])){
+                $cod = $_GET['redirect'];
+                $link = 'login.php?erro-ao-logar&redirect=contrate&codigo='.$cod;
+                    
+            }else{
+                $link = 'login.php?erro-ao-logar';
+            }
+            
         ?>
             <script>
-                window.location.href = "login.php?erro-ao-logar";
+                window.location.href = "<?php echo $link ?>";
             </script>
         <?php
             //header('location:login.php?erro-ao-logar');
@@ -72,7 +88,7 @@ class Cliente{
     }
     
     public function SelectClienteById($id){
-        $sql = 'call VwDadosUsuario('.$id.')';
+        $sql = 'select * from tbl_cliente where id_cliente = '.$id.';';
         
         if($select = mysqli_query($this->conect, $sql)){
             
@@ -110,6 +126,7 @@ class Cliente{
                     $cliente->enteresse = '';
                 }
                 
+                $cliente->nmrenteresse = $rs['enteresse'];
                 $cliente->dia = $dia;
                 $cliente->mes = $mes;
                 $cliente->ano = $ano;
@@ -202,11 +219,22 @@ class Cliente{
                 if(mysqli_query($this->conect, $sql)){
                     
                     mysqli_close($this->conect);
-                    header('location:perfil-cliente.php?editar=sucesso');
+        ?>
+                    <script>
+                        window.location.href = "perfil-cliente.php?editar=sucesso";
+                    </script>
+        <?php
+                    
+                    //header('location:perfil-cliente.php?editar=sucesso');
                     
                 }else{
+        ?>
+                    <script>
+                        window.location.href = "perfil-cliente.php?perfil=cliente&erro";
+                    </script>
+        <?php
                     //header('location:perfil-cliente.php?perfil=cliente&erro');
-                    echo $sql;
+                    //echo $sql;
                 }
                 
             }else{
@@ -249,10 +277,6 @@ class Cliente{
             }
             
         }
-        
-    }
-    
-    public function SelectSugestoes($id){
         
     }
     

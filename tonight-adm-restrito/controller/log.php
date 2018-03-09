@@ -15,13 +15,16 @@ class Controller{
             
             if($login == 'admnrb'){
                 if($senha == '1990-admn'){
-                    header('Location:default.php');
+                    session_start();
+                    $_SESSION['rgr'] = true;
+                    
+                    header('Location:index.php');
                     
                 }else{
-                    header('Location:../ERRO.php');
+                    header('Location:login.php?search=rblss&ERRO');
                 }
             }else{
-                header('Location:../ERRO.php');
+                header('Location:login.php?search=rblss&ERRO');
             }
             
         }

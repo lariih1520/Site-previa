@@ -3,6 +3,33 @@
 	Objetivo: estilo pagina filiado
  ***/
 
+#erro{
+    font-size: 16px;
+    animation-name: erro;
+    animation-duration: 2s;
+}
+@keyframes erro {
+    0%   {
+        color: #8A0808;
+        border: solid 2px black;
+        box-shadow: 0px 0px 4px black;
+    }
+    50%  {
+        color: #8A0808;
+        border: solid 2px black;
+        box-shadow: 0px 0px 4px black;
+        text-shadow: 0px 0px 10px #CDCDCD;
+    }
+    75% {
+        color: #8A0808;
+        border: solid 2px black;
+        box-shadow: 0px 0px 4px black;
+        text-shadow: 0px 0px 2px #CDCDCD;
+    }
+    100% {
+        display: none;
+    }
+}
 
 #estilo{
     width: auto;
@@ -37,6 +64,29 @@ select{font-size: 17px;}
     margin: auto;
     height: 40px;
     font-size: 20px;
+}
+
+.escolha{
+    animation-name: escolher;
+    animation-duration: 2s;
+}
+@keyframes escolher {
+    0%   {
+        border: solid 2px black;
+        box-shadow: 0px 0px 5px black;
+    }
+    50%  {
+        border: solid 2px #8A0808;
+        box-shadow: 0px 0px 15px #8A0808;
+    }
+    75% {
+        border: solid 1px black;
+        box-shadow: 0px 0px 5px black;
+    }
+    100% {
+        border: double 4px black;
+        box-shadow: 0px 0px 6px black;
+    }
 }
 .tipo_conta{
     float: left;

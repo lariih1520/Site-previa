@@ -1,0 +1,38 @@
+/**
+    Data: 07/03/2018
+    Objetivo: Estilo pag lucro
+**/
+
+h2{
+    font-weight: 100;
+}
+.titulo{
+    margin-top: 20px;
+    margin-bottom: 5px;
+}
+#lucro{
+    width: 930px;
+    height: 700px;
+    margin: auto;
+    padding-left: 30px;
+    border: solid 1px #FFF;
+}
+.content_lucro{
+    width: 905px;
+    height: 245px;
+    overflow-y: scroll;
+    margin-top: 5px;
+    padding: 5px;
+    border: solid 1px #8A0808;
+}
+.conta{
+    float: left;
+    width: 220px;
+    height: 120px;
+    padding: 10px;
+    margin: 10px 0px 0px 10px;
+    border: solid 1px gray;
+}
+.conta p{
+    margin-bottom: 6px;
+}

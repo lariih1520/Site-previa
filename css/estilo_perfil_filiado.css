@@ -2,13 +2,18 @@
 	Data: 14/02/2018
 	Objetivo: Estilização da página de perfil do filiado do site.
 **/
+.voltar a{
+    color: black;
+    font-size: 22px;
+}
 
 #content_perfil{
     width: 980px;
-    height: 550px;
+    height: 530px;
     margin: auto;
     margin-bottom: 10px;
     padding:10px 5px 5px 5px;
+    border: solid 1px transparent;
 }
 .perfil{
     float: left;
@@ -85,7 +90,7 @@
     height: auto;
     margin: auto;
     padding:10px 5px 5px 5px;
-    border: solid 1px white;
+    border-top: solid 1px #CDCDCD;
 }
 .imgs_filiado{
     float: left;
@@ -95,12 +100,22 @@
     text-align: center;
     margin-left: 20px;
     margin-bottom: 10px;
-    border: solid 1px gray;
+    border: solid 1px #CDCDCD;
 }
 .imgs_filiado img{
     max-width: 300px;
     height: 300px;
     margin: auto;
+}
+.videos_filiado{
+    float: left;
+    width: 350px;
+    height: 300px;
+    overflow: hidden;
+    text-align: center;
+    margin-left: 20px;
+    margin-bottom: 10px;
+    border: solid 1px #CDCDCD;
 }
 #sugestoes{
     width: 980px;
@@ -109,4 +124,60 @@
     margin-top: 10px;
     padding:10px 5px 5px 5px;
     border-top: solid 1px black;
+}
+.lst_sugestoes li{
+    float: left;
+    width: 280px;
+    height: 190px;
+    overflow: hidden;
+    margin-right: 10px;
+    border-radius: 10px;
+    background-color: #8A0808;
+    border: solid 1px black;
+}
+label{
+    font-size: 18px;
+}
+.foto{
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+}
+.img_peril{
+    max-width: 100%;
+    height: 100%;
+}
+.titulo{
+    margin-bottom: 20px;
+}
+
+.perfil_sugestao{
+    color: white;
+    width: 272px;
+    height: 0px;
+    opacity: 0.6;
+    font-size: 20px;
+    padding-top: 5px;
+    padding-left: 5px;
+    margin-top: 185px;
+    margin-left: 0px;
+    visibility: hidden;
+    text-align: justify;
+    position: absolute;
+    border-radius: 10px;
+    background-color: #ffffff;
+    border: 1px solid black;
+    filter: alpha(opacity=60);
+}
+
+.lst_sugestoes li:hover .perfil_sugestao{
+    transition-duration: 0.5s;
+    height: 184px;
+    color: black;
+    visibility: visible;
+    margin-top: 0;
+}
+
+.img_peril{
+    max-width: 100%;
+    height: 100%;
 }

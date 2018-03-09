@@ -21,7 +21,7 @@
                                 while($cont < count($rs)){
                                     $img = $rs[$cont]->imagem;
                         ?>
-                                <a href="#" class="trs"><img src="<?php echo $img ?>" alt="" /></a>
+                                <a href="#" class="trs"><img src="<?php echo $img ?>" alt="imagem" /></a>
 
                         <?php
                                     $cont++;
@@ -42,64 +42,82 @@
                 
                 <!-- Lista de usuários mulheres -->
                 <div id="mulheres">
-                    <h1 class="titulo"><a href="exibir-todos.php?var=mulheres"> Mulheres &raquo;</a></h1>
+                    <h1 class="titulo"><a href="exibir-todos.php?var=mulheres"><strong> Mulheres &raquo; </strong></a></h1>
+                    
+                <?php
+                    $sexo = 1;
+                    
+                    $controller = new ControllerAcompanhante();
+                    $rs = $controller->BuscarFiliadosSexo($sexo, null, 15, null);
+                    
+                    if(count($rs) > 3){
+                ?>
                     <div class="content">
                         <div class="menu-carrossel">
                             <a href="#" class="prev1" title="Anterior"> 
-                               <img src="icones/left.png" class="icone">
+                               <img src="icones/left.png" class="icone" alt="anterior">
                             </a>
                         </div>
+                <?php
+                    }
+                ?>
                         <div id="carrossel1" class="carrossel">
                             <ul>
+                        <?php
+                            if($rs != false){
+                                    
+                                $cont = 0;
+                                while($cont < count($rs)){
+                                    
+                                    if($rs[$cont]->foto == null){
+                                        $foto = 'icones/usuaria.jpg';
+                                    }else{
+                                        $foto = $rs[$cont]->foto;
+                                    }
+                                    
+                                    $id = $rs[$cont]->id;
+                                    $nome = $rs[$cont]->nome;
+                                    $idade = $rs[$cont]->idade;
+                                    $uf = $rs[$cont]->uf;
+                                    $acompanha = $rs[$cont]->acompanha;
+
+                            ?>
                                 <li>
+                                    <a href="perfil-filiado.php?codigo=<?php echo $id ?>">
                                     <div class="img_carrossel">
-                                        <img src="icones/usuaria.jpg" />
+                                        <img src="<?php echo $foto ?>" alt="Foto carrossel"/>
                                     </div>
                                     <div class="apresentacao">
-                                        <p>Nome: </p>
-                                        Tal pessoa
-                                        <p>Idade: </p>
-                                        tantos anos
-                                        <p> Online </p>
-                                        <img src="icones/online.png" class="on_off">
-                                        <img src="icones/offline.png" class="on_off">
+                                        <p> Nome: </p>
+                                        <span><?php echo ucfirst($nome) ?></span>
+
+                                        <p> Estado: 
+                                            <?php echo $uf ?>
+                                        </p>
+
+                                        <p> Acompanha: </p>
+                                        <?php echo $acompanha ?>
                                     </div>
+                                    </a>
                                 </li>
-                                <li>
-                                    <div class="img_carrossel">
-                                        <img src="icones/usuaria.jpg" />
-                                    </div>
-                                    <div class="apresentacao">
-                                        <p>Nome: </p>
-                                        <p>Idade: </p>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="img_carrossel">
-                                        <img src="icones/usuaria.jpg" />
-                                    </div>
-                                    <div class="apresentacao">
-                                        <p>Nome: </p>
-                                        <p>Idade: </p>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="img_carrossel">
-                                        <img src="icones/usuaria.jpg" />
-                                    </div>
-                                    <div class="apresentacao">
-                                        <p>Nome: </p>
-                                        <p>Idade: </p>
-                                    </div>
-                                </li>
+                        <?php
+                                    $cont++;
+                                }
+                            }
+                        ?>
                             </ul>
                         </div>
+                        
+                <?php
+                    if(count($rs) > 3){
+                ?>
                         <div class="menu-carrossel">
                             <a href="#" class="next1" title="Próximo"> 
-                                <img src="icones/right.png" class="icone">
+                                <img src="icones/right.png" class="icone" alt="proximo">
                             </a>
                         </div>
                     </div>
+                   
                     <script>	
                         $(function() {
                             $("#carrossel1").jCarouselLite({
@@ -109,76 +127,107 @@
                             })
                         })
                     </script>
-                    
+                <?php
+                                 
+                    }
+                ?>
                 </div>
 
 
                 <!-- Lista de usuários homens -->
                 <div id="homens">
-                    <p class="titulo"><a href="exibir-todos.php?var=homens"> Homens &raquo;</a></p>
+                    <p class="titulo"><a href="exibir-todos.php?var=homens"><strong> Homens &raquo;</strong> </a></p>
                     <div class="content">
-                        <div class="menu-carrossel">
-                            <a href="#" class="prev2" title="Anterior"> 
-                                <img src="icones/left.png" class="icone">
-                            </a>
+                     <?php
+                        $sexo = 2;
+                        $rs = $controller->BuscarFiliadosSexo($sexo, null, 15, null);
+
+                        if(count($rs) > 3){
+                    ?>
+                        <div class="content">
+                            <div class="menu-carrossel">
+                                <a href="#" class="prev2" title="Anterior"> 
+                                   <img src="icones/left.png" class="icone" alt="anterior">
+                                </a>
+                            </div>
+                    <?php
+                        }
+                    ?>
+                            <div id="carrossel2" class="carrossel">
+                                <ul>
+                            <?php
+                                if($rs != false){
+
+                                    $cont = 0;
+                                    while($cont < count($rs)){
+
+                                        if($rs[$cont]->foto == null){
+                                            $foto = 'icones/usuaria.jpg';
+                                        }else{
+                                            $foto = $rs[$cont]->foto;
+                                        }
+
+                                        $id = $rs[$cont]->id;
+                                        $nome = $rs[$cont]->nome;
+                                        $idade = $rs[$cont]->idade;
+                                        $uf = $rs[$cont]->uf;
+                                        $acompanha = $rs[$cont]->acompanha;
+                                        
+                                        $n = explode(' ', $nome);
+                                        $nome = $n[0];
+
+                            ?>
+                                    <li>
+                                        <a href="perfil-filiado.php?codigo=<?php echo $id ?>">
+                                            <div class="img_carrossel">
+                                                <img src="<?php echo $foto ?>" alt="Foto de perfil" />
+                                            </div>
+                                            <div class="apresentacao">
+                                                <p> Nome: </p>
+                                                <span><?php echo ucfirst($nome) ?></span>
+
+                                                <p> Estado: 
+                                                    <?php echo $uf ?>
+                                                </p>
+
+                                                <p> Acompanha: </p>
+                                                <?php echo $acompanha ?>
+                                            </div>
+                                        </a>
+                                    </li>
+                            <?php
+                                        $cont++;
+                                    }
+                                }
+                            ?>
+                                </ul>
+                            </div>
+<!--
+<p> Online </p><img src="icones/online.png" class="on_off"><img src="icones/offline.png" class="on_off">
+-->
+                    <?php
+                        if(count($rs) > 3){
+                    ?>
+                            <div class="menu-carrossel">
+                                <a href="#" class="next2" title="Próximo"> 
+                                    <img src="icones/right.png" class="icone" alt="proximo">
+                                </a>
+                            </div>
                         </div>
-                        <div id="carrossel2" class="carrossel">
-                            <ul>
-                                <li>
-                                    <div class="img_carrossel">
-                                        <img src="icones/usuario.jpg" />
-                                    </div>
-                                    <div class="apresentacao">
-                                        <p>Nome: </p>
-                                        Tal pessoa
-                                        <p>Idade: </p>
-                                        tantos anos
-                                        <p> Online </p>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="img_carrossel">
-                                        <img src="icones/usuario.jpg" />
-                                    </div>
-                                    <div class="apresentacao">
-                                        <p>Nome: </p>
-                                        <p>Idade: </p>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="img_carrossel">
-                                        <img src="icones/usuario.jpg" />
-                                    </div>
-                                    <div class="apresentacao">
-                                        <p>Nome: </p>
-                                        <p>Idade: </p>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="img_carrossel">
-                                        <img src="icones/usuario.jpg" />
-                                    </div>
-                                    <div class="apresentacao">
-                                        <p>Nome: </p>
-                                        <p>Idade: </p>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="menu-carrossel">
-                            <a href="#" class="next2" title="Próximo"> 
-                                <img src="icones/right.png" class="icone">
-                            </a>
-                        </div>
-                    </div>
-                    <script>	
-                        $(function() {
-                            $("#carrossel2").jCarouselLite({
-                                btnPrev: '.prev2', 
-                                btnNext: '.next2',
-                                visible: 3
+
+                        <script>	
+                            $(function() {
+                                $("#carrossel2").jCarouselLite({
+                                    btnPrev: '.prev2', 
+                                    btnNext: '.next2',
+                                    visible: 3
+                                })
                             })
-                        })
-                    </script>
+                        </script>
+                <?php
+                                 
+                    }
+                ?>
+                    </div>
                 </div>
                 

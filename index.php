@@ -6,8 +6,6 @@
 	<head>
 		<title> Tonight </title>
 		<meta charset="UTF-8">
-		<meta http-equiv="content-language" content="pt-br" />
-		<meta name="viewport" content="initial-scale=1" />
 		<meta name="author" content="Larissa AP" />
 		<meta name="description" content="Precisa de um ampanhante? Nós temos o que você precisa" />
 		<meta name="keywords" content="Acompanhante, Acompanhantes, companhias para festas" />
@@ -46,11 +44,11 @@
             
             if(!empty($_SESSION['id_cliente'])){
                 $lgrc = true;
-                $msg = '<a href="perfil.php?perfil=cliente"> Ir para o perfil </a>';
+                $msg = '<a href="perfil?perfil=cliente"> Ir para o perfil </a>';
 
             }else{
                 $lgrc = false;
-                $msg = '<a href="login.php"> Faça Login </a>';
+                $msg = '<a href="login"> Faça Login </a>';
             }
             
             
@@ -71,10 +69,10 @@
             
             <div id="menu_index">
                 <div id="fazer_login" <?php echo $imagem[1] ?>> <?php echo $msg ?> </div>
-                <div id="ir_site" <?php echo $imagem[2] ?>><a href="inicio.php"> Ir para o site </a></div>
-                <div id="ver_homens" <?php echo $imagem[3] ?>><a href="inicio.php?#homens"> Homens </a></div>
-                <div id="ver_mulheres" <?php echo $imagem[4] ?>><a href="inicio.php?#mulheres"> Mulheres </a></div>
-                <div id="seja_filiado" <?php echo $imagem[5] ?>><a href="seja-filiado.php"> Seja um dos nossos filiados </a></div>
+                <div id="ir_site" <?php echo $imagem[2] ?>><a href="inicio"> Ir para o site </a></div>
+                <div id="ver_homens" <?php echo $imagem[3] ?>><a href="inicio?#homens"> Homens </a></div>
+                <div id="ver_mulheres" <?php echo $imagem[4] ?>><a href="inicio?#mulheres"> Mulheres </a></div>
+                <div id="seja_filiado" <?php echo $imagem[5] ?>><a href="seja-filiado"> Seja um dos nossos filiados </a></div>
             </div>
             
 		</div>
