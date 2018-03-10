@@ -40,7 +40,7 @@
         $cont = 0;
         while($cont < count($rs)){
 ?>
-    <a href="perfil-filiado.php?codigo=<?php echo $rs[$cont]->id ?>">    
+    <a href="perfil-filiado<?php echo $php ?>?codigo=<?php echo $rs[$cont]->id ?>">    
         <div class="filiado">
             <img src="<?php echo $rs[$cont]->foto ?>" alt="Foto de perfil">
             <p> Nome: <?php echo $rs[$cont]->nome ?> </p>

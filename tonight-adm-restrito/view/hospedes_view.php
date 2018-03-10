@@ -6,7 +6,6 @@
     <div id="visualizar">
         
         
-            
 <?php 
         $id = $_GET['codigo'];
         $controller = new ControllerAcompanhante();
@@ -104,3 +103,54 @@
         ?>    
         </table>
     </div>
+    
+    <br>
+    <br>
+    <?php 
+        $controller = new ControllerAcompanhante();
+        $rs = $controller->ListarFiliadosDesativados();
+
+        if($rs != null){
+    ?>
+    <h1 class="titulo_maior"> Contas excluidas ou desativadas - Hospedes </h1>
+
+    <div id="hospedes">
+        <table class="lst_hospedes">
+            <tr class="tbl_titulo">
+                <td> Codigo: </td><td> Nome: </td><td> Nasc: </td><td> Uf </td><td> Cobra </td><td> CPF </td><td> Ver </td> 
+            </tr>
+            
+        <?php 
+            
+                $cont = 0;
+                while($cont < count($rs)){
+                    $codigo = $rs[$cont]->id_filiado;
+                    $nome   = $rs[$cont]->nome;
+                    $nasc   = $rs[$cont]->nasc;
+                    $uf     = $rs[$cont]->uf;
+                    $cobra  = $rs[$cont]->cobrar;
+                    $cpf    = $rs[$cont]->cpf;
+        ?>
+            <tr>
+                <td> <?php echo $codigo ?> </td>
+                <td> <?php echo $nome ?>   </td>
+                <td> <?php echo $nasc ?>   </td> 
+                <td> <?php echo $uf ?>     </td> 
+                <td> R$ <?php echo $cobra ?>,00  </td> 
+                <td> <?php echo $cpf ?>    </td>  
+                <td> 
+                    <a href="?modo=ver&codigo=<?php echo $codigo ?>"> Mais </a>
+                </td> 
+            </tr>
+            
+        <?php 
+                    $cont++;
+                }
+              
+        ?>    
+        </table>
+    </div>
+    <?php
+        }
+    ?>   
+

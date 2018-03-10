@@ -41,13 +41,13 @@
     if($pagMes == 'null' and $diah == '10'){
 
         $mensalidade = '<div class="mensalidade">
-        Não esqueça de <a href="filiado-dados.php?editar=pagar-private">efetuar o pagamento </a> referente à este mês! Valor: '.$valor.',00
+        Não esqueça de <a href="filiado-dados'.$php.'?editar=pagar-private">efetuar o pagamento </a> referente à este mês! Valor: '.$valor.',00
         </div>';
 
     }elseif($pagMes == 1){
 
         $mensalidade = '<div class="mensalidade">
-        Não esqueça de <a href="filiado-dados.php?editar=pagar-private">efetuar o pagamento </a> referente à este mês! Valor: '.$valor.',00
+        Não esqueça de <a href="filiado-dados'.$php.'?editar=pagar-private">efetuar o pagamento </a> referente à este mês! Valor: '.$valor.',00
         </div>';
 
     }elseif($pagMes == 0){
@@ -56,7 +56,7 @@
     }elseif($pagMes > 1){
         $deve = $valor * $pagMes;
         $mensalidade = '<div class="mensalidade">
-        Não esqueça de <a href="filiado-dados.php?editar=pagar-private">efetuar o pagamento </a>
+        Não esqueça de <a href="filiado-dados'.$php.'?editar=pagar-private">efetuar o pagamento </a>
         referente à '.$pagMes.' meses de atraso ou sua conta será <span style="color:#8A0808">desativada!</span>
         Valor: <b>'.$deve.',00 </b>
         </div>';
@@ -77,7 +77,7 @@
     </div>
     <div class="content_dados"> <!--  Dados Publicos do acompanhante  -->
         <p class="titulo"> Dados públicos 
-            <a href="filiado-dados.php?editar=dados">
+            <a href="filiado-dados<?php echo $php ?>?editar=dados">
             <img src="icones/editar.ico" class="icone" title="editar" alt="Editar">
             </a>
         </p>
@@ -106,7 +106,7 @@
     </div>
     <div class="content_midia"> <!-- ****** Imagens ****** -->
         <p class="titulo"> Imagens 
-            <a href="filiado-fotos.php?editar=fotos">
+            <a href="filiado-fotos<?php echo $php ?>?editar=fotos">
             <img src="icones/editar.ico" class="icone" title="editar" alt="Editar">
             </a>
         </p>
@@ -131,7 +131,7 @@
             if(count($rs) < $qtd_fotos){
         ?>
             <div class="imgs">
-                <a href="filiado-fotos.php">
+                <a href="filiado-fotos<?php echo $php ?>">
                     <img src="imagens/adicionar.png" alt="add imagem" title="adcionar imagem">
                 </a>
             </div>
@@ -146,7 +146,7 @@
 
     <div class="content_midia"> <!-- ****** Videos ****** -->
         <p class="titulo"> Videos 
-            <a href="filiado-fotos.php?editar=videos">
+            <a href="filiado-fotos<?php echo $php ?>?editar=videos">
             <img src="icones/editar.ico" class="icone" title="editar" alt="Editar">
             </a>
         </p>
@@ -177,7 +177,7 @@
             if(count($rs) < $qtd_videos){
         ?>
             <div class="imgs">
-                <a href="filiado-fotos.php">
+                <a href="filiado-fotos<?php echo $php ?>">
                     <img src="imagens/adicionar.png" alt="add imagem" title="adcionar imagem">
                 </a>
             </div>
@@ -229,7 +229,7 @@
     ?>
     
     <div class="content_dados_seguranca"> <!-- *** Dados Privados *** -->
-        <p class="titulo"> Dados privados <a href="filiado-dados.php?editar=dados-private">
+        <p class="titulo"> Dados privados <a href="filiado-dados<?php echo $php ?>?editar=dados-private">
             <img src="icones/editar.ico" class="icone" title="editar">
             </a>
         </p>
@@ -239,6 +239,7 @@
             <li> <p>Nome:              </p><?php echo $nome ?> </li> 
             <li> <p>Sobrenome:         </p><?php echo $sobrenome ?> </li> 
             <li> <p>Telefone:          </p><?php echo '('.$ddd.')'.$telefone ?> </li> 
+            <li> <p>CPF:               </p><?php echo $cpf ?> </li> 
             <li> <p>CEP:               </p><?php echo $cep ?> </li> 
             <li> <p>Rua:               </p><?php echo $rua ?> </li> 
             <li> <p>Numero:            </p><?php echo $numero ?> </li> 
@@ -264,8 +265,26 @@
         
         <div class="clear"></div>
         
-        <p class="clear"><a href="filiado-dados.php?editar=tipo-conta"> Alterar tipo de conta &raquo; </a></p>
+        <?php 
+            $dia = date('d');
+            if($dia < 5 or $dia > 10){
+                
+                if($pagMes <= 1){
+        ?>
         
+        <p class="clear"><a href="filiado-dados<?php echo $php ?>?editar=tipo-conta"> Alterar tipo de conta &raquo; </a></p>
+        
+        <?php  }else{ ?>
+        
+        <p class="clear"> Não é possível alterar o tipo de conta antes da realização do pagamento </p>
+        
+        <?php  }
+                
+            }else{ ?>
+        
+        <p class="clear"> Não é possível alterar seu tipo de conta nos dias próximos ao pagamento </p>
+        
+        <?php  } ?>
     </div>
 
     <div id="delete_conta">
@@ -277,7 +296,7 @@
             <input type="password" name="txtSenha" id="txtSenha" placeholder="senha">
             <input type="password" name="senha" id="senha" value="<?php echo $senha ?>" class="hiden">
             <input type="submit" name="btnConfirmar" value="Confirmar" id="confirmar" onclick="confirmDelete()" class="botao">
-            <a href="perfil-filiado.php"> Cancelar </a>
+            <a href="perfil-filiado<?php echo $php ?>"> Cancelar </a>
             <p> (Esta ação não pode ser desfeita) </p>
         </div>
     </div>
@@ -299,7 +318,7 @@
                 decisao = confirm('Deseja realmente exluir sua conta?')
 
                 if(decisao){
-                    window.location.href = "router.php?controller=acompanhante&modo=excluir";
+                    window.location.href = "router<?php echo $php ?>?controller=acompanhante&modo=excluir";
 
                 }else{
                     return false;

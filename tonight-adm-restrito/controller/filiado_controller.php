@@ -15,6 +15,15 @@ class ControllerAcompanhante{
         return $rs;
     }
     
+    public function ListarFiliadosDesativados(){
+        require_once('model/cliente_class.php');
+        
+        $class = new Acompanhante();
+        $rs = $class->SelectFiliadosDesativados();
+        
+        return $rs;
+    }
+    
     public function BuscarDadosFiliado($id){
         require_once('model/filiado_class.php');
         

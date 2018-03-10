@@ -1,20 +1,22 @@
 <?php
+    require_once('view/extencao.php');
+
     session_start();
 
     if(!empty($_GET['codigo'])){
         $cod = $_GET['codigo'];
         
         if(empty($_SESSION['id_cliente'])){
-            header('location:login.php?redirect=contrate&cod='.$cod);
+            header('location:login'.$php.'?redirect=contrate&cod='.$cod);
         }
         
     }else{
-        header('exibir-todos.php');
+        header('exibir-todos'.$php);
     }
 
     if(!empty($_SESSION['id_filiado'])){
         echo 'alert("Você está logado como acompanhante")';
-        header('location:login.php');
+        header('location:login'.$php);
     }
     
     

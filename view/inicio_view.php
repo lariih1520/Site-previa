@@ -42,7 +42,7 @@
                 
                 <!-- Lista de usuários mulheres -->
                 <div id="mulheres">
-                    <h1 class="titulo"><a href="exibir-todos.php?var=mulheres"><strong> Mulheres &raquo; </strong></a></h1>
+                    <h1 class="titulo"><a href="exibir-todos<?php echo $php ?>?var=mulheres"><strong> Mulheres &raquo; </strong></a></h1>
                     
                 <?php
                     $sexo = 1;
@@ -83,7 +83,7 @@
 
                             ?>
                                 <li>
-                                    <a href="perfil-filiado.php?codigo=<?php echo $id ?>">
+                                    <a href="perfil-filiado<?php echo $php ?>?codigo=<?php echo $id ?>">
                                     <div class="img_carrossel">
                                         <img src="<?php echo $foto ?>" alt="Foto carrossel"/>
                                     </div>
@@ -136,7 +136,7 @@
 
                 <!-- Lista de usuários homens -->
                 <div id="homens">
-                    <p class="titulo"><a href="exibir-todos.php?var=homens"><strong> Homens &raquo;</strong> </a></p>
+                    <p class="titulo"><a href="exibir-todos<?php echo $php ?>?var=homens"><strong> Homens &raquo;</strong> </a></p>
                     <div class="content">
                      <?php
                         $sexo = 2;
@@ -178,7 +178,7 @@
 
                             ?>
                                     <li>
-                                        <a href="perfil-filiado.php?codigo=<?php echo $id ?>">
+                                        <a href="perfil-filiado<?php echo $php ?>?codigo=<?php echo $id ?>">
                                             <div class="img_carrossel">
                                                 <img src="<?php echo $foto ?>" alt="Foto de perfil" />
                                             </div>

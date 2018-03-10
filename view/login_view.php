@@ -34,19 +34,19 @@
     }
     ?>
 
-    <form action="router.php?controller=<?php echo($modo); ?>&modo=logar<?php echo $redirect ?>" method="post" id="login">
+    <form action="router<?php echo($php); ?>?controller=<?php echo($modo); ?>&modo=logar<?php echo $redirect ?>" method="post" id="login">
         
         <h1 class="titulo centro"> 
             <?php
                 if($modo == 'cliente'){
                     echo("Fazer login como cliente");
                     $desc = "Faça o login e contrate um dos nossos acompanhantes.";
-                    $link = "seja-cliente";
+                    $link = "seja-cliente".$php;
                     
                 }else{
                     echo("Fazer login como acompanhante");
                     $desc = "Faça o login para que você possa ser contratado como acompanhante.";
-                    $link = "seja-filiado";
+                    $link = "seja-filiado".$php;
                 }
             ?>
             

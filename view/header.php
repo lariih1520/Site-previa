@@ -2,7 +2,7 @@
         
         if(!empty($_SESSION['id_cliente'])){
             $lgrc = true;
-            $perfil = 'perfil-cliente.php?';
+            $perfil = 'perfil-cliente'.$php.'?';
             
         }else{
             $perfil = '';
@@ -11,10 +11,10 @@
 
         if(!empty($_SESSION['id_filiado'])){
             $lgrf = true;
-            $perfil = 'perfil-filiado.php?';
+            $perfil = 'perfil-filiado'.$php.'?';
             
         }elseif(empty($_SESSION['id_cliente'])){
-            $perfil = 'login.php?';
+            $perfil = 'login'.$php.'?';
             $lgrf = false;
         }
 
@@ -31,7 +31,7 @@
             <?php
                 if ($lgrc == true || $lgrf == true) {
             ?>
-            <a href="inicio?sair">
+            <a href="inicio<?php echo $php ?>?sair">
                 <img src="icones/power.png" class="icon" alt="Sair">
             </a>
             <?php
@@ -48,34 +48,34 @@
     <header>
         <div id="content_header"> 
             <div id="content_logo">
-                <a href="index">
+                <a href="index<?php echo $php ?>">
                    <img src="imagens/logo.png" id="logo" title="Tonight" alt="logo tonight">
                 </a>
             </div>
             <ul class="lst_menu">
-                <li><a href="inicio.php"> Home </a></li>
-                <li><a href="localidade.php"> Filtrar por estado </a></li>
+                <li><a href="inicio<?php echo $php ?>"> Home </a></li>
+                <li><a href="localidade<?php echo $php ?>"> Filtrar por estado </a></li>
                 <?php
                     if($lgrc == false and $lgrf == false){
                 ?>
-                <li><a href="seja-cliente.php"> Cadastre-se </a></li>
+                <li><a href="seja-cliente<?php echo $php ?>"> Cadastre-se </a></li>
                 
                 <?php
                     }
                 ?>
-                <li><a href="seja-filiado.php"> Seja acompanhante </a></li>
-                <li><a href="sobre-o-site.php"> Sobre </a></li>
+                <li><a href="seja-filiado<?php echo $php ?>"> Seja acompanhante </a></li>
+                <li><a href="sobre-o-site<?php echo $php ?>"> Sobre </a></li>
             </ul>
             <div class="content_logar">
                 <?php
                     if($lgrc == false && $lgrf == false){
                 ?>
                 <div class="botao_header">
-                    <a href="login"> Fazer login </a>
+                    <a href="login<?php echo $php ?>"> Fazer login </a>
                 </div>
                 <div class="tipo_login">
-                    <p><a href="login.php?login=cliente"> Sou cliente </a></p>
-                    <p><a href="login.php?login=acompanhante"> Sou acompanhante </a></p>
+                    <p><a href="login<?php echo $php ?>?login=cliente"> Sou cliente </a></p>
+                    <p><a href="login<?php echo $php ?>?login=acompanhante"> Sou acompanhante </a></p>
 
                 </div>
                 <?php

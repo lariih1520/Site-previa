@@ -280,15 +280,23 @@ class Acompanhante{
                 while($rs = mysqli_fetch_array($select)){
                     $_SESSION['id_filiado'] = $rs['id_filiado'];
                     
-                    header('location:filiado-fotos.php');
+                    
+                ?> <script> window.location.href = "filiado-fotos.php"; </script> <?php
+                    
+                    //header('location:filiado-fotos.php');
                 }
                 
             }else{
-                header('location:seja-filiado.php?Erro=cadastro&#erro');
+                
+                ?> <script> window.location.href = "seja-filiado.php?Erro=cadastro&#erro"; </script> <?php
+                    
+                    //header('location:seja-filiado.php?Erro=cadastro&#erro');
             }
             
         }else{
-            header('location:seja-filiado.php?Erro=cadastro&#erro');
+            
+            ?> <script> window.location.href = "seja-filiado.php?Erro=cadastro&#erro"; </script> <?php
+                //header('location:seja-filiado.php?Erro=cadastro&#erro');
         }
         
     }
@@ -330,22 +338,15 @@ class Acompanhante{
             "'.$dadosPag->mesExpira.'", "'.$dadosPag->anoExpira.'")';
             
             if(mysqli_query($this->conect, $sql)){
-                
-            ?>
-                <script>
-                    window.location.href = "<?php echo $link ?>";
-                </script>
-
-            <?php
+               
+            
+            ?> <script>  window.location.href = "<?php echo $link ?>"; </script> <?php
                 
             }else{
                 $link = $link.'?Erro';
-            ?>
-                <script>
-                    window.location.href = "<?php echo $link ?>";
-                </script>
-
-            <?php
+                
+            ?> <script> window.location.href = "<?php echo $link ?>"; </script> <?php
+                
                 //echo $sql;
                 //header('location:'.$link.'?Erro');
             }
@@ -423,21 +424,11 @@ class Acompanhante{
                 
         if(mysqli_query($this->conect, $sql)){
                 
-        ?>
-            <script>
-                window.location.href = "perfil-filiado.php";
-            </script>
-
-        <?php
+        ?> <script> window.location.href = "perfil-filiado.php"; </script> <?php
 
         }else{
         
-        ?>
-            <script>
-                window.location.href = "perfil-filiado.php?ERRO";
-            </script>
-
-        <?php
+        ?> <script> window.location.href = "perfil-filiado.php?ERRO"; </script> <?php
             
             //echo $sql;
             //header('location:'.$link.'?Erro');
@@ -449,18 +440,110 @@ class Acompanhante{
     public function UpdatePlano(){
         
         $id = $_SESSION['id_filiado'];
+        $contaAnterior = $_POST['txtConta'];
         $tipo = $_POST['txtTipo'];
         
-        $sql = "update tbl_filiado set id_tipo_conta = ".$tipo."
-                where id_filiado = ".$id;
+        $sql = "select * from tbl_tipo_conta where id_tipo_conta = ".$contaAnterior;
+        if($select = mysqli_query($this->conect, $sql)){
+            
+            while($rs = mysqli_fetch_array($select)){
+                $id_conta_anterior = $rs['id_tipo_conta'];
+                $foto_anterior = $rs['foto'];
+                $video_anterior = $rs['video'];
+            }
+        }
         
-        if(mysqli_query($this->conect, $sql)){
-            header('location:perfil-filiado.php?Sucesso');
+        $sql = "select * from tbl_tipo_conta where id_tipo_conta = ".$tipo;
+        if($select = mysqli_query($this->conect, $sql)){
+            
+            while($rs = mysqli_fetch_array($select)){
+                $id_conta_atual = $rs['id_tipo_conta'];
+                $foto_atual = $rs['foto'];
+                $video_atual= $rs['video'];
+            }
+        }
+        
+        if($foto_anterior > $foto_atual){ //SE A QTD DE FOTOS DA CONTA ANTIGA FOR MAIOR DO QUE A ATUAL
+            
+            $sql = "select * from tbl_filiado_midia where descricao = 1 and id_filiado = ".$id;
+            
+            if($select = mysqli_query($this->conect, $sql)){
+                $cont = 0;
+                while($rs = mysqli_fetch_array($select)){
+                    
+                    if($cont >= $foto_atual){
+                        $id_foto[$cont] = $rs['id_filiado_midia'];
+                    }
+                    $cont++;
+                }
+            }
+            
+            if($cont > $foto_atual){
+                while($cont > $foto_atual){
+                    $sql = "delete from tbl_filiado_midia where id_filiado_midia =".$id_foto[$foto_atual]." and id_filiado = ".$id;
+                    mysqli_query($this->conect, $sql);
+                    $foto_atual++;
+                }
+                
+            }
+            
+            $alteração = true;
+            
+        }else{
+            $alteração = true;
+        }
+        
+        if($video_anterior > $video_atual){ //SE A QTD DE VIDEOS DA CONTA ANTIGA FOR MAIOR DO QUE A ATUAL
+            $cont = 0;
+            $sql = "select * from tbl_filiado_midia where descricao = 2 and id_filiado = ".$id;
+            
+            if($select = mysqli_query($this->conect, $sql)){
+                
+                while($rs = mysqli_fetch_array($select)){
+                    
+                    if($cont >= $foto_atual){
+                        $id_video[$cont] = $rs['id_filiado_midia'];
+                    }
+                    $cont++;
+                }
+            }
+            
+            if($cont > $video_atual){
+                while($cont > $video_atual){
+                    $sql = "delete from tbl_filiado_midia where id_filiado_midia = ".$id_video[$video_atual]." and id_filiado = ".$id;
+                    
+                    mysqli_query($this->conect, $sql);
+                    $video_atual++;
+                    
+                }
+                
+            }
+            $alteração = true;
+            
+        }else{
+            $alteração = true;
+        }
+        
+        if($alteração == true){
+
+            $sql = "update tbl_filiado set id_tipo_conta = ".$tipo."
+                    where id_filiado = ".$id;
+
+            if(mysqli_query($this->conect, $sql)){
+
+                ?> <script> window.location.href = "perfil-filiado.php?Sucesso"; </script> <?php
+
+                //header('location:perfil-filiado.php?Sucesso');
+            }else{
+                echo "<script>alert('Não foi possivel realizar a alteração')</script>";
+
+                ?> <script> window.location.href = "perfil-filiado.php?Erro&#tipo_conta"; </script> <?php
+                //header('location:perfil-filiado.php?Erro&#tipo_conta');
+            }
         }else{
             echo "<script>alert('Não foi possivel realizar a alteração')</script>";
-            header('location:perfil-filiado.php?Erro&#tipo_conta');
+            ?> <script> window.location.href = "perfil-filiado.php?Erro&#tipo_conta"; </script> <?php
         }
-            
     }
     
     /* Alterar Dados do Pagamento */
@@ -550,17 +633,26 @@ class Acompanhante{
 
             if(mysqli_query($this->conect, $sql)){
                 session_destroy();
-                header('location:inicio.php');
+                
+                ?> <script> window.location.href = "inicio.php"; </script> <?php
+                
+                //header('location:inicio.php');
 
             }else{
                 //echo $sql;
                 echo '<script> alert("Não foi possivel realizar a ação") </script>';
-                header('location:perfil-filiado.php?Erro');
+                
+                ?> <script> window.location.href = "perfil-filiado.php?Erro"; </script> <?php
+                    
+                //header('location:perfil-filiado.php?Erro');
             }
         }else{
             //echo $sql;
             echo "<script>alert('Não foi possivel realizar a exclusão, tente novamente mais tarde')</script>";
-            header('location:perfil-filiado.php?Erro');
+            
+            ?> <script> window.location.href = "perfil-filiado.php?Erro"; </script> <?php
+                
+            //header('location:perfil-filiado.php?Erro');
         }
     }
     
@@ -988,11 +1080,11 @@ class Acompanhante{
                            echo $sql;
                        }
                         
-                    }else{ echo "Falha ao enviar"; }
+                    }else{ echo "<script>alert('Falha ao enviar'); window.location.href = 'perfil-filiado.php';</script>"; }
                     
-                }else{ echo "A imagem deve ser de no máximo 1MB"; }
+                }else{ echo "<script>alert('A imagem deve ser de no máximo 1MB'); window.location.href = 'perfil-filiado.php';</script>"; }
                 
-            }else{ echo "Somente são aceitos arquivos do tipo Imagem"; }
+            }else{ echo "<script>alert('Somente são aceitos arquivos do tipo Imagem'); window.location.href = 'perfil-filiado.php';</script>"; }
             
         }else{
             echo "Selecione uma imagem";

@@ -83,7 +83,7 @@
             }
 
 ?>
-    <form action="router.php?controller=acompanhante&modo=alterar&q=dados" method="post" id="form1">
+    <form action="router<?php echo $php ?>?controller=acompanhante&modo=alterar&q=dados" method="post" id="form1">
         <ul class="lst_dados">
             <li> <p>Nome de usuário:</p>
                 <input type="text" name="txtNome" value="<?php echo $nome ?>" maxlength="20">
@@ -326,7 +326,7 @@
     if($_GET['editar'] == 'dados-private' or empty($_GET['forma']) or $_GET['forma'] == 'card'){
 ?>  
      
-    <form action="router.php?controller=acompanhante&<?php echo $modo.'&'.$q ?>&forma=card" method="post" id="form2">
+    <form action="router<?php echo $php ?>?controller=acompanhante&<?php echo $modo.'&'.$q ?>&forma=card" method="post" id="form2">
         <ul class="lst_dados">
             <li> <p>Nome: </p>
                 <input type="text" name="txtNome" value="<?php echo $nome ?>" maxlength="30">
@@ -373,7 +373,7 @@
             </li>    
         </ul>
         <p><input type="submit" name="btnSalvar" value="<?php echo $botao; ?>" class="botao"> 
-            <a href="perfil-filiado.php"> Cancelar </a>
+            <a href="perfil-filiado<?php echo $php ?>"> Cancelar </a>
         </p>
         
     </form>
@@ -381,7 +381,7 @@
 <?php
         }elseif($_GET['forma'] == 'boleto'){
 ?>
-    <form action="router.php?controller=acompanhante&<?php echo $modo.'&'.$q ?>&forma=boleto" method="post" id="form3">
+    <form action="router<?php echo $php ?>?controller=acompanhante&<?php echo $modo.'&'.$q ?>&forma=boleto" method="post" id="form3">
         <ul class="lst_dados">
             <li> <p>Nome: </p>
                 <input type="text" name="txtNome" value="<?php echo $nome ?>" maxlength="30">
@@ -416,7 +416,7 @@
             </li> 
         </ul>
         <p><input type="submit" name="btnSalvar" value="<?php echo $botao; ?>" class="botao"> 
-            <a href="perfil-filiado.php"> Cancelar </a>
+            <a href="perfil-filiado<?php echo $php ?>"> Cancelar </a>
         </p>
         
     </form>
@@ -443,7 +443,7 @@
         
 ?>
         
-    <form id="frmPlano" method="post" action="router.php?controller=acompanhante&modo=plano">
+    <form id="frmPlano" method="post" action="router<?php echo $php ?>?controller=acompanhante&modo=plano">
         <p class="titulo"> Plano: </p>
         
         <div id="planos">
@@ -461,7 +461,10 @@
 ?>    
             <a href="#" onclick="PegarPlano('<?php echo $rs[$cont]->tipo_conta ?>', '<?php echo $cont ?>', '<?php echo $total ?>');">
                 <div class="tipo_conta <?php echo $classe ?>" id="conta<?php echo $cont ?>">
-                        <?php echo $rs[$cont]->titulo ?>
+                    <p class="titulo"> <?php echo $rs[$cont]->titulo ?></p>
+                    <p> Valor: R$ <?php echo $rs[$cont]->valor ?>, 00</p>
+                    <p> Quantidade de fotos: <?php echo $rs[$cont]->qtd_fotos ?></p>
+                    <p> Quantidade de vídeos: <?php echo $rs[$cont]->qtd_videos ?></p>
                 </div>
             </a>
 <?php
@@ -472,15 +475,16 @@
         </div>
         
         <p> Digite sua senha: </p>
-        <input type="password" name="txtSenha" id="senhaDigit" required>
+        <input type="password" name="txtSenhaDigit" id="senhaDigit" required onkeyup="Senha();">
         <span id="alerta"> Senha invalida </span>
         <p class="hide"><input type="text" name="txtSenha" value="<?php echo $senha ?>" id="senha"></p>
         
+        <p class="hide"><input type="text" name="txtConta" id="conta" value="<?php echo $id_tipo_conta ?>"></p>
         <p class="hide"><input type="text" name="txtTipo" id="tipoConta"></p>
         
         <p>
             <input type="submit" name="btnAlterar" value="Salvar" class="botao desabilitado" disabled id="salvar">
-            <a href="perfil-filiado.php"> Cancelar </a>
+            <a href="perfil-filiado<?php echo $php ?>"> Cancelar </a>
         </p>
     
     </form>
@@ -582,7 +586,7 @@
                 
             }
             
-            $('#senhaDigit').focusout(function(){
+           function Senha(){
                 
                 senha = $('#senha').val();
                 senhaDigit = $('#senhaDigit').val();
@@ -593,10 +597,25 @@
                     document.getElementById('salvar').disabled = ""; 
                     $('#salvar').removeClass('desabilitado');
                 }else{
+                    document.getElementById('salvar').disabled = "disabled"; 
+                    $('#salvar').addClass('desabilitado');
+                }
+                
+            }
+            
+            $('#senhaDigit').focusout(function(){
+                
+                senha = $('#senha').val();
+                senhaDigit = $('#senhaDigit').val();
+                
+                if(senhaDigit != senha){
                     $('#alerta').css('visibility', 'visible');
+                    document.getElementById('salvar').disabled = "disabled"; 
+                    $('#salvar').addClass('desabilitado');
                 }
                 
             });
+            
             
         </script>
     

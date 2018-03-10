@@ -1,4 +1,5 @@
 <?php
+    require_once('view/extencao.php');
     session_start();
 ?>
 <!DOCTYPE html>
@@ -62,17 +63,17 @@
                 
                 <p class="alerta"> (SE VOCÊ TIVER MAIS DE 18 ANOS) </p>
                 <div class="termos"> 
-                    Ao entrar no site você concorda com os <a href="sobre-o-site.php"> Termos de uso </a>
+                    Ao entrar no site você concorda com os <a href="sobre-o-site<?php echo $php ?>"> Termos de uso </a>
                     do site
                 </div>
             </div>
             
             <div id="menu_index">
                 <div id="fazer_login" <?php echo $imagem[1] ?>> <?php echo $msg ?> </div>
-                <div id="ir_site" <?php echo $imagem[2] ?>><a href="inicio"> Ir para o site </a></div>
-                <div id="ver_homens" <?php echo $imagem[3] ?>><a href="inicio?#homens"> Homens </a></div>
-                <div id="ver_mulheres" <?php echo $imagem[4] ?>><a href="inicio?#mulheres"> Mulheres </a></div>
-                <div id="seja_filiado" <?php echo $imagem[5] ?>><a href="seja-filiado"> Seja um dos nossos filiados </a></div>
+                <div id="ir_site" <?php echo $imagem[2] ?>><a href="inicio<?php echo $php ?>"> Ir para o site </a></div>
+                <div id="ver_homens" <?php echo $imagem[3] ?>><a href="inicio<?php echo $php ?>?#homens"> Homens </a></div>
+                <div id="ver_mulheres" <?php echo $imagem[4] ?>><a href="inicio<?php echo $php ?>?#mulheres"> Mulheres </a></div>
+                <div id="seja_filiado" <?php echo $imagem[5] ?>><a href="seja-filiado<?php echo $php ?>"> Seja um dos nossos filiados </a></div>
             </div>
             
 		</div>

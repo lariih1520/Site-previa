@@ -200,7 +200,7 @@
         ?>
         
             <li>
-                <a href="perfil-filiado.php?codigo=<?php echo $resp[$cont]->id ?>">
+                <a href="perfil-filiado<?php echo $php ?>?codigo=<?php echo $resp[$cont]->id ?>">
                     <span class="perfil_sugestao">
                          <p> Nome: <?php echo $resp[$cont]->nome ?></p>
                          <p> Estado: <?php echo $resp[$cont]->uf ?></p>

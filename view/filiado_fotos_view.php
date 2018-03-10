@@ -33,7 +33,7 @@
             if(!empty($_GET['editar'])){
     ?>
             <!--     Editar foto do perfil      -->
-            <form id="formulario" method="post" enctype="multipart/form-data" action="router.php?controller=acompanhante&modo=perfil&id=<?php echo $id ?>" class="content_perfil">
+            <form id="formulario" method="post" enctype="multipart/form-data" action="router<?php echo $php ?>?controller=acompanhante&modo=perfil&id=<?php echo $id ?>" class="content_perfil">
                 <div class="img_perfil" id="ver">
                     <img src="<?php echo $res ?>" alt="Editar foto de perfil">
                 </div>
@@ -75,7 +75,7 @@
     ?>
 
     <!-- cadastrar foto do perfil se ainda não existir -->
-    <form id="formulario" method="post" enctype="multipart/form-data" action="router.php?controller=acompanhante&modo=perfil&id=<?php echo $id ?>" class="content_perfil">
+    <form id="formulario" method="post" enctype="multipart/form-data" action="router<?php echo $php ?>?controller=acompanhante&modo=perfil&id=<?php echo $id ?>" class="content_perfil">
         <div class="img_perfil" id="ver">
             
         </div>
@@ -117,7 +117,7 @@
             
             if(!empty($_GET['editar'])){
     ?>
-            <form id="frm<?php echo $cont ?>" method="post" enctype="multipart/form-data" action="router.php?controller=acompanhante&modo=foto&id=<?php echo $id ?>&name=fl<?php echo $cont; ?>&editar=<?php echo $result[$cont]->id_midia; ?>" class="imgs_filiado">
+            <form id="frm<?php echo $cont ?>" method="post" enctype="multipart/form-data" action="router<?php echo $php ?>?controller=acompanhante&modo=foto&id=<?php echo $id ?>&name=fl<?php echo $cont; ?>&editar=<?php echo $result[$cont]->id_midia; ?>" class="imgs_filiado">
                 <div class="img" id="ver<?php echo $cont ?>">
                     <img src="<?php echo $result[$cont]->foto ?>" alt="Editar foto">
                 </div>
@@ -165,7 +165,7 @@
         $cont = 0;
         while($cont < $fotos){
     ?>
-        <form id="frm<?php echo $cont ?>" method="post" enctype="multipart/form-data" action="router.php?controller=acompanhante&modo=foto&id=<?php echo $id ?>&name=fl<?php echo $cont; ?>" class="imgs_filiado">
+        <form id="frm<?php echo $cont ?>" method="post" enctype="multipart/form-data" action="router<?php echo $php ?>?controller=acompanhante&modo=foto&id=<?php echo $id ?>&name=fl<?php echo $cont; ?>" class="imgs_filiado">
             <div class="img" id="ver<?php echo $cont ?>">
                 
             </div>
@@ -328,6 +328,6 @@
 
 
     <!-- Botão que redirecioan para o perfil -->
-    <p class="botao"><a href="perfil-filiado.php"> Concluido </a></p>
+    <p class="botao"><a href="perfil-filiado<?php echo $php ?>"> Concluido </a></p>
 
 

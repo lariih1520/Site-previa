@@ -40,7 +40,7 @@ class Plano{
                 $result[$cont]->nmrVideos = $rs['video'];
                 
                 $sql = 'select count(*) as nmr from tbl_filiado 
-                    where id_tipo_conta = '.$result[$cont]->id;
+                    where id_tipo_conta = '.$result[$cont]->id.' and conta_ativa = 1';
                 
                 if($slct = mysqli_query($this->conect, $sql)){
                     

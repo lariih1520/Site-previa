@@ -127,7 +127,7 @@
             }
                 
         ?>
-        <form action="router.php?controller=cliente&modo=alterar&id=<?php echo $id ?>" method="post" enctype="multipart/form-data">
+        <form action="router<?php echo $php ?>?controller=cliente&modo=alterar&id=<?php echo $id ?>" method="post" enctype="multipart/form-data">
             <div id="foto_perfil">
                 <img src="<?php echo $foto ?>" alt="foto de perfil usuário">
             </div>
@@ -269,7 +269,7 @@
                         while($cont < count($resp)){   
                 ?>
                 <li>
-                    <a href="perfil-filiado.php?codigo=<?php echo $resp[$cont]->id ?>">
+                    <a href="perfil-filiado<?php echo $php ?>?codigo=<?php echo $resp[$cont]->id ?>">
                         <span class="perfil_sugestao">
                              <p> Nome:   <?php echo $resp[$cont]->nome ?> </p>
                              <p> Estado: <?php echo $resp[$cont]->uf ?> </p>

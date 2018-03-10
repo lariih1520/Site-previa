@@ -3,7 +3,7 @@
     include_once('controller/filiado_controller.php');
 
     if(empty($_GET) && empty($_SESSION['id_filiado'])){
-        header('location:login.php?perfil=filiado');
+        header('location:login'.$php.'?perfil=filiado');
     }
 
     if(isset($_GET['codigo'])){

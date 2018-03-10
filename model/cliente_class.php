@@ -34,6 +34,8 @@ class Cliente{
     }
     
     public function Login($cliente){
+        require_once('view/extencao.php');
+        
         $sql = "select * from tbl_cliente where email = '".$cliente->email."' ";
         $sql = $sql." and senha = '".$cliente->senha."'";
         
@@ -44,9 +46,6 @@ class Cliente{
             while($rs = mysqli_fetch_array($select)){
                 $id = $rs['id_cliente'];
             }
-            if(empty($_SESSION)){
-                session_start();
-            }
             
             $_SESSION['id_cliente'] = $id;
             
@@ -54,10 +53,10 @@ class Cliente{
             
             if(!empty($_GET['redirect'])){
                 $cod = $_GET['redirect'];
-                $redirect = 'contratar.php?codigo='.$cod;
+                $redirect = 'contratar'.$php.'?codigo='.$cod;
                 
             }else{
-                $redirect = 'perfil-cliente.php';
+                $redirect = 'perfil-cliente'.$php;
             }
             
             ?>
@@ -71,10 +70,10 @@ class Cliente{
             mysqli_close($this->conect);
             if(!empty($_GET['redirect'])){
                 $cod = $_GET['redirect'];
-                $link = 'login.php?erro-ao-logar&redirect=contrate&codigo='.$cod;
+                $link = 'login'.$php.'?erro-ao-logar&redirect=contrate&codigo='.$cod;
                     
             }else{
-                $link = 'login.php?erro-ao-logar';
+                $link = 'login'.$php.'?erro-ao-logar';
             }
             
         ?>
@@ -146,6 +145,7 @@ class Cliente{
     }
     
     public function InsertCliente($cliente){
+        require_once('view/extencao.php');
         
         $sql = "select * from tbl_cliente where email = '".$cliente->email."' ";
         
@@ -155,7 +155,7 @@ class Cliente{
             
         ?>
             <script>
-                window.location.href = "seja-cliente.php?erro=email";
+                window.location.href = "seja-cliente<?php echo $php ?>?erro=email";
             </script>
 
         <?php 
@@ -181,7 +181,7 @@ class Cliente{
                         
                         ?>
                             <script>
-                                window.location.href = "perfil-cliente.php";
+                                window.location.href = "perfil-cliente<?php echo $php ?>";
                             </script>
 
                         <?php 
@@ -195,7 +195,7 @@ class Cliente{
                     
                     ?>
                         <script>
-                            window.location.href = "login.php?perfil=cliente";
+                            window.location.href = "login<?php echo $php ?>?perfil=cliente";
                         </script>
 
                     <?php 
@@ -209,7 +209,7 @@ class Cliente{
                 ?>
 
                 <script>
-                    window.location.href = "filiado-fotos.php";
+                    window.location.href = "filiado-fotos<?php echo $php ?>";
                 </script>
 
                 <?php 
@@ -224,6 +224,7 @@ class Cliente{
     }
     
     public function UpdateCliente($cliente){
+        require_once('view/extencao.php');
         
         $sql = "select * from tbl_cliente where email = '".$cliente->email."' and id_cliente != ".$cliente->id;
         
@@ -257,7 +258,7 @@ class Cliente{
                     mysqli_close($this->conect);
         ?>
                     <script>
-                        window.location.href = "perfil-cliente.php?editar=sucesso";
+                        window.location.href = "perfil-cliente<?php echo $php ?>?editar=sucesso";
                     </script>
         <?php
                     
@@ -266,7 +267,7 @@ class Cliente{
                 }else{
         ?>
                     <script>
-                        window.location.href = "perfil-cliente.php?perfil=cliente&erro";
+                        window.location.href = "perfil-cliente<?php echo $php ?>?perfil=cliente&erro";
                     </script>
         <?php
                     //header('location:perfil-cliente.php?perfil=cliente&erro');
@@ -296,7 +297,7 @@ class Cliente{
                             
                             ?>
                                 <script>
-                                    window.location.href = "perfil-cliente.php?editar=sucesso";
+                                    window.location.href = "perfil-cliente<?php echo $php ?>?editar=sucesso";
                                 </script>
 
                             <?php 
@@ -320,7 +321,7 @@ class Cliente{
                     
                     ?>
                         <script>
-                            window.location.href = "perfil-cliente.php?editar=erro";
+                            window.location.href = "perfil-cliente<?php echo $php ?>?editar=erro";
                         </script>
 
                     <?php 

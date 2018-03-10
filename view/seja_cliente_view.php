@@ -5,7 +5,7 @@
     ?>
     <div id="divisao">
     <div class="titulo"> Cadastre-se para contratar um dos nossos aompanhantes! </div>
-    <form method="post" action="router.php?controller=cliente&modo=inserir" id="frm" class="cont_alinhar">
+    <form method="post" action="router<?php echo $php ?>?controller=cliente&modo=inserir" id="frm" class="cont_alinhar">
         <ul class="lst_cadastrar_dados">
             <li> 
                  <p> Nome:</p>
@@ -131,7 +131,7 @@
                         
                         echo('
                             <span class="botao_ok">
-                                <a href="seja-cliente.php"> OK </a>
+                                <a href="seja-cliente<?php echo $php ?>"> OK </a>
                             </span>
                         </p>');
                         

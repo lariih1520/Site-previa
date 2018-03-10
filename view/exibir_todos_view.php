@@ -188,7 +188,7 @@
             $uf   = $rs[$cont]->uf;
 ?>
     <div class="acompanhante">
-        <a href="perfil-filiado.php?codigo=<?php echo $id ?>">
+        <a href="perfil-filiado<?php echo $php ?>?codigo=<?php echo $id ?>">
             <img src="<?php echo $foto ?>">
             <p> Nome:<?php echo $nome ?></p>
             <p> Estado: <?php echo $uf ?> </p>

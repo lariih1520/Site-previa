@@ -47,7 +47,37 @@ class Acompanhante{
     public function SelectFiliados(){
         $sql = 'select fi.*, pf.cpf from tbl_filiado as fi
                 left join tbl_pagamento_filiado as pf
-                on fi.id_filiado = pf.id_filiado where conta_ativa = 1';
+                on fi.id_filiado = pf.id_filiado where fi.conta_ativa = 1';
+        
+        if($select = mysqli_query($this->conect, $sql)){
+            
+            $cont = 0;
+            
+            while($rs = mysqli_fetch_array($select)){
+                
+                $result[] = new Acompanhante();
+            
+                $result[$cont]->nome = $rs['nome'];
+                $result[$cont]->id_filiado = $rs['id_filiado'];
+                $result[$cont]->nasc = $rs['nasc'];
+                $result[$cont]->uf = $rs['uf'];
+                $result[$cont]->cobrar = $rs['cobrar'];
+                $result[$cont]->cpf = base64_decode($rs['cpf']);
+            
+                $cont++;
+            }
+            
+        }else{
+            $result = false;
+        }
+        
+        return $result;
+    }
+ 
+    public function SelectFiliadosDesativados(){
+        $sql = 'select fi.*, pf.cpf from tbl_filiado as fi
+                left join tbl_pagamento_filiado as pf
+                on fi.id_filiado = pf.id_filiado where fi.conta_ativa = 0';
         
         if($select = mysqli_query($this->conect, $sql)){
             
@@ -99,9 +129,18 @@ class Acompanhante{
                 $filiado->senha = $rs['senha'];
                 $filiado->celular1 = $rs['celular1'];
                 $filiado->celular2 = $rs['celular2'];
-                $filiado->sexo = $rs['sexo'];
+                
+                if($rs['sexo'] == '1'){
+                    $filiado->sexo = 'Feminino';
+                }else{
+                    $filiado->sexo = 'Masculino';
+                }
                 $filiado->apresentacao = $rs['apresentacao'];
-                $filiado->foto_perfil = $rs['foto_perfil'];
+                if($rs['foto_perfil'] == '-'){
+                    $filiado->foto_perfil = null;
+                }else{
+                    $filiado->foto_perfil = $rs['foto_perfil'];
+                }
                 $filiado->altura = $rs['altura'];
                 $filiado->peso = $rs['peso'];
                 $filiado->conta_ativa = $rs['conta_ativa'];
@@ -119,7 +158,14 @@ class Acompanhante{
                 $filiado->cidadeCard = $rs['cidadeCard'];
                 $filiado->ufCard = $rs['ufCard'];
                 $filiado->cep = $rs['cep'];
-                $filiado->desconto = $rs['desconto'];
+                $filiado->excluido = $rs['excluido'];
+                
+                if($rs['desconto'] == null){
+                    $filiado->desconto = 0;
+                }else{
+                    $filiado->desconto = $rs['desconto'];
+                }
+                
                 $filiado->cpf = base64_decode($rs['cpf']);
                 
             }

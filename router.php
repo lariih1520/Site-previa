@@ -8,6 +8,7 @@
 switch ($controller) {
 
     case 'cliente':
+        
         switch ($modo){
             case 'inserir':
                 session_start();
@@ -41,6 +42,7 @@ switch ($controller) {
     break;
         
     case 'acompanhante':
+        
         switch ($modo){
             case 'inserir':
                 session_start();

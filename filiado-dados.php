@@ -1,11 +1,26 @@
 <?php
+    include_once('controller/filiado_controller.php');
+    require_once('view/extencao.php');
     session_start();
 
     if(empty($_SESSION['id_filiado'])){
-        header('location:login.php?login=acompanhante');
+        header('location:login'.$php.'?login=acompanhante');
     }
+
     if(empty($_GET['editar'])){
-        header('location:perfil-filiado.php');
+        header('location:perfil-filiado'.$php);
+    }
+
+    if(isset($_GET['editar']) and $_GET['editar'] == 'tipo-conta'){
+        $controller = new ControllerAcompanhante();
+        $pagMes = $controller->getStatusPagamento();
+
+        $dia = date('d');
+        
+        if($dia == 10 or $pagMes > 1 ){
+            header('location:perfil-filiado'.$php);
+        }
+        
     }
 ?>
 <!DOCTYPE html>
@@ -30,7 +45,6 @@
             <!-- conteudo -->
             <section id="conteudo">
             <?php
-                include_once('controller/filiado_controller.php');
                 
                 $controller = new ControllerAcompanhante();
                 $rs = $controller->BuscarDadosUsuario();

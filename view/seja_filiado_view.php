@@ -270,7 +270,7 @@
 
     <h1 class="titulo"> Escolha o tipo da conta! </h1>
     <div class="content_dados_2">
-        <form action="router.php?controller=acompanhante&modo=inserir" method="post">
+        <form action="router<?php echo $php ?>?controller=acompanhante&modo=inserir" method="post">
             
             <p class="sobre_pag"> Escolha uma das contas a seguir: <br>
             

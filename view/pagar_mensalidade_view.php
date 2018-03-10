@@ -5,7 +5,7 @@
     $dados = new ControllerAcompanhante();
     $rs = $dados->BuscarDadosPag();
 
-    if($rs != null){
+    if($rs != null and !empty($_SESSION['id_filiado'])){
         $id_transfer = $rs->id_transfer;
         $nome = $rs->nome;
         $sobrenome = $rs->sobrenome;
@@ -26,7 +26,13 @@
 
     }else{
         /*** Se não houverem dados o usuário é redirecionado para a página para preenche-los ***/
-        header('location:filiado-dados.php?editar=pagar-private');
+        $redirect = 'filiado-dados'.$php.'?editar=pagar-private';
+        ?>
+            <script>
+                window.location.href = "<?php echo $redirect ?>";
+            </script>
+        <?php
+        //header('location:filiado-dados'.$php.'?editar=pagar-private');
     }
  
 
@@ -293,16 +299,16 @@
         
 <!--
 ************************ CLASSES REFERENTES AO PAGSEGURO **************************
-
+ --> 
     <script type="text/javascript" src=
     "https://stc.pagseguro.uol.com.br/pagseguro/api/v2/checkout/pagseguro.directpayment.js">
-    </script> --> 
+    </script>
     
-    <!--    Em Sandbox:-->
+    <!--    Em Sandbox:
     <script src=
     "https://stc.sandbox.pagseguro.uol.com.br/pagseguro/api/v2/checkout/pagseguro.directpayment.js">
     </script>
-    
+    -->
     <script>
 
     function SetarIdSession(){

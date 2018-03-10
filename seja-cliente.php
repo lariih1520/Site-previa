@@ -1,4 +1,5 @@
 <?php
+    require_once('view/extencao.php');
     session_start();
 ?>
 <!DOCTYPE html>
