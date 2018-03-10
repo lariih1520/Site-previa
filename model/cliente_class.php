@@ -152,7 +152,14 @@ class Cliente{
         mysqli_query($this->conect, $sql);
         
         if (mysqli_affected_rows($this->conect) > 0) {
-            header('location:seja-cliente.php?erro=email');
+            
+        ?>
+            <script>
+                window.location.href = "seja-cliente.php?erro=email";
+            </script>
+
+        <?php 
+            //header('location:seja-cliente.php?erro=email');
             
         }else{
         
@@ -169,24 +176,45 @@ class Cliente{
                     
                     while($rs = mysqli_fetch_array($slct)){
                         $id = $rs['id_cliente'];
-                        /******
-                            Codigo da session aqui
-                        ******/
-                        
+                        $_SESSION['id_cliente'] = $id;
                         mysqli_close($this->conect);
-                        header('location:perfil-cliente.php?codigo='.$id);
+                        
+                        ?>
+                            <script>
+                                window.location.href = "perfil-cliente.php";
+                            </script>
+
+                        <?php 
+                        
+                        //header('location:perfil-cliente.php?codigo='.$id);
                     }
                     
                 }else{
                     
                     mysqli_close($this->conect);
-                    header('location:login.php?perfil=cliente');
+                    
+                    ?>
+                        <script>
+                            window.location.href = "login.php?perfil=cliente";
+                        </script>
+
+                    <?php 
+                    
+                    //header('location:login.php?perfil=cliente');
                 }
                 
 
             }else{
-              //header('location:index.php');
-                echo $sql;
+                
+                ?>
+
+                <script>
+                    window.location.href = "filiado-fotos.php";
+                </script>
+
+                <?php 
+                //header('location:index.php');
+                //echo $sql;
             }
                     
             
@@ -202,7 +230,15 @@ class Cliente{
         mysqli_query($this->conect, $sql);
         
         if (mysqli_affected_rows($this->conect) > 0) {
-            header('location:seja-cliente.php?erro=email');
+            
+        ?>
+            <script>
+                window.location.href = "seja-cliente.php?erro=email";
+            </script>
+
+        <?php 
+            
+            //header('location:seja-cliente.php?erro=email');
             
         }else{
             
@@ -257,7 +293,15 @@ class Cliente{
                         if(mysqli_query($this->conect, $sql)){
                             
                             mysqli_close($this->conect);
-                            header('location:perfil-cliente.php?editar=sucesso');
+                            
+                            ?>
+                                <script>
+                                    window.location.href = "perfil-cliente.php?editar=sucesso";
+                                </script>
+
+                            <?php 
+                            
+                            //header('location:perfil-cliente.php?editar=sucesso');
 
                         }else{
                             mysqli_close($this->conect);
@@ -273,62 +317,15 @@ class Cliente{
                 }else{
                     mysqli_close($this->conect);
                     echo "<script> alert('Erro na extensão do arquivo'); </script>";
+                    
+                    ?>
+                        <script>
+                            window.location.href = "perfil-cliente.php?editar=erro";
+                        </script>
+
+                    <?php 
                 }
             }
-            
-        }
-        
-    }
-    
-    public function SelectEstados(){
-        
-        if ($slct = mysqli_query($this->conect, "select * from tbl_estado where id_estado < 10") ) {
-           
-            $conta = 0;
-            while($rst = mysqli_fetch_array($slct)){
-                
-                $estado[] = new Cliente();
-                
-                $estado[$conta]->id_estado = $rst['id_estado'];
-                $estado[$conta]->codigo_uf = $rst['codigo_uf'];
-                $estado[$conta]->estado = $rst['estado'];
-                $estado[$conta]->uf = $rst['uf'];
-               
-                $conta++;
-                
-            }
-            return $estado;
-            
-        } else {
-            return false;
-            
-        }
-    }
-    
-    public function SelectCidade(){
-        $sql = "select * from tbl_cidade";
-        
-        if($select = mysqli_query($this->conect, $sql)){
-           
-            $cont = 0;
-            while($rs = mysqli_fetch_array($select)){
-                
-                $estado = new Cliente();
-                
-                $estado[$cont]->id_cidade = $rs['id_cidade'];
-                $estado[$cont]->cidade = $rs['cidade'];
-                $estado[$cont]->uf = $rs['uf'];
-                
-                $cont++;
-            }
-            
-            mysqli_close($this->conect);
-            return $estado;
-            
-        }else{
-            
-            mysqli_close($this->conect);
-            return false;
             
         }
         

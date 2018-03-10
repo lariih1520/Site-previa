@@ -102,7 +102,7 @@
                     <option value="0"> Selecione </option>
                     <option value="1"> Mulheres </option>
                     <option value="2"> Homens </option>
-                    <option value="3"> Os dois </option>
+                    <option value="3"> Homens e mulheres </option>
                 </select>
             </li>
             <li>

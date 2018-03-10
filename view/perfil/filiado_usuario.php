@@ -29,6 +29,7 @@
         $valor = $rs->valor;
         $qtd_fotos = $rs->qtd_fotos;
         $qtd_videos = $rs->qtd_videos;
+        $acompanha = $rs->acompanha;
         
     }
 
@@ -37,7 +38,13 @@
     
     $pagMes = $controller->getStatusPagamento();
         
-    if($pagMes == 1 and $diah == '10'){
+    if($pagMes == 'null' and $diah == '10'){
+
+        $mensalidade = '<div class="mensalidade">
+        Não esqueça de <a href="filiado-dados.php?editar=pagar-private">efetuar o pagamento </a> referente à este mês! Valor: '.$valor.',00
+        </div>';
+
+    }elseif($pagMes == 1){
 
         $mensalidade = '<div class="mensalidade">
         Não esqueça de <a href="filiado-dados.php?editar=pagar-private">efetuar o pagamento </a> referente à este mês! Valor: '.$valor.',00
@@ -89,6 +96,7 @@
             <li> <p> Peso: </p>         <?php echo $peso ?> Kg </li>
             <li> <p> Cidade: </p>       <?php echo $cidade ?> </li>
             <li> <p> Estado: </p>       <?php echo $estado ?> </li>
+            <li> <p> Atente: </p>       <?php echo $acompanha ?> </li>
         <li><p>Valor para contratar:</p><?php echo $cobrar ?>,00 </li>
         </ul>
         <div class="apresentacao">

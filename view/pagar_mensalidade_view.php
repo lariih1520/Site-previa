@@ -87,7 +87,7 @@
                 
             }
             
-            $pagMes = $controller->getStatusPagamento();
+            $pagMes = $dados->getStatusPagamento();
             if($pagMes > 1){
                 $valor = $pagMes * $valor;
             }
@@ -96,6 +96,8 @@
             if($res != null){
                 $valor = $res->valor - $desconto;
             }
+            
+            $id_pag = $_SESSION['id_filiado'];
             
             $dados = [
             
@@ -118,7 +120,7 @@
                 'billingAddressPostalCode' => $cep,
                 'billingAddressCity' => $cidade,
                 'billingAddressState' => $estado,
-                'reference' => 'mensal'.$id_transfer.date('y-m-d'),
+                'reference' => 'mensal'.$id_pag.date('y-m-d'),
                 'itemAmount1' => $valor.'.00',
             ];
                 
@@ -126,7 +128,7 @@
             $retorno = $pag->efetuaPagamentoCartao($dados);
 
             if($retorno != null){
-                var_dump($retorno);
+                //var_dump($retorno);
                 
                 $dadosPagBd = [
                     'date' => date('Y/m/d H:i'),
@@ -136,18 +138,30 @@
                     'referencia' => $dados['reference']
                 ];
                 
-                $controller = new ControllerAcompanhante();
-                $resp = $controller->InserirMensalidadePag('card', $dadosPagBd);
+                //var_dump($dadosPagBd);
                 
-                if($resp == true){
+                if($dadosPagBd['referencia'] != null){
+                
+                    $controller = new ControllerAcompanhante();
+                    $resp = $controller->InserirMensalidadePag('card', $dadosPagBd);
+                
+                    if($resp == true){
             ?>
                 <script>
                     window.location.href = "perfil-filiado.php?Sucesso=sucesso";
                 </script>
 
             <?php
+                    }
+                }else{
+            ?>
+                <script>
+                    alert('Houve um erro de processamento de dados');
+                    window.location.href = "perfil-filiado.php?Sucesso=sucesso";
+                </script>
+
+            <?php
                 }
-                
             }
                 
         /************ Se o pagamento for realizado via cartão ***********/
@@ -155,18 +169,14 @@
             
             $hash = $_POST['txtHash'];
             
-            $rspst = $dados->BuscarDadosPag();
-            
-            if($rspst != null){
-                $id_transfer = $rspst->id_transfer;
-            }
+            $id_pag = $_SESSION['id_filiado'];
             
             $rsp = $dados->BuscarDadosUsuario();
             if($rsp != null){
                 $email = $rsp->email;
             }
             
-            pagMes = $controller->getStatusPagamento();
+            $pagMes = $dados->getStatusPagamento();
             if($pagMes > 1){
                 $valor = $pagMes * $valor;
             }
@@ -183,7 +193,7 @@
                 'senderPhone' => $telefone,
                 'senderEmail' => $email,
                 'senderCPF' => $cpf,
-                'reference' => 'mensal'.$id_transfer.date('y-m-d'),
+                'reference' => 'mensal'.$id_pag.date('y-m-d'),
                 'itemAmount' => $valor.'.00',
             ];
             
@@ -206,7 +216,9 @@
             ?>
 
                 <script>
+                    setTimeout(function(){
                     window.location.href = "<?php echo $retorno['paymentLink'] ?>";
+                    }, 2000);            
                 </script>
 
             <?php
@@ -230,10 +242,12 @@
         $(document).ready(function() {
             
             SetarIdSession();
-
-            GetBrand();
-
-            GerarToken();
+            setTimeout(function(){
+                GetBrand();
+            }, 2000);            
+            setTimeout(function(){
+                GerarToken();
+            }, 2000);
             
             setTimeout(function(){
                 GerarIdentificador();
@@ -279,16 +293,16 @@
         
 <!--
 ************************ CLASSES REFERENTES AO PAGSEGURO **************************
- --> 
+
     <script type="text/javascript" src=
     "https://stc.pagseguro.uol.com.br/pagseguro/api/v2/checkout/pagseguro.directpayment.js">
-    </script>
+    </script> --> 
     
-    <!--    Em Sandbox:
+    <!--    Em Sandbox:-->
     <script src=
     "https://stc.sandbox.pagseguro.uol.com.br/pagseguro/api/v2/checkout/pagseguro.directpayment.js">
     </script>
-    -->
+    
     <script>
 
     function SetarIdSession(){

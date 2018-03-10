@@ -20,6 +20,18 @@
             
         }
     
+    if(!empty($_GET['erro'])){
+    ?>
+    <?php
+        if($_GET['erro'] == 'contaexcluida'){
+            echo ("<div id='erro'> Esta conta foi excluida </div>
+                   <p class='recuperar'> Deseja recuperá-la? envie um e-mail para <i>tonight@tonight.net.br</i> </p>
+            ");
+
+        }elseif($_GET['erro'] == 'login'){
+            echo ("<div id='erro'> Login ou senha incorretos </div>");
+        }
+    }
     ?>
 
     <form action="router.php?controller=<?php echo($modo); ?>&modo=logar<?php echo $redirect ?>" method="post" id="login">

@@ -57,11 +57,6 @@ class ControllerAcompanhante{
             $cont++;
         }
         
-        if($n != 44){
-            //echo $n;
-            header('location:filiado-dados.php?Erro=cpf');
-        }
-        
         $dadosPag->cpf = base64_encode($_POST['txtCpf']);
         
         if($_GET['forma'] == 'card'){

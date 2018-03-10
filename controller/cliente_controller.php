@@ -169,25 +169,6 @@ class ControllerCliente{
         
     }
     
-    public function BuscarEstados(){
-        require_once('model/cliente_class.php');
-        
-        $cliente_classe = new Cliente();
-        $result = $cliente_classe->SelectEstados();
-       
-        return $result;
-    }
-    
-    public function BuscarCidade(){
-        require_once('model/cliente_class.php');
-        
-        $cliente_class = new Cliente();
-        $result = $cliente_class->SelectCidade();
-        
-        return $result;
-        
-    }
-    
     public function BuscarSugestoes($id){
         require_once('model/cliente_class.php');
         

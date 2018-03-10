@@ -48,6 +48,7 @@ class Acompanhante{
     public $formaPagar;
     public $id_transfer;
     public $id_midia;
+    public $excluido;
     
     public function __construct(){
         require_once('db_class.php');
@@ -102,7 +103,7 @@ class Acompanhante{
                 }
             }else{
     ?>
-                <script> window.location.href = "login.php?Conta-excluida"; </script>
+                <script> window.location.href = "login.php?login=acompanhante&erro=contaexcluida"; </script>
 
     <?php
         
@@ -113,7 +114,7 @@ class Acompanhante{
             
         ?>
             <script>
-                window.location.href = "login.php?erro-ao-logar";
+                window.location.href = "login.php?login=acompanhante&erro=login";
             </script>
         <?php
             
@@ -224,6 +225,7 @@ class Acompanhante{
                 $filiado->dia = $dia;
                 $filiado->mes = $mes;
                 $filiado->ano = $ano;
+                $filiado->excluido = $rs['excluido'];
                 
             }
             
@@ -888,7 +890,7 @@ class Acompanhante{
             if($ant == 1){ $sql = $sql.' and '; }
             else{ $ant = 1; $sql = $sql.' where '; }
             
-            $sql = $sql.' acompanha = '.$filtro['acompanha'];
+            $sql = $sql.' acompanha = '.$filtro['acompanha'].' or acompanha = 3';
         }
         
         if($ant == 1){ $sql = $sql.' and '; }
@@ -1187,6 +1189,10 @@ class Acompanhante{
         
         if(mysqli_query($this->conect, $sql)){
             
+            $sql = "update tbl_pagamento_filiado set desconto = 0 where id_filiado = ".$id;
+            
+            mysqli_query($this->conect, $sql);
+            
             return true;
             
         }else{
@@ -1206,7 +1212,7 @@ class Acompanhante{
             }
             $sql = 'update tbl_mensalidade set status = '.$status.' where id_transeferencia = "'.$code.'" ';
         
-            mysqli_query($this->conect, $sql)
+            mysqli_query($this->conect, $sql);
 
         }
         //TO DO: CRIAR UMA TABELA DE NOTIFICAÇÃO DE ERROS
@@ -1219,7 +1225,7 @@ class Acompanhante{
         $sql = $sql." order by data_hora desc limit 1";
                    
         if($select = mysqli_query($this->conect, $sql)){
-            $tempo = null;
+            $tempo = 'null';
             while($rs = mysqli_fetch_array($select)){
                 $tempo = $rs['tempo'];
             }

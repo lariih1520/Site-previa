@@ -124,7 +124,7 @@
                 <option value="2" <?php echo $sm ?>> Masculino </option>
             </select>
         </li>
-        <li> Acompanha:
+        <li> Atende:
             <select name="slc_acompanha">
                 <option value="0"> Selecione </option>
                 <option value="1" <?php echo $am ?>> Mulheres </option>

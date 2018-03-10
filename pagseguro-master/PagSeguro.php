@@ -36,8 +36,8 @@ class Pagamento{
 
     public function efetuaPagamentoCartao($dados) {
 
-		$data['token'] ='2C2D9B3A420B4CBFB96E39ACD3DA30DA'; //token produção
-		//$data['token'] ='894B0178743C4806BE5ADA11F1129820'; //token sandbox 
+		//$data['token'] ='2C2D9B3A420B4CBFB96E39ACD3DA30DA'; //token produção
+		$data['token'] ='894B0178743C4806BE5ADA11F1129820'; //token sandbox 
 		$data['paymentMode'] = 'default';
 		$data['senderHash'] = $dados['hash']; //gerado via javascript
 		$data['creditCardToken'] = $dados['creditCardToken']; //gerado via javascript
@@ -75,8 +75,8 @@ class Pagamento{
 
 		$data = http_build_query($data);
         
-        $url = 'https://ws.pagseguro.uol.com.br/v2/transactions';
-		//$url = 'https://ws.sandbox.pagseguro.uol.com.br/v2/transactions'; //URL de teste
+        //$url = 'https://ws.pagseguro.uol.com.br/v2/transactions';
+		$url = 'https://ws.sandbox.pagseguro.uol.com.br/v2/transactions'; //URL de teste
 
 		$curl = curl_init();
 
@@ -113,8 +113,8 @@ class Pagamento{
 
 	public function efetuaPagamentoBoleto($dados) {
 
-		$data['token'] ='2C2D9B3A420B4CBFB96E39ACD3DA30DA'; //token produção
-		//$data['token'] ='894B0178743C4806BE5ADA11F1129820'; //token sandbox
+		//$data['token'] ='2C2D9B3A420B4CBFB96E39ACD3DA30DA'; //token produção
+		$data['token'] ='894B0178743C4806BE5ADA11F1129820'; //token sandbox
 		$data['paymentMode'] = 'default';
 		$data['hash'] = $dados['hash'];
 		$data['paymentMethod'] = 'boleto';
@@ -135,8 +135,8 @@ class Pagamento{
 		$emailPagseguro = "bellussiroger1@gmail.com";
 
 		$data = http_build_query($data);
-		$url = 'https://ws.pagseguro.uol.com.br/v2/sessions'; //URL real
-		//$url = 'https://ws.sandbox.pagseguro.uol.com.br/v2/transactions'; //URL de teste
+		//$url = 'https://ws.pagseguro.uol.com.br/v2/sessions'; //URL real
+		$url = 'https://ws.sandbox.pagseguro.uol.com.br/v2/transactions'; //URL de teste
 
 		$curl = curl_init();
 

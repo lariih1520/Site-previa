@@ -4,8 +4,9 @@
     $controller = new ControllerAcompanhante();
     $rs = $controller->BuscarDadosUsuario();
 
-    if($rs != null){
+    if($rs != null and $rs->excluido == null){
         
+        $deleted = $rs->excluido;
         $foto = $rs->foto;
         $nome = $rs->nome;
         $altura = $rs->altura;
@@ -52,7 +53,6 @@
             $idade = $anos - 1;
         }
 
-    }
 ?>
     <div id="content_perfil">
         <div class="perfil">
@@ -70,7 +70,7 @@
 <!--        DISCOMENTAR QUANDO ESTIVER PRONTO
 
             <div class="contrate">
-                <a href="contratar.php?codigo=<?php echo $id ?>">
+                <a href="contratar.php?codigo=< ?php echo $id ?>">
                     <p class="botao"> Contrate! </p>
                 </a>
             </div>
@@ -86,7 +86,13 @@
             <ul class="lst_dados">
                 <li> Idade:  <?php echo $idade ?></li>
                 <li> Altura: <?php echo $altura ?></li>
-                <li> Peso:   <?php if($peso){ echo $peso; } ?></li>
+                
+                <?php if($peso != null){ ?>
+                
+                <li> Peso:   <?php echo $peso; ?> Kg </li>
+                
+                <?php } ?>
+                
                 <li> Sexo:   <?php echo $sexo ?></li>
                 <li> Valor:  R$ <?php echo $cobrar ?>,00 </li>
                 <li> Etnia:   <?php echo $etnia ?> </li>
@@ -101,7 +107,7 @@
 <!--        DISCOMENTAR QUANDO ESTIVER PRONTO
 
             <div class="contrate">
-                <a href="contratar.php?acompanhante=<?php echo $id ?>">
+                <a href="contratar.php?acompanhante=< ?php echo $id ?>">
                     <p class="botao"> Contrate! </p>
                 </a>
             </div>
@@ -166,7 +172,12 @@
     </div>
 
 <?php
-    
+        
+}else{
+    echo '<p class="conta_null"> Conta inesistente </p>';
+    $sexo = 0;
+    $idetnia = 0;
+}
     if($sexo == "Masculino"){
         $sexo = 2;
     }elseif($sexo == "Feminino"){
@@ -211,4 +222,5 @@
 <?php
               
     }
+
 ?>

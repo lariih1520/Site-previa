@@ -261,7 +261,7 @@
                     include_once('controller/filiado_controller.php');
                     $controller = new ControllerAcompanhante();
                 
-                    $resp = $controller->BuscarFiliadosSexo($nmrenteresse, null, 3);
+                    $resp = $controller->BuscarFiliadosSexo($nmrenteresse, null, 3, null);
                         
                     if($resp != ''){
                         

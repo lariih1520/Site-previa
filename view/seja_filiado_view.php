@@ -4,7 +4,7 @@
     
     $filiado = new Filiado();
     
-    if (empty($_GET['Etapa'])) {
+    if (empty($_GET['etapa'])) {
 ?>
 
     <h1 class="titulo"> Seja um acompanhante e divulgue-se! </h1>

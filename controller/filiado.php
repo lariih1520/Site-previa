@@ -101,11 +101,26 @@ class Filiado{
                 $_SESSION['cobra'] = $cobra;
                 
             }else{
-                header('location:seja-filiado.php?Erro=Senha#erro');
+                   
+            ?>
+                <script>
+                    window.location.href = "seja-filiado.php?Erro=Senha#erro";
+                </script>
+
+            <?php
+                //header('location:seja-filiado.php?Erro=Senha#erro');
             }
             
         }else{
-            header('location:seja-filiado.php?Erro=Idade#erro');
+               
+            ?>
+                <script>
+                    window.location.href = "seja-filiado.php?Erro=Idade#erro";
+                </script>
+
+            <?php
+                
+            //header('location:seja-filiado.php?Erro=Idade#erro');
         }
         
     }

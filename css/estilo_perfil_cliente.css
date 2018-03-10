@@ -25,7 +25,7 @@
     border: solid 1px gray;
 }
 
-#foto_perfil img{ height: 100% !important; }
+#foto_perfil img{ height: 100% !important; max-width: 200px;}
 
 /******** Editar dados do usuário *********/
 #dados{

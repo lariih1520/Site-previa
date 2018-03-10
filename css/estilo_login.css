@@ -3,6 +3,17 @@
 	Objetivo: Estilização da página de Login do site.
  **/
 
+#erro{
+    margin: auto;
+    text-align: center;
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+.recuperar{
+    text-align: center;
+    margin: auto;
+    margin-bottom: 10px;
+}
 #login{
     width: 400px;
     height: 450px;

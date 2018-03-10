@@ -39,8 +39,10 @@
                     $valor = $rs->valor;
                 }
                 
+                $deve = $valor;
+                
                 $pagMes = $controller->getStatusPagamento();
-                if($pagMes > 1){
+                if($pagMes > 1 and $pagMes != 'null'){
                     $deve = $valor * $pagMes;
                 }
                 

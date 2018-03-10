@@ -10,6 +10,7 @@ switch ($controller) {
     case 'cliente':
         switch ($modo){
             case 'inserir':
+                session_start();
                 require_once('model/cliente_class.php');
                 require_once('controller/cliente_controller.php');
                 $controller = new ControllerCliente();
@@ -18,6 +19,7 @@ switch ($controller) {
             break;
                 
             case 'logar':
+                session_start();
                 require_once('model/cliente_class.php');
                 require_once('controller/cliente_controller.php');
                 $autentica_controller = new ControllerCliente();
@@ -26,6 +28,7 @@ switch ($controller) {
             break;
                 
             case 'alterar':
+                session_start();
                 require_once('model/cliente_class.php');
                 require_once('controller/cliente_controller.php');
                 $autentica_controller = new ControllerCliente();
