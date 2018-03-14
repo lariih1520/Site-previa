@@ -6,7 +6,9 @@
     color: black;
     font-size: 22px;
 }
-
+.hide{
+    display: none;
+}
 #content_perfil{
     width: 980px;
     height: 530px;
@@ -14,6 +16,10 @@
     margin-bottom: 10px;
     padding:10px 5px 5px 5px;
     border: solid 1px transparent;
+}
+#addLista{
+    height: 25px;
+    padding-top: px;
 }
 .perfil{
     float: left;

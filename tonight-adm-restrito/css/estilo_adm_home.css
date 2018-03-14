@@ -49,12 +49,17 @@
 .vizualisar{
     float: right;
     width: 400px;
-    height: 300px;
+    height: 340px;
+    padding: 2px;
     border: solid 1px black;
 }
 .vizualisar img{
     width: 400px;
     height: 300px;
+}
+.vizualisar p{
+    margin-top: 5px;
+    margin-left: 2px;
 }
 div.titulo{
     width: 950px;
@@ -68,20 +73,38 @@ div.titulo{
     color: gray;
     font-size: 18px;
     margin-top: 20px;
+    margin-bottom: 30px;
     text-align: center;
     overflow-y: scroll;
     border: solid 1px gray;
 }
-
+.hide{
+    display: none;
+}
+.add{
+    padding: 2px 5px 2px 5px;
+    border: solid 1px gray;
+    color: white;
+    background-color: black;
+    font-size: 16px;
+    cursor: pointer;
+}
 .lst_fotos li{
     float: left;
     width: 280px;
-    height: 200px;
+    height: 250px;
     margin-right: 10px;
     margin-bottom: 10px;
+    padding-top: 2px;
+    border: solid 1px gray;
 }
 .lst_fotos li img{
     width: 280px;
-    height: 180px;
+    height: 180px !important;
 }
-
+.lst_fotos li p a{
+    color: black;
+}
+.lst_fotos li p a:hover{
+    color: blue;
+}

@@ -36,6 +36,33 @@ switch ($controller) {
                 $autentica_controller->Alterar();
                 
             break;
+                
+            case 'addLista':
+                session_start();
+                require_once('model/cliente_class.php');
+                require_once('controller/cliente_controller.php');
+                $autentica_controller = new ControllerCliente();
+                $autentica_controller->AddListaPersonalizada();
+        
+            break;
+                
+            case 'delLista':
+                session_start();
+                require_once('model/cliente_class.php');
+                require_once('controller/cliente_controller.php');
+                $autentica_controller = new ControllerCliente();
+                $autentica_controller->DelListaPersonalizada();
+        
+            break;
+                
+            case 'excluir':
+                session_start();
+                require_once('model/cliente_class.php');
+                require_once('controller/cliente_controller.php');
+                $autentica_controller = new ControllerCliente();
+                $autentica_controller->Excluir();
+                
+            break;
         }
 
 

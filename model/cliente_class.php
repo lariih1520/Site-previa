@@ -332,4 +332,181 @@ class Cliente{
         
     }
     
+    public function DeleteCliente(){
+        
+        $id = $_SESSION['id_cliente'];
+        
+        $sql = "delete from tbl_cliente_filiado where id_cliente = ".$id;
+        
+        if(mysqli_query($this->conect, $sql)){
+
+            $sql = "delete from tbl_cliente where id_cliente = ".$id;
+
+            if(mysqli_query($this->conect, $sql)){
+                session_destroy();
+            ?>
+                <script>
+                    alert("EXCLUIDO COM SUCESSO");
+                    window.location.href = "index.php?sucesso";
+                </script>
+            <?php
+
+            }else{
+            ?>
+                <script>
+                    alert("Não foi possível concluir a exclusão");
+                    window.location.href = "perfil-cliente.php";
+                </script>
+            <?php
+                return false;
+            }  
+
+        }else{
+            ?>
+                <script>
+                    alert("Não foi possível concluir a exclusão");
+                    window.location.href = "perfil-cliente.php";
+                </script>
+            <?php
+            
+        }
+        
+    } 
+    
+    public function AddListaPersonalizada(){
+        $idCliente = $_SESSION['id_cliente'];
+        $idFiliado = $_POST['txtIdFiliado'];
+
+        $sql = "select * from tbl_cliente_filiado where id_cliente = ".$idCliente;
+        $sql .= " and id_filiado = ".$idFiliado;
+        
+        mysqli_query($this->conect, $sql);
+        
+        if(mysqli_affected_rows($this->conect) == 0){
+            $sql = "insert into tbl_cliente_filiado (id_cliente, id_filiado)";
+            $sql .= "values (".$idCliente.", ".$idFiliado.")";
+
+            if(mysqli_query($this->conect, $sql)){
+            ?>
+                <script>
+                    window.location.href = "perfil-filiado.php?codigo=<?php echo $idFiliado ?>&sucesso";
+                </script>
+            <?php
+
+            }else{
+                //echo $sql;
+
+            ?>
+                <script>
+                    alert("Infelismente não foi possível adicionar, tente mais tarde");
+                    window.location.href = "perfil-filiado.php?codigo=<?php echo $idFiliado ?>";
+                </script>
+            <?php
+            }
+        }else{
+        ?>
+            <script>
+                window.location.href = "perfil-filiado.php?codigo=<?php echo $idFiliado ?>&sucesso";
+            </script>
+        <?php
+
+        }
+    }
+    
+    public function DelListaPersonalizada(){
+        $idFiliado = $_GET['codigoDel'];
+        $sql = "delete from tbl_cliente_filiado where id_filiado = ".$idFiliado;
+        if(mysqli_query($this->conect, $sql)){
+?>
+            <script>
+                window.location.href = "perfil-cliente.php?sucesso";
+            </script>
+<?php
+            
+        }else{        
+?>
+            <script>
+                alert("Infelismente não foi possível adicionar, tente mais tarde");
+                window.location.href = "perfil-cliente.php?Erro";
+            </script>
+<?php
+        }
+    }
+    
+    public function FiliadoEmLista($idFiliado){
+        $idCliente = $_SESSION['id_cliente'];
+        
+        $sql = "select * from tbl_cliente_filiado where id_cliente = ".$idCliente;
+        $sql .= " and id_filiado = ".$idFiliado;
+        
+        if(mysqli_query($this->conect, $sql)){
+            
+            if(mysqli_affected_rows($this->conect) > 0){
+                return true;
+                
+            }else{
+                return false;
+            }
+            
+            
+        }else{
+            return false;
+        }
+        
+    }
+    
+    /* Lista personalizada de atalhos para o usuário */
+    public function SelectListaPersonalizada(){
+        $id = $_SESSION['id_cliente'];
+        
+        $sql = "select * from tbl_cliente_filiado where id_cliente = ".$id;
+        
+        $select = mysqli_query($this->conect, $sql);
+        
+        if(mysqli_affected_rows($this->conect) > 0){
+            $lista = null;
+            
+            $cont = 0;
+            while($rs = mysqli_fetch_array($select)){
+                $idFiliado = $rs['id_filiado'];
+                
+                $sql2 = "select * from tbl_filiado where id_filiado = ".$idFiliado;
+                
+                $select2 = mysqli_query($this->conect, $sql2);
+                
+                if(mysqli_affected_rows($this->conect) > 0){
+                    while($rs2 = mysqli_fetch_array($select2)){
+                        $contaAtiva = $rs2['conta_ativa'];
+                        
+                        if($contaAtiva == 1){
+
+                            $lista[] = new Cliente();
+
+                            $lista[$cont]->id = $rs2['id_filiado'];
+                            $lista[$cont]->foto = $rs2['foto_perfil'];
+                            $lista[$cont]->nome = $rs2['nome'];
+                            $lista[$cont]->celular1 = $rs2['celular1'];
+                            $cont++;
+
+                        }else{
+                            $sql = "delete from tbl_cliente_filiado where id_filiado = ".$idFiliado;
+                            mysqli_query($this->conect, $sql);
+
+                        }
+
+                    }
+                }else{
+                    $deleted = null;
+                }
+                
+            }
+            
+            return $lista;
+            
+        }else{
+            return null;
+        }
+    }
+    
+    
 }

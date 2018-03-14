@@ -51,20 +51,62 @@ class Acompanhante{
         
         if($select = mysqli_query($this->conect, $sql)){
             
-            $cont = 0;
+            if(mysqli_affected_rows($this->conect) > 0){
+                $cont = 0;
+
+                while($rs = mysqli_fetch_array($select)){
+
+                    $result[] = new Acompanhante();
+
+                    $result[$cont]->nome = $rs['nome'];
+                    $result[$cont]->id_filiado = $rs['id_filiado'];
+                    $result[$cont]->foto = $rs['foto_perfil'];
+                    $result[$cont]->nasc = $rs['nasc'];
+                    $result[$cont]->uf = $rs['uf'];
+                    $result[$cont]->cobrar = $rs['cobrar'];
+                    $result[$cont]->cpf = base64_decode($rs['cpf']);
+
+                    $cont++;
+                }
             
-            while($rs = mysqli_fetch_array($select)){
-                
-                $result[] = new Acompanhante();
+            }else{
+                $result = false;
+            }
             
-                $result[$cont]->nome = $rs['nome'];
-                $result[$cont]->id_filiado = $rs['id_filiado'];
-                $result[$cont]->nasc = $rs['nasc'];
-                $result[$cont]->uf = $rs['uf'];
-                $result[$cont]->cobrar = $rs['cobrar'];
-                $result[$cont]->cpf = base64_decode($rs['cpf']);
+        }else{
+            $result = false;
+        }
+        
+        return $result;
+    }
+ 
+    public function SelectFiliadoPesq($pesq){
+        $sql = 'select fi.*, pf.cpf from tbl_filiado as fi
+                left join tbl_pagamento_filiado as pf
+                on fi.id_filiado = pf.id_filiado 
+                where fi.nome like "%'.$pesq.'%" 
+                or fi.id_filiado like "%'.$pesq.'%" ';
+        
+        if($select = mysqli_query($this->conect, $sql)){
             
-                $cont++;
+            if(mysqli_affected_rows($this->conect) > 0){
+                $cont = 0;
+
+                while($rs = mysqli_fetch_array($select)){
+
+                    $result[] = new Acompanhante();
+
+                    $result[$cont]->nome = $rs['nome'];
+                    $result[$cont]->id_filiado = $rs['id_filiado'];
+                    $result[$cont]->nasc = $rs['nasc'];
+                    $result[$cont]->uf = $rs['uf'];
+                    $result[$cont]->cobrar = $rs['cobrar'];
+                    $result[$cont]->cpf = base64_decode($rs['cpf']);
+
+                    $cont++;
+                }
+            }else{
+                $result = false;
             }
             
         }else{
@@ -159,22 +201,202 @@ class Acompanhante{
                 $filiado->ufCard = $rs['ufCard'];
                 $filiado->cep = $rs['cep'];
                 $filiado->excluido = $rs['excluido'];
+                $filiado->desconto = $rs['desconto'];
                 
-                if($rs['desconto'] == null){
-                    $filiado->desconto = 0;
-                }else{
-                    $filiado->desconto = $rs['desconto'];
-                }
                 
                 $filiado->cpf = base64_decode($rs['cpf']);
                 
+                $sql2 = "select * from tbl_tipo_conta where id_tipo_conta = ".$rs['id_tipo_conta'];
+                
+                if($select2 = mysqli_query($this->conect, $sql2)){
+            
+                    while($rs2 = mysqli_fetch_array($select2)){
+                        $filiado->valor = $rs2['valor'];
+                        
+                    }
+                }
             }
+            
         }else{
             $filiado = false;
         }
         
         return $filiado;
     }
+    
+    public function RecuperarContaFiliado(){
+        $id = $_GET['id'];
+        
+        $sql = "insert into tbl_mensalidade (id_filiado, data_hora, valor, status, desconto,
+                code, referencia, forma) 
+                values (".$id.", now(), 0, 0, 0, 0, 'recuperar', 'recuperar')";
+        
+        if(mysqli_query($this->conect, $sql)){
+            $sql = "update tbl_filiado set status = 1, conta_ativa = 1,
+                    foto_perfil = '0', apresentacao = '0', excluido = 0000-00-00
+                    where id_filiado = ".$id;
+
+            if(mysqli_query($this->conect, $sql)){
+
+                ?> <script> window.location.href = "hospedes.php?Sucesso"; </script> <?php
+
+            }else{
+                //echo $sql;
+                echo '<script> alert("Infelizmente não foi possivel realizar a ação") </script>';
+
+                ?> <script> window.location.href = "hospedes.php?Erro"; </script> <?php
+
+            }
+        }else{
+            echo '<script> alert("Infelizmente houve um erro na recuperação da conta") </script>';
+            ?> <script> window.location.href = "hospedes.php?Erro"; </script> <?php
+        }
+    }
+    
+    public function DeleteHospedeById(){
+        $id = $_GET['id'];
+        
+        $sql = "delete from tbl_filiado_midia where id_filiado = ".$id;
+        if(mysqli_query($this->conect, $sql)){
+        
+            $sql = "update tbl_filiado set status = 0, conta_ativa = 0,
+                    foto_perfil = '-', apresentacao = '-', excluido = date(now())
+                    where id_filiado = ".$id;
+        
+            
+            if(mysqli_query($this->conect, $sql)){
+                
+                ?> <script> window.location.href = "hospedes.php?Sucesso"; </script> <?php
+                
+            }else{
+                //echo $sql;
+                echo '<script> alert("Não foi possivel realizar a ação") </script>';
+                
+                ?> <script> window.location.href = "hospedes.php?Erro"; </script> <?php
+                
+            }
+            
+        }else{
+            //echo $sql;
+            echo "<script>alert('Não foi possivel realizar a exclusão, tente novamente mais tarde')</script>";
+            
+            ?> <script> window.location.href = "hospedes.php?Erro"; </script> <?php
+            
+        }
+        
+    }
+    
+    public function AdicionarDesconto(){
+        $id = $_GET['cod'];
+        $desconto = intval($_POST['txtValorPorcentagem']);
+        
+        $sql = "update tbl_pagamento_filiado set desconto = ".$desconto;
+        $sql .= " where id_filiado = ".$id;
+        
+        if(mysqli_query($this->conect, $sql)){
+            
+            ?> <script> window.location.href = "hospedes.php?Sucesso"; </script> <?php
+        }else{
+            ?> <script> 
+                alert("Infelizmente não foi possivel concluir esta ação"); 
+                window.location.href = "hospedes.php?Erro"; </script> <?php
+        }
+        
+    }
+    
+    //Apagar os usuários com atraso de pagamento maior que uma semana
+    public function DeleteFiliadoMensalAtrasada(){
+        
+        $class = new Acompanhante();
+        $filiados = $class->SelectFiliadosPagAtraso();
+        
+        if($filiados != false){ //Se houver usuários que devem ser excluidos
+            
+            $cont = 0;
+            while($cont < count($filiados)){
+                $id = $filiados->id;
+
+                $sql = "delete from tbl_filiado_midia where id_filiado = ".$id;
+                if(mysqli_query($this->conect, $sql)){
+
+                    $sql = "update tbl_filiado set status = 0, conta_ativa = 0,
+                            foto_perfil = '-', apresentacao = '-', excluido = date(now())
+                            where id_filiado = ".$id;
+
+                    mysqli_query($this->conect, $sql);
+
+                }else{
+                    //echo $sql;
+                    echo "<script>alert('Não foi possivel realizar a exclusão, tente novamente mais tarde')</script>";
+
+                    ?> <script> window.location.href = "hospedes.php?Erro"; </script> <?php
+
+                }
+                $cont++;
+            }
+            
+            ?> <script> window.location.href = "hospedes.php?Sucesso&nmr=<?php echo $cont ?>"; </script> <?php
+            
+        }else{
+            echo "<script>alert('Não foi possivel realizar a exclusão, tente novamente mais tarde')</script>";
+
+            ?> <script> window.location.href = "hospedes.php?Erro"; </script> <?php
+
+        }
+    }
+    
+    //Buscar os usuários que devem ser excluidos e se há
+    public function SelectFiliadosPagAtraso(){
+        
+        $sql1 = "select * from tbl_filiado where conta_ativa = 0 and excluido != 0000-00-00";
+        
+        $select1 = mysqli_query($this->conect, $sql1);
+        
+        if(mysqli_affected_rows($this->conect) > 0){
+            
+            while($rs1 = mysqli_fetch_array($select1)){
+                
+                $id = $rs1['id_filiado'];
+                
+                $sql = "select month(now()) - month(data_hora) as mes, 10 - day(data_hora) as dias,
+                        from tbl_mensalidade where id_filiado = ".$id;
+                $sql = $sql." order by data_hora desc limit 1";
+
+                $select = mysqli_query($this->conect, $sql);
+
+                if(mysqli_affected_rows($this->conect) > 0){
+
+                    while($rs = mysqli_fetch_array($select)){
+                        $dias = $rs['dias'];
+                        $mes = $rs['mes'];
+
+                        $filiado = new Acompanhante();
+
+                        if($mes == 1){
+
+                            if($dias > 7){ //Se a conta deve ser excluida
+                                $filiado->id = $rs['id_filiado'];
+                            }
+
+                        }elseif($mes >= 2){ //Se passou do tempo da conta ser excluida
+                            $filiado->id = $rs['id_filiado'];
+                        }
+
+                    }
+
+                    return $filiado; // Retorno dos ids
+
+                }else{
+                    return false; // Não há filiados para apagar
+                }
+            }
+            
+        }else{
+            return false; // Não há filiados para apagar
+        }
+        
+    }
+    
     
 }
 

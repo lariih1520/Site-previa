@@ -14,7 +14,7 @@
             
             if($rs->foto_perfil != null){
 ?>
-        <div class="foto_perfil"><a href="../perfil-filiado.php?codigo=<?php echo $rs->id_filiado ?>"> <img src="<?php echo '../'.$rs->foto_perfil ?>" alt="Ver perfil"></a> </div>
+        <div class="foto_perfil"> <img src="<?php echo '../'.$rs->foto_perfil ?>" alt="Ver perfil"> </div>
         
 <?php       } 
 ?>
@@ -30,7 +30,7 @@
             <li><p>uf</p> <span><?php echo $rs->uf ?></span></li>
             <li><p>cidade</p> <span><?php echo $rs->cidade ?></span></li>
             <li><p>data_cadastro</p> <span><?php echo $rs->data_cadastro ?></span></li>
-<!--            <li><p>cpf</p> <span><?php echo $rs->cpf ?></span></li> -->
+            <li><p>cpf</p> <span><?php echo $rs->cpf ?></span></li> 
             <li> <a href="?" class="botao"> OK </a> </li>
 <?php 
             

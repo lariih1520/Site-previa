@@ -15,9 +15,11 @@
         
         if(isset($_GET['ver'])){
             $img = $_GET['ver'];
+            $id = $_GET['code'];
     ?>
         <div class="vizualisar lado">
             <img src="../<?php echo $img ?>">
+            <p> Pertence ao usuário de código: <?php echo $id ?> </p>
         </div>
     <?php
         }
@@ -39,11 +41,56 @@
             while($cont < count($rs)){
                 $id_home = $rs[$cont]->id_home;
                 $img = $rs[$cont]->imagem;
+                $filiado = $rs[$cont]->filiado;
     ?>
         
             <li><img src="../<?php echo $img ?>">
-                <p><a href="?ver=<?php echo $img ?>#content_bar">Ver</a></p>
-                <p><a href="router.php?controller=home&modo=excluir&id=<?php echo $id_home ?>">Excluir</a></p>
+                <p><a href="?ver=<?php echo $img ?>&code=<?php echo $filiado ?>#content_bar">Ver</a></p>
+                <p><a href="router.php?controller=home&modo=excluir&id=<?php echo $id_home ?>#imagem">Excluir</a></p>
+            </li>
+        
+    <?php
+                $cont++;
+            
+            }
+            
+        }else{
+            echo 'Ainda não há imagens';
+            
+        }
+        
+    ?>
+        </ul>
+    </div>
+    
+    <div class="titulo"> Adicionar fotos dos usuários ao slide </div>
+   
+    <div id="img_todas">
+        <ul class="lst_fotos">
+    <?php
+        require_once('controller/filiado_controller.php');
+        $controller = new ControllerAcompanhante();
+        $rs = $controller->ListarAcompanhantes();
+
+        $cont = 0;
+        if($rs != false){
+            
+            while($cont < count($rs)){
+                $id = $rs[$cont]->id_filiado;
+                $img = $rs[$cont]->foto;
+                $nome = $rs[$cont]->nome;
+    ?>
+        
+            <li>
+                <form action="router.php?controller=home&modo=inserir&id=<?php echo $id ?>" method="post" id="form">
+                    <div>
+                        <img src="../<?php echo $img ?>">
+                    </div>
+                    <input type="text" name="txtIdFiliado" class="hide" value="<?php echo $img ?>">
+                    <p><input type="submit" name="btnSalvar" value="Adicionar" class="add"></p>
+                    <p><?php echo $nome ?></p>
+                </form>
+                
             </li>
         
     <?php

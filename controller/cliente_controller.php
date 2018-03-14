@@ -159,6 +159,12 @@ class ControllerCliente{
         
     }
     
+    public function Excluir(){
+        $cliente_class = new Cliente();
+        $rs = $cliente_class->DeleteCliente();
+        
+    }
+    
     public function BuscarDadosUsuario($id){
         require_once('model/cliente_class.php');
         
@@ -169,10 +175,41 @@ class ControllerCliente{
         
     }
     
+    public function AddListaPersonalizada(){
+        $cliente = new Cliente();
+        $cliente->AddListaPersonalizada();
+        
+    }
+    
+    public function DelListaPersonalizada(){
+        $cliente = new Cliente();
+        $cliente->DelListaPersonalizada();
+        
+    }
+    
+    public function FiliadoEmLista($id){
+        require_once('model/cliente_class.php');
+        
+        $cliente_class = new Cliente();
+        $rs = $cliente_class->FiliadoEmLista($id);
+        
+        return $rs;
+        
+    }
+    
+    public function BuscarListaPersonalizada(){
+        require_once('model/cliente_class.php');
+        
+        $cliente = new Cliente();
+        $rs = $cliente->SelectListaPersonalizada();
+        
+        return $rs;
+    }
+    
     public function BuscarSugestoes($id){
         require_once('model/cliente_class.php');
         
-        $cliente = new Clienrte();
+        $cliente = new Cliente();
         $rs = $cliente->SelectSugestoes();
         
         return $rs;

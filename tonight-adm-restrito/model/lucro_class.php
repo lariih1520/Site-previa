@@ -133,7 +133,7 @@ class Lucro{
     
     public function SelectHistoricoMensal(){
         
-        $sql = "select date(data_hora) as data from tbl_mensalidade group by day(data_hora)";
+        $sql = "select date(data_hora) as data from tbl_mensalidade group by month(data_hora)";
         
         if($select = mysqli_query($this->conect, $sql)){
             

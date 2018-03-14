@@ -151,6 +151,7 @@
             </li>
             <li><p> *Valor que deseja cobrar: </p> 
                 <input type="text" name="txtValor" maxlength="6" required size="5" pattern="[0-9]+" oninvalid="setCustomValidity('Escolha o valor que deseja cobrar (apenas números)')" onchange="try{setCustomValidity('')}catch(e){}">,00
+                / hora
             </li>
             
             <?php

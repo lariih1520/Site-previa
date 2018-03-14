@@ -30,9 +30,8 @@
                     $controller->Excluir();
                     
                     break;
-                    
-                    
             }
+        break;
             
         case 'index':
             switch ($modo){
@@ -55,6 +54,7 @@
                     break;
                     
             }
+            
         break;
 
         case 'plano':
@@ -87,6 +87,49 @@
                     break;
                     
             }
+        break;
+
+        case 'hospedes':
+            switch ($modo){
+                case 'delHospede':
+                    
+                    include_once('model/filiado_class.php');
+                    include_once('controller/filiado_controller.php');
+                    
+                    $controller = new ControllerAcompanhante();
+                    $controller->ExcluirHospede();
+                    
+                    break;
+                    
+                case 'delAtrasados':
+                    include_once('model/filiado_class.php');
+                    include_once('controller/filiado_controller.php');
+                    
+                    $controller = new ControllerAcompanhante();
+                    $controller->ExcluirFiliadoMensalAtrasada();
+                    
+                    break;
+                    
+                case 'recuperar':
+                    include_once('model/filiado_class.php');
+                    include_once('controller/filiado_controller.php');
+                    
+                    $controller = new ControllerAcompanhante();
+                    $controller->RecuperarContaFiliado();
+                    
+                    break;
+                    
+                case 'desconto':
+                    include_once('model/filiado_class.php');
+                    include_once('controller/filiado_controller.php');
+                    
+                    $controller = new ControllerAcompanhante();
+                    $controller->AdicionarDesconto();
+                    
+                    break;
+                    
+            }
+            
         break;
 
     }

@@ -21,7 +21,7 @@
                                 while($cont < count($rs)){
                                     $img = $rs[$cont]->imagem;
                         ?>
-                                <a href="#" class="trs"><img src="<?php echo $img ?>" alt="imagem" /></a>
+                                <a href="#" class="trs"><img src="<?php echo $img ?>" alt="" /></a>
 
                         <?php
                                     $cont++;
@@ -69,12 +69,7 @@
                                 $cont = 0;
                                 while($cont < count($rs)){
                                     
-                                    if($rs[$cont]->foto == null){
-                                        $foto = 'icones/usuaria.jpg';
-                                    }else{
-                                        $foto = $rs[$cont]->foto;
-                                    }
-                                    
+                                    $foto = $rs[$cont]->foto;
                                     $id = $rs[$cont]->id;
                                     $nome = $rs[$cont]->nome;
                                     $idade = $rs[$cont]->idade;
@@ -161,12 +156,7 @@
                                     $cont = 0;
                                     while($cont < count($rs)){
 
-                                        if($rs[$cont]->foto == null){
-                                            $foto = 'icones/usuaria.jpg';
-                                        }else{
-                                            $foto = $rs[$cont]->foto;
-                                        }
-
+                                        $foto = $rs[$cont]->foto;
                                         $id = $rs[$cont]->id;
                                         $nome = $rs[$cont]->nome;
                                         $idade = $rs[$cont]->idade;

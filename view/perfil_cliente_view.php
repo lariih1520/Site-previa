@@ -105,6 +105,37 @@
             </ul>
             <div class="editar_dados"><a href="?perfil=cliente&editar=dados&codigo=<?php echo $id ?>#content"> Editar dados </a></div>
             <div style="clear:both;"></div>
+            <p class="outras_config">
+                <a href="#foto_perfil" onclick="abrirConfig();">
+                Mais configurações 
+                </a>
+            </p>
+            <p id="apagarConta" class="esconder"> 
+                <a href="#foto_perfil" onclick="confirmExcluir()">
+                Excluir conta 
+                </a>
+            </p>
+            <script>
+                
+                function confirmExcluir(){
+
+                    decisao = confirm('Deseja realmente excluir sua conta?')
+
+                    if(decisao){
+                        window.location.href = "router.php?controller=cliente&modo=excluir";
+
+                    }else{
+                        return false;
+                    }
+                
+                }
+                
+                function abrirConfig(){
+                    $('.esconder').toggle();
+                }
+                
+            </script>
+            <div style="clear:both;"></div>
         </div>
         
         <?php
@@ -254,6 +285,51 @@
         <?php
             }
         ?>
+        
+        <p class="titulo"> Minha lista </p>
+        <div id="lista_atalho">
+        <?php
+          
+            $controller = new ControllerCliente();
+            $rs = $controller->BuscarListaPersonalizada();
+
+            if($rs != false){
+        ?>
+            <table> 
+        <?php
+              
+                $cont = 0;
+                while($cont < count($rs)){
+                    $id = $rs[$cont]->id;
+                    $foto = $rs[$cont]->foto;
+                    $nome = $rs[$cont]->nome;
+                    $celular = $rs[$cont]->celular1;
+        ?>
+            <tr>    
+                <td> <img src="<?php echo $foto ?>" class="fotolista"> </td>
+                <td> <p> Nome: </p><?php echo $nome ?> </td>
+                <td> <p> Celular: </p><?php echo $celular ?> </td>
+                <td> <a href="perfil-filiado.php?codigo=<?php echo $id ?>">Ver perfil</a> </td>
+                <td> <a href="router.php?controller=cliente&modo=delLista&codigoDel=<?php echo $id ?>">Excluir da lista</a> </td>
+            </tr>
+        <?php
+                    $cont++;
+                }
+        ?>  
+            </table>
+            
+        <?php
+                
+            }else{
+            
+        ?>   
+                <p><span> Não há acompanhantes em sua lista </span></p>
+                
+        <?php   
+            }
+        ?>
+        </div>
+        
         <div id="sugestoes">
             <h1 class="titulo"> Sugestões </h1>
             <ul class="lst_sugestoes">

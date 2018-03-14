@@ -10,7 +10,7 @@
 
 #content{
     width: 900px;
-    height: 1000px;
+    height: 1080px;
     margin: auto;
     padding: 10px;
     border: solid 1px transparent;
@@ -98,6 +98,27 @@ select{
     font-size: 18px;
 }
 
+.outras_config{
+    margin-top: 10px;
+    border: solid 1px #FFF;
+}
+a{
+    color: black;
+}
+#apagarConta{
+    width: 160px;
+    width: 160px;
+    height: 20px;
+    padding: 10px;
+    text-align: center;
+    border: solid 1px black;
+}
+.esconder{
+    display: none;
+}
+.esconder a:active{
+    color: blue;
+}
 /********** Dados Importantes ***********/
 #informacoes{
     height: 200px;
@@ -106,7 +127,30 @@ select{
     border: solid 1px transparent;
 }
 
+#lista_atalho{
+    width: 880px;
+    height: 180px;
+    overflow-y: scroll;
+    margin: auto;
+    padding: 10px;
+    margin-bottom: 30px;
+    border: solid 1px #CDCDCD;
+}
 
+#lista_atalho table tr td{
+    min-width: 150px;
+    max-width: 400px;
+    height: 100px;
+    float: left;
+    border-bottom: solid 1px gray;
+}
+#lista_atalho span{
+    color: gray;
+}
+.fotolista{
+    width: 100px;
+    height: 100px;
+}
 /******** Sugestãos *********/
 #sugestoes{
     width: 880px;

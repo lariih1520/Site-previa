@@ -35,31 +35,28 @@
 
     date_default_timezone_set('America/Sao_Paulo');
     $diah = date('d');
+    $diapag = '13';
     
     $pagMes = $controller->getStatusPagamento();
         
-    if($pagMes == 'null' and $diah == '10'){
+    if($pagMes == 'naopaga' and $diah == $diapag){//Ainda não pago
 
         $mensalidade = '<div class="mensalidade">
         Não esqueça de <a href="filiado-dados'.$php.'?editar=pagar-private">efetuar o pagamento </a> referente à este mês! Valor: '.$valor.',00
         </div>';
 
-    }elseif($pagMes == 1){
+    }elseif($pagMes == 'atraso'){ //Será excluida
 
         $mensalidade = '<div class="mensalidade">
-        Não esqueça de <a href="filiado-dados'.$php.'?editar=pagar-private">efetuar o pagamento </a> referente à este mês! Valor: '.$valor.',00
+        Sua conta está desativada <a href="filiado-dados'.$php.'?editar=pagar-private">efetue o pagamento </a>
+        referente à este mês ou sua conta será <span style="color:#8A0808">excluida!</span>! Valor: '.$valor.',00
         </div>';
 
-    }elseif($pagMes == 0){
+    }elseif($pagMes == 'paga'){//Pago
         $mensalidade = '';
 
-    }elseif($pagMes > 1){
-        $deve = $valor * $pagMes;
-        $mensalidade = '<div class="mensalidade">
-        Não esqueça de <a href="filiado-dados'.$php.'?editar=pagar-private">efetuar o pagamento </a>
-        referente à '.$pagMes.' meses de atraso ou sua conta será <span style="color:#8A0808">desativada!</span>
-        Valor: <b>'.$deve.',00 </b>
-        </div>';
+    }elseif($pagMes == 'excluido'){ //Excluia
+        $mensalidade = 'Conta excluida';
     }
         
     
@@ -97,7 +94,7 @@
             <li> <p> Cidade: </p>       <?php echo $cidade ?> </li>
             <li> <p> Estado: </p>       <?php echo $estado ?> </li>
             <li> <p> Atente: </p>       <?php echo $acompanha ?> </li>
-        <li><p>Valor para contratar:</p><?php echo $cobrar ?>,00 </li>
+        <li><p>Valor para contratar:</p><?php echo $cobrar ?>,00 / hora </li>
         </ul>
         <div class="apresentacao">
             <p> Apresentacao </p>
@@ -267,7 +264,7 @@
         
         <?php 
             $dia = date('d');
-            if($dia < 5 or $dia > 10){
+            if($dia < 5 or $dia > $diapag){
                 
                 if($pagMes <= 1){
         ?>

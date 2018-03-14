@@ -73,7 +73,7 @@ class Acompanhante{
                 $excluido = $rs['excluido'];
             }
             
-            if($excluido == null){
+            if($excluido == null or $excluido == 0000-00-00){
                 $_SESSION['id_filiado'] = $id;
             
                 if(empty($foto_perfil)){
@@ -129,7 +129,6 @@ class Acompanhante{
         }else{
             $id = $_GET['codigo'];
         }
-        
 
         $sql = 'select fi.*, et.*, ca.cor as cabelo, tc.foto,
                 tc.titulo, tc.valor as valor_conta, tc.video
@@ -182,10 +181,9 @@ class Acompanhante{
                     
                 }elseif($rs['sexo'] == 2){
                     $filiado->sexo = 'Masculino';
-                    
                 }
                 
-                if($rs['apresentacao'] == null){
+                if($rs['apresentacao'] == null or $rs['apresentacao'] == 0){
                     $filiado->apresentacao = 'Não há apresentação';
                     
                 }else{
@@ -200,7 +198,6 @@ class Acompanhante{
                     
                 }elseif($rs['acompanha'] == 3){
                     $filiado->acompanha = 'Homens e mulheres';
-                    
                 }
                 
                 $data = explode('-', $rs['nasc']);
@@ -212,7 +209,21 @@ class Acompanhante{
                 $filiado->uf = $rs['uf'];
                 $filiado->cidade = $rs['cidade'];
                 $filiado->cobrar = $rs['cobrar'];
-                $filiado->foto = $rs['foto_perfil'];
+                
+                if($rs['foto_perfil'] != null){
+                    $filiado->foto = $rs['foto_perfil'];
+
+                }else{
+
+                    if($rs['sexo'] == 1){
+                        $filiado->foto = 'icones/usuaria.jpg';
+                    }else{
+                        $filiado->foto = 'icones/usuario.jpg';
+                    }
+
+                }
+                
+                $filiado->id_filiado = $rs['id_filiado'];
                 $filiado->idetnia = $rs['id_etnia'];
                 $filiado->etnia = $rs['etnia'];
                 $filiado->cabelo = $rs['cabelo'];
@@ -938,7 +949,19 @@ class Acompanhante{
 
                 $filiados[$cont]->id = $rs['id_filiado'];
                 $filiados[$cont]->nome = $rs['nome'];
-                $filiados[$cont]->foto = $rs['foto_perfil'];
+                if($rs['foto_perfil'] != null){
+                        $resut[$cont]->foto = $rs['foto_perfil'];
+                        
+                }else{
+                        
+                        if($rs['sexo'] == 1){
+                            $resut[$cont]->foto = 'icones/usuaria.jpg';
+                        }else{
+                            $resut[$cont]->foto = 'icones/usuario.jpg';
+                        }
+                        
+                }
+                
                 $filiados[$cont]->uf = $rs['uf'];
                 
                 $cont++;
@@ -1000,7 +1023,18 @@ class Acompanhante{
 
                     $filiados[$cont]->id = $rs['id_filiado'];
                     $filiados[$cont]->nome = $rs['nome'];
-                    $filiados[$cont]->foto = $rs['foto_perfil'];
+                    if($rs['foto_perfil'] != null){
+                        $resut[$cont]->foto = $rs['foto_perfil'];
+                        
+                    }else{
+                        
+                        if($rs['sexo'] == 1){
+                            $resut[$cont]->foto = 'icones/usuaria.jpg';
+                        }else{
+                            $resut[$cont]->foto = 'icones/usuario.jpg';
+                        }
+                        
+                    }
                     
                     $data = explode('-', $rs['nasc']);
                 
@@ -1059,14 +1093,15 @@ class Acompanhante{
                 $tamanho = round($tamanho_imagem / 1024);
 
                 if($tamanho < 8024){ 
+                    $nome_atual = uniqid(time()).$ext;
                     $tmp = $_FILES['flPerfil']['tmp_name']; 
 
-                    if(move_uploaded_file($tmp, $pasta.$nome_imagem)){
-                        $sql = "update tbl_filiado set foto_perfil = '".$pasta.$nome_imagem."'
+                    if(move_uploaded_file($tmp, $pasta.$nome_atual)){
+                        $sql = "update tbl_filiado set foto_perfil = '".$pasta.$nome_atual."'
                         where id_filiado = ".$id;
                         
                        if(mysqli_query($this->conect, $sql)){
-                            echo "<img src='midia/".$nome_imagem."' id='previsualizar'>"; 
+                            echo "<img src='midia/".$nome_atual."' id='previsualizar'>"; 
                 ?>
                     <script type="text/javascript">
                         
@@ -1124,22 +1159,31 @@ class Acompanhante{
                 }
                 
                 if($tamanho < $limit){ 
+                    $nome_atual = uniqid(time()).$ext;
                     $tmp = $_FILES[$flname]['tmp_name']; 
 
-                    if(move_uploaded_file($tmp, $pasta.$nome_imagem)){
+                    if(move_uploaded_file($tmp, $pasta.$nome_atual)){
                         
                         if(!empty($_GET['editar'])){
                             $id_foto = $_GET['editar'];
-                            $sql = "update tbl_filiado_midia set midia = '".$pasta.$nome_imagem."'
+                            
+                            $sql = "select * from tbl_filiado_midia where id_filiado_midia = ".$id_foto;
+                            $select = mysqli_query($this->conect, $sql);
+                            
+                            while($rs = mysqli_fetch_array($select)){
+                                unlink($rs['midia']);
+                            }
+                            
+                            $sql = "update tbl_filiado_midia set midia = '".$pasta.$nome_atual."'
                                     where id_filiado_midia = ".$id_foto;
                         }else{
                             $sql = "insert into tbl_filiado_midia (id_filiado, midia, descricao, data_upload) 
-                                values (".$id.", '".$pasta.$nome_imagem."', ".$desc.", '".$datetime."')";
+                                values (".$id.", '".$pasta.$nome_atual."', ".$desc.", '".$datetime."')";
                         }
                         
                         if($desc == 1){
                            if(mysqli_query($this->conect, $sql)){
-                                echo "<img src='midia/".$nome_imagem."' id='previsualizar'>"; 
+                                echo "<img src='midia/".$nome_atual."' id='previsualizar'>"; 
 
                                $fl = explode('fl', $flname); 
                     ?>
@@ -1313,13 +1357,39 @@ class Acompanhante{
     /* Pegar o status do pacamento do próprio banco */
     public function getStatusPagamento(){
         $id = $_SESSION['id_filiado'];
-        $sql = "select month(now()) - month(data_hora) as tempo from tbl_mensalidade where id_filiado = ".$id;
+        $sql = "select month(now()) - month(data_hora) as mes,
+                day(now()) - day(data_hora) as dias,
+                day(data_hora) as diapag
+                from tbl_mensalidade where id_filiado = ".$id;
         $sql = $sql." order by data_hora desc limit 1";
                    
         if($select = mysqli_query($this->conect, $sql)){
-            $tempo = 'null';
+            $tempo = 'naopaga';
             while($rs = mysqli_fetch_array($select)){
-                $tempo = $rs['tempo'];
+                $dias = $rs['dias'];
+                $diapag = $rs['diapag'];
+                $mes = $rs['mes'];
+                
+                if($mes == 0){//Se a mensalidade foi paga
+                    $tempo = 'paga';
+                    
+                }elseif($mes == 1){//Se está no mês de pagamento
+                    
+                    if($dias >= 0 and $dias <= 7){ //Se ainda está em tempo de pagar
+                        $tempo = 'naopaga';
+                        
+                    }elseif($dias < 0){ //Se já passou do tempo de pagar
+                        $tempo = 'naopaga';
+                        
+                    }else{ //Se já passou do tempo de pagar
+                        $tempo = 'atraso';
+                        
+                    }
+                    
+                }elseif($mes == 2){ //Se a conta deve ser excluida
+                    $tempo = 'excluido';
+                }
+                
             }
 
             return $tempo;
@@ -1330,17 +1400,17 @@ class Acompanhante{
             
     }
     
-    /* Listar filiados peo sexo e possivelmente etnia */
+    /* Listar filiados peo sexo, etnia, com limit de retorno e excluindo algum id expessifico */
     public function SelectFiliadosSexo($sexo, $etnia, $limit, $id){
         
         date_default_timezone_set('America/Sao_Paulo');
                 
         if(!empty($sexo) and !empty($etnia)){
-            $sql = 'select * from tbl_filiado where sexo ='.$sexo;
+            $sql = 'select * from tbl_filiado where sexo = '.$sexo;
             $sql .= ' and etnia = '.$etnia;
             
         }elseif(!empty($sexo)){
-            $sql = 'select * from tbl_filiado where sexo ='.$sexo;
+            $sql = 'select * from tbl_filiado where sexo = '.$sexo;
             
         }elseif(!empty($etnia)){
             $sql = 'select * from tbl_filiado where etnia = '.$etnia;
@@ -1388,7 +1458,20 @@ class Acompanhante{
 
                     $resut[$cont]->id = $rs['id_filiado'];
                     $resut[$cont]->nome = $rs['nome'];
-                    $resut[$cont]->foto = $rs['foto_perfil'];
+                     
+                    if($rs['foto_perfil'] != null){
+                        $resut[$cont]->foto = $rs['foto_perfil'];
+                        
+                    }else{
+                        
+                        if($rs['sexo'] == 1){
+                            $resut[$cont]->foto = 'icones/usuaria.jpg';
+                        }else{
+                            $resut[$cont]->foto = 'icones/usuario.jpg';
+                        }
+                        
+                    }
+                    
                     $resut[$cont]->idade = $idade;
                     $resut[$cont]->uf = $rs['uf'];
                     
@@ -1400,7 +1483,6 @@ class Acompanhante{
                         
                     }else{
                         $genero = 'Homens e Mulheres';
-                        
                     }
                     
                     $resut[$cont]->acompanha = $genero;
@@ -1451,7 +1533,19 @@ class Acompanhante{
 
                             $resut[$cont]->id = $rs['id_filiado'];
                             $resut[$cont]->nome = $rs['nome'];
-                            $resut[$cont]->foto = $rs['foto_perfil'];
+                            
+                            if($rs['foto_perfil'] != null){
+                                $resut[$cont]->foto = $rs['foto_perfil'];
+
+                            }else{
+
+                                if($rs['sexo'] == 1){
+                                    $resut[$cont]->foto = 'icones/usuaria.jpg';
+                                }else{
+                                    $resut[$cont]->foto = 'icones/usuario.jpg';
+                                }
+
+                            }
                             $resut[$cont]->idade = $idade;
                             $resut[$cont]->uf = $rs['uf'];
 

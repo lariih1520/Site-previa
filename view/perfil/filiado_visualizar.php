@@ -4,9 +4,10 @@
     $controller = new ControllerAcompanhante();
     $rs = $controller->BuscarDadosUsuario();
 
-    if($rs != null and $rs->excluido == null){
+    if($rs != null and $rs->excluido == null or $rs->excluido == 0000-00-00){
         
         $deleted = $rs->excluido;
+        $id_filiado = $rs->id_filiado;
         $foto = $rs->foto;
         $nome = $rs->nome;
         $altura = $rs->altura;
@@ -52,9 +53,39 @@
         }else{
             $idade = $anos - 1;
         }
-
+        
+        if(!empty($_SESSION['id_cliente'])){
+            require_once('controller/cliente_controller.php');
+            $controllerCliente = new ControllerCliente();
+            $rs = $controllerCliente->FiliadoEmLista($id_filiado);
+        }else{
+            $rs = true;
+        }
+        if($rs == true){
+            $action = '#content_perfil';
+            $msg = 'Em minha lista';
+        }else{
+            $action = "router.php?controller=cliente&modo=addLista";
+            $msg = 'Adicionar a minha lista';
+        }
+        
+        
+        
+    if(empty($_SESSION['id_cliente'])){
+        $href = 'login.php';
+        $msg = 'Adicionar a minha lista';
+    }else{
+        $href = '#content_perfil';
+    }
 ?>
     <div id="content_perfil">
+        <form action="<?php echo $action ?>" method="post" id="form">
+            <p id="addLista">
+                <a href="<?php echo $href ?>" onclick="form.submit();"> <?php echo $msg ?> </a>
+            </p>
+            <input type="text" name="txtIdFiliado" value="<?php echo $id_filiado ?>" class="hide">
+        </form>
+            
         <div class="perfil">
             <div id="pefil">
                 <div class="foto_perfil">
@@ -94,7 +125,7 @@
                 <?php } ?>
                 
                 <li> Sexo:   <?php echo $sexo ?></li>
-                <li> Valor:  R$ <?php echo $cobrar ?>,00 </li>
+                <li> Valor:  R$ <?php echo $cobrar ?>,00 / hora </li>
                 <li> Etnia:   <?php echo $etnia ?> </li>
                 <li> Estado:   <?php echo $uf ?> </li>
                 <li> Cidade:   <?php echo $cidade ?> </li>
