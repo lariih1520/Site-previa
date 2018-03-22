@@ -23,7 +23,8 @@
         $nmr_cartao = $rs->numero_cartaodc;
         $expiracaoMes = $rs->expiracaoMes;
         $expiracaoAno = $rs->expiracaoAno;
-
+        $showgif = true;
+        
     }else{
         /*** Se não houverem dados o usuário é redirecionado para a página para preenche-los ***/
         $redirect = 'filiado-dados'.$php.'?editar=pagar-private';
@@ -93,11 +94,6 @@
                 
             }
             
-            $pagMes = $dados->getStatusPagamento();
-            if($pagMes > 1){
-                $valor = $pagMes * $valor;
-            }
-            
             $res = $dados->BuscarTipoConta();
             if($res != null){
                 $valor = $res->valor - $desconto;
@@ -132,8 +128,16 @@
                 
             $pag = new Pagamento();
             $retorno = $pag->efetuaPagamentoCartao($dados);
-
-            if($retorno != null){
+            
+            if($retorno["erro"]){
+                echo '<center><p>Erro:</p>'.$retorno["erro"].'</center>';
+                echo '<center>'.$retorno["code"].'</center>';
+                echo '<center>'.$retorno["token"].'</center>';
+                echo '<div class="titulo_maior"><a href="perfil-filiado.php"> Voltar para o perfil </a></div>';
+                
+                $showgif = false;
+                
+            }else{
                 //var_dump($retorno);
                 
                 $dadosPagBd = [
@@ -163,7 +167,7 @@
             ?>
                 <script>
                     alert('Houve um erro de processamento de dados');
-                    window.location.href = "perfil-filiado.php?Sucesso=sucesso";
+                    window.location.href = "perfil-filiado.php?Erro=erro";
                 </script>
 
             <?php
@@ -180,11 +184,6 @@
             $rsp = $dados->BuscarDadosUsuario();
             if($rsp != null){
                 $email = $rsp->email;
-            }
-            
-            $pagMes = $dados->getStatusPagamento();
-            if($pagMes > 1){
-                $valor = $pagMes * $valor;
             }
             
             $res = $dados->BuscarTipoConta();
@@ -205,8 +204,16 @@
             
             $pag = new Pagamento();
             $retorno = $pag->efetuaPagamentoBoleto($dados);
-
-            if($retorno != null){
+            
+            //var_dump($retorno);
+            
+            if($retorno["erro"]){
+                echo '<center><p>Erro:</p>'.$retorno["erro"].'</center>';
+                echo '<div class="titulo_maior"><a href="perfil-filiado.php"> Voltar para o perfil </a></div>';
+                
+                $showgif = false;
+                
+            }else{
                 $dadosPagBd = [
                     'date' => date('Y/m/d H:i'),
                     'valor' => $valor,
@@ -219,17 +226,31 @@
                 $resp = $controller->InserirMensalidadePag('boleto', $dadosPagBd);
                 
                 if($resp == true){
-            ?>
+                    
+                    if($retorno['paymentLink'] != null){
+                        echo "<center><p> Codigo:".$retorno['code']." </p></center>";
+                        echo "<center><p> Data:".$retorno['date']." </p></center>";
+                        echo "<center><p> Link:".$retorno['paymentLink']." </p></center>";
+                        echo '<center><a href="'.$retorno['paymentLink'].'"> Link para o boleto </a></center>';
+            /*? >
+                <input type="text" value="<?php echo $retorno['paymentLink'] ?>" name="txtLinkBoleto" class="hide" id="link">
 
+                <script src="js/jquery-3.2.1.min.js" ></script>
                 <script>
-                    setTimeout(function(){
-                    window.location.href = "<?php echo $retorno['paymentLink'] ?>";
-                    }, 2000);            
+                    link = $('#link').val();
+                    alert('Link para: ' + link);
+                    
+                    window.location.href = link;
+                              
                 </script>
 
-            <?php
+            <? php*/
+                    }else{
+                        ?><script> window.location.href = "perfil-filiado.php"; </script> <?php  
+                    }
+                }else{
+                    ?> <script> window.location.href = "perfil-filiado.php"; </script> <?php  
                 }
-                //header('location:'.$retorno['paymentLink']);
                 
             }
             
@@ -299,16 +320,16 @@
         
 <!--
 ************************ CLASSES REFERENTES AO PAGSEGURO **************************
- --> 
+ 
     <script type="text/javascript" src=
     "https://stc.pagseguro.uol.com.br/pagseguro/api/v2/checkout/pagseguro.directpayment.js">
     </script>
-    
-    <!--    Em Sandbox:
+-->
+    <!--    Em Sandbox: -->
     <script src=
     "https://stc.sandbox.pagseguro.uol.com.br/pagseguro/api/v2/checkout/pagseguro.directpayment.js">
     </script>
-    -->
+    
     <script>
 
     function SetarIdSession(){
@@ -387,9 +408,14 @@
 
     /******** MOSTRAR GIF CARREGANDO ********/
 
+
+    if($showgif == true){
 ?>
 
     <div class="imgcarregando">
        <img src="icones/carregando.gif">
     </div>
 
+<?php
+    }
+?>

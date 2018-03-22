@@ -9,7 +9,7 @@
         $deleted = $rs->excluido;
         $id_filiado = $rs->id_filiado;
         $foto = $rs->foto;
-        $nome = $rs->nome;
+        $nome = $rs->apelido;
         $altura = $rs->altura;
         $peso = $rs->peso;
         $sexo = $rs->sexo;
@@ -150,7 +150,7 @@
         <div class="sugestoes">
             <ul class="lst_dados">
                 <li> Atende: <?php echo $acompanha ?>  </li>
-                <li> Celular 1: <?php echo $celular1 ?> </li>
+                <li> Celular 1: <?php echo $celular1 ?> <img src="icones/whatsapp.png" alt="whatsapp" class="icone"></li>
                 <li> Celular 2:  <?php echo $celular2 ?> </li>
             </ul>
         </div>
@@ -233,7 +233,7 @@
             <li>
                 <a href="perfil-filiado<?php echo $php ?>?codigo=<?php echo $resp[$cont]->id ?>">
                     <span class="perfil_sugestao">
-                         <p> Nome: <?php echo $resp[$cont]->nome ?></p>
+                         <p> Nome: <?php echo $resp[$cont]->apelido ?></p>
                          <p> Estado: <?php echo $resp[$cont]->uf ?></p>
                          <p> Idade: <?php echo $resp[$cont]->idade ?></p>
                     </span>

@@ -173,6 +173,7 @@ class Acompanhante{
                 $filiado->estado = $rs['uf'];
                 $filiado->cidade = $rs['cidade'];
                 $filiado->nome = $rs['nome'];
+                $filiado->apelido = $rs['apelido'];
                 $filiado->email = $rs['email'];
                 $filiado->senha = $rs['senha'];
                 
@@ -227,7 +228,11 @@ class Acompanhante{
                 $filiado->idetnia = $rs['id_etnia'];
                 $filiado->etnia = $rs['etnia'];
                 $filiado->cabelo = $rs['cabelo'];
-                $filiado->altura = $rs['altura'];
+                
+                $alt = explode('.', $rs['altura']);
+                $filiado->altura = $alt[0].','.$alt[1];
+                
+                
                 $filiado->peso = $rs['peso'];
                 $filiado->titulo = $rs['titulo'];
                 $filiado->valor = $rs['valor_conta'];
@@ -262,9 +267,12 @@ class Acompanhante{
         date_default_timezone_set('America/Sao_Paulo');
         $datetime = (date('Y/m/d H:i'));
         
-        $sql = "insert into tbl_filiado(nome, nasc, email, senha, celular1, celular2, etnia, sexo,
+        if($fld->peso == null){ $fld->peso = 0; }
+        
+        $sql = "insert into tbl_filiado(nome, apelido, nasc, email, senha, celular1, celular2, etnia, sexo,
                 altura, peso, acompanha, id_tipo_conta, cidade, uf, cobrar, data_cadastro, conta_ativa, status)
                 values ('".$fld->nome."', '".
+                         $fld->apelido."', '".
                          $fld->nasc."', '".
                          $fld->email."', '".
                          $fld->senha."', '".
@@ -290,24 +298,97 @@ class Acompanhante{
                 
                 while($rs = mysqli_fetch_array($select)){
                     $_SESSION['id_filiado'] = $rs['id_filiado'];
+                    $cpf = base64_encode($fld->cpf);
+                    $sql2 = "insert into tbl_pagamento_filiado (id_filiado, cpf) values (".$rs['id_filiado'].", '".$cpf."')";
+                    mysqli_query($this->conect, $sql2);
                     
+                    $desconto = new Acompanhante();
+                    $desc = $desconto->getStatusDesconto($tipo_conta);
                     
-                ?> <script> window.location.href = "filiado-fotos.php"; </script> <?php
+                    if($desc != 2){//Se a promoção está ativa
+                        if($desc['status'] == 1){
+
+                            $date = date('Y-m');
+                            $time = date('H:i');
+                            $dt = $date.'-10 '.$time;
+                            $sql = "insert into tbl_mensalidade ";
+                            $sql = $sql."(id_filiado, data_hora, valor, status, desconto, code, referencia, forma)";
+                            $sql = $sql." values (".$rs['id_filiado'].", '".$dt."', 0, 3, ".$desc['valor'];
+                            $sql = $sql.", 'ref".date('m-d')."', 'mensal".$rs['id_filiado']."', 'promocao')";
+                            mysqli_query($this->conect, $sql);
+                            
+                            if(date('d') >= 20){
+                                $ano = date('Y');
+                                $mes = date('m');
+                                $mes = $mes + 1;
+                                $time = date('H:i');
+
+                                if($mes <= 9){
+                                    $mes = '0'.$mes;
+                                }else{
+                                    if($mes == 12){
+                                        $mes = '01';
+                                    }
+                                }
+
+                                $dt = $ano.'-'.$mes.'-10 '.$time;
+                                $sql = "insert into tbl_mensalidade ";
+                                $sql = $sql."(id_filiado, data_hora, valor, status, desconto, code, referencia, forma)";
+                                $sql = $sql." values (".$rs['id_filiado'].", '".$dt."', 0, 3, ".$desc['valor'];
+                                $sql = $sql.", 'ref".date('m-d')."', 'mensal".$rs['id_filiado']."', 'promocao')";
+                                mysqli_query($this->conect, $sql);
+                            }
+                        }
+                    }
                     
-                    //header('location:filiado-fotos.php');
+                   ?> <script> window.location.href = "filiado-fotos.php"; </script> <?php
+                    
                 }
                 
             }else{
                 
                 ?> <script> window.location.href = "seja-filiado.php?Erro=cadastro&#erro"; </script> <?php
                     
-                    //header('location:seja-filiado.php?Erro=cadastro&#erro');
             }
             
         }else{
             
             ?> <script> window.location.href = "seja-filiado.php?Erro=cadastro&#erro"; </script> <?php
-                //header('location:seja-filiado.php?Erro=cadastro&#erro');
+        }
+        
+    }
+    
+    /* Verificar se há desconto */
+    public function getStatusDesconto($tipo_conta){
+        $sql = "select * from tbl_desconto";
+        
+        if($select = mysqli_query($this->conect, $sql)){
+
+            while($rs = mysqli_fetch_array($select)){
+                
+                if($tipo_conta != null){
+                    $sql2 = "select * from tbl_tipo_conta where id_tipo_conta = ".$tipo_conta;
+
+                    if($select2 = mysqli_query($this->conect, $sql2)){
+                        while($rs2 = mysqli_fetch_array($select2)){
+
+                            $desc = [
+                                "status" => $rs['status'],
+                                "valor" => $rs2['valor'],
+                            ];
+
+                        }
+
+                    }else{
+                        $desc = 2;
+                    }
+                }else{
+                    $desc = [ "status" => $rs['status'] ];
+                }
+            }
+            return $desc;
+        }else{
+            return 2;
         }
         
     }
@@ -374,6 +455,10 @@ class Acompanhante{
         
         $sql = $sql."nome = '".$fld->nome."' ";
         
+        if($fld->apelido != null){
+            $sql = $sql.", apelido = '".$fld->apelido."'";
+        }
+        
         if($fld->nasc != null and $fld->nasc != 0){
             $sql = $sql.", nasc = '".$fld->nasc."'";
         }
@@ -430,9 +515,12 @@ class Acompanhante{
             $sql=$sql.", apresentacao='".$fld->apresentacao."'";
             
         }
+        if($fld->senha != 1){
+            $sql=$sql.", senha = '".$fld->senha."'";
+            
+        }
         $sql = $sql." where id_filiado = ".$fld->id;
-        
-                
+           
         if(mysqli_query($this->conect, $sql)){
                 
         ?> <script> window.location.href = "perfil-filiado.php"; </script> <?php
@@ -441,8 +529,6 @@ class Acompanhante{
         
         ?> <script> window.location.href = "perfil-filiado.php?ERRO"; </script> <?php
             
-            //echo $sql;
-            //header('location:'.$link.'?Erro');
         }
         
     }
@@ -575,13 +661,9 @@ class Acompanhante{
         
         mysqli_query($this->conect, $sql);
         
-        if(mysqli_affected_rows($this->conect) == 0){
-            $dadosPag->id = $id;
-            $update = new Acompanhante();
-            $update->UpdateDados($dadosPag);
+        if(mysqli_affected_rows($this->conect) > 0){
             
-        }else{
-            if($forma == 'card'){
+            if($forma == 'card' or !empty($dadosPag->numeroCartao)){
                 $sql = 'update tbl_pagamento_filiado set nome = "'.$dadosPag->nome.'",
                 sobrenome = "'.$dadosPag->sobrenome.'", telefone = "'.$dadosPag->telefone.'",
                 rua = "'.$dadosPag->rua.'",
@@ -593,7 +675,7 @@ class Acompanhante{
                 expiracaoMes = "'.$dadosPag->mesExpira.'",
                 expiracaoAno = "'.$dadosPag->anoExpira.'" where id_filiado ='.$id;
                 
-            }elseif($forma == 'boleto'){
+            }elseif($forma == 'boleto' or empty($dadosPag->numeroCartao)){
                 $sql = 'update tbl_pagamento_filiado set nome = "'.$dadosPag->nome.'",
                 sobrenome = "'.$dadosPag->sobrenome.'", telefone = "'.$dadosPag->telefone.'",
                 rua = "'.$dadosPag->rua.'",
@@ -672,7 +754,6 @@ class Acompanhante{
         
         $id = $_SESSION['id_filiado'];
         
-        //$sql = 'call VwDadosPag('.$id.')';
         $sql = 'select pf.*, tp.valor, m.id_transferencia 
                 from tbl_filiado as fi
                 inner join tbl_pagamento_filiado as pf
@@ -692,13 +773,13 @@ class Acompanhante{
                 $dados->id_transfer = $rs['id_transferencia'];
                 $dados->nome = $rs['nome'];
                 $dados->sobrenome = $rs['sobrenome'];
-                
-                $tel = explode(')', $rs['telefone']);
-                
-                $telddd = explode('(', $tel[0]);
-                $ddd = $telddd[1];
-                $numero = $tel[1];
-                
+                if($rs['telefone'] != null){
+                    $tel = explode(')', $rs['telefone']);
+                    $telddd = explode('(', $tel[0]);
+
+                    $ddd = $telddd[1];
+                    $numero = $tel[1];
+                }
                 $dados->ddd = $ddd;
                 $dados->telefone = $numero;
                 $dados->cep = $rs['cep'];
@@ -803,7 +884,7 @@ class Acompanhante{
         
     }
     
-    /* Buscar tipo de conta */
+    /* Buscar todos os tipos de conta */
     public function SelectTiposConta(){
         
         $sql = "select * from tbl_tipo_conta";
@@ -832,7 +913,7 @@ class Acompanhante{
         }
     }
     
-    /* Buscar tipo de conta */
+    /* Buscar tipo de conta de um usuário */
     public function SelectTipoConta(){
         $id = $_SESSION['id_filiado'];
         
@@ -949,17 +1030,24 @@ class Acompanhante{
 
                 $filiados[$cont]->id = $rs['id_filiado'];
                 $filiados[$cont]->nome = $rs['nome'];
+                
+                if($rs['apelido'] != null){
+                    $filiados[$cont]->apelido = $rs['apelido'];
+                }else{
+                    $filiados[$cont]->apelido = 'Usuário';
+                }
+                
                 if($rs['foto_perfil'] != null){
-                        $resut[$cont]->foto = $rs['foto_perfil'];
+                    $resut[$cont]->foto = $rs['foto_perfil'];
                         
                 }else{
-                        
-                        if($rs['sexo'] == 1){
-                            $resut[$cont]->foto = 'icones/usuaria.jpg';
-                        }else{
-                            $resut[$cont]->foto = 'icones/usuario.jpg';
-                        }
-                        
+
+                    if($rs['sexo'] == 1){
+                        $resut[$cont]->foto = 'icones/usuaria.jpg';
+                    }else{
+                        $resut[$cont]->foto = 'icones/usuario.jpg';
+                    }
+
                 }
                 
                 $filiados[$cont]->uf = $rs['uf'];
@@ -1023,15 +1111,16 @@ class Acompanhante{
 
                     $filiados[$cont]->id = $rs['id_filiado'];
                     $filiados[$cont]->nome = $rs['nome'];
+                    $filiados[$cont]->apelido = $rs['apelido'];
                     if($rs['foto_perfil'] != null){
-                        $resut[$cont]->foto = $rs['foto_perfil'];
+                        $filiados[$cont]->foto = $rs['foto_perfil'];
                         
                     }else{
                         
                         if($rs['sexo'] == 1){
-                            $resut[$cont]->foto = 'icones/usuaria.jpg';
+                            $filiados[$cont]->foto = 'icones/usuaria.jpg';
                         }else{
-                            $resut[$cont]->foto = 'icones/usuario.jpg';
+                            $filiados[$cont]->foto = 'icones/usuario.jpg';
                         }
                         
                     }
@@ -1294,7 +1383,19 @@ class Acompanhante{
                 $filiado[] = new Acompanhante();
                 
                 $filiado[$cont]->nome = $rs['nome'];
-                $filiado[$cont]->foto = $rs['foto_perfil'];
+                $filiado[$cont]->apelido = $rs['apelido'];
+                
+                if($rs['foto_perfil'] != null){
+                    $filiado[$cont]->foto = $rs['foto_perfil'];
+                }else{
+
+                    if($rs['sexo'] == 1){
+                        $filiado[$cont]->foto = 'icones/usuaria.jpg';
+                    }else{
+                        $filiado[$cont]->foto = 'icones/usuario.jpg';
+                    }
+                }
+                
                 $filiado[$cont]->uf = $rs['uf'];
                 $filiado[$cont]->id = $rs['id_filiado'];
                 
@@ -1319,6 +1420,10 @@ class Acompanhante{
         $codigo = $dados['code'];
         $referencia = $dados['referencia'];
         $forma = $tipo;
+        
+        if($desconto == null){
+            $desconto = 0;
+        }
         
         $sql = 'insert into tbl_mensalidade (id_filiado, data_hora, valor, status , desconto, referencia, code, forma)';
         $sql=$sql.'values('.$id.', "'.$data.'", "'.$valor.'", '.$status.', '.$desconto.', "'.$referencia.'", "'.$codigo.'", "'.$forma.'")';
@@ -1349,7 +1454,7 @@ class Acompanhante{
             $sql = 'update tbl_mensalidade set status = '.$status.' where id_transeferencia = "'.$code.'" ';
         
             mysqli_query($this->conect, $sql);
-
+            echo $sql;
         }
         //TO DO: CRIAR UMA TABELA DE NOTIFICAÇÃO DE ERROS
     }
@@ -1402,9 +1507,22 @@ class Acompanhante{
     
     /* Listar filiados peo sexo, etnia, com limit de retorno e excluindo algum id expessifico */
     public function SelectFiliadosSexo($sexo, $etnia, $limit, $id){
-        
+        $resut = null;
         date_default_timezone_set('America/Sao_Paulo');
-                
+        
+        $sindex = 0; //Este é um parametro que restringe a busca
+        $paramtr1 = 1;
+        $paramtr1 = $paramtr1.'.'; // Se devem ser 
+        
+        $paramtr2 = 2;
+        $paramtr2 = $paramtr2.'.';
+        
+        if($sexo == $paramtr1 or $sexo == $paramtr2){
+            $s = explode ('.', $sexo);
+            $sindex = 1;
+            $sexo = $s[0];
+        }
+        
         if(!empty($sexo) and !empty($etnia)){
             $sql = 'select * from tbl_filiado where sexo = '.$sexo;
             $sql .= ' and etnia = '.$etnia;
@@ -1458,6 +1576,7 @@ class Acompanhante{
 
                     $resut[$cont]->id = $rs['id_filiado'];
                     $resut[$cont]->nome = $rs['nome'];
+                    $resut[$cont]->apelido = $rs['apelido'];
                      
                     if($rs['foto_perfil'] != null){
                         $resut[$cont]->foto = $rs['foto_perfil'];
@@ -1493,7 +1612,7 @@ class Acompanhante{
             /*
             Se não houver usuário com a etnia escolhida é retornado o usuário de msm sexo 
             */
-            }else{
+            }elseif($sindex == 0){
                 $sql = 'select * from tbl_filiado where conta_ativa = 1';
                 
                 if($id != null){
@@ -1533,6 +1652,7 @@ class Acompanhante{
 
                             $resut[$cont]->id = $rs['id_filiado'];
                             $resut[$cont]->nome = $rs['nome'];
+                            $resut[$cont]->apelido = $rs['apelido'];
                             
                             if($rs['foto_perfil'] != null){
                                 $resut[$cont]->foto = $rs['foto_perfil'];

@@ -56,8 +56,8 @@
             
         </div>
         
-        <p class="titulo"> Histórico do lucro mensal </p>
         <div class="content_lucro">
+        <h2> Histórico do lucro mensal </h2>
         <?php
         
             $rs = $controller->HistoricoMensal();

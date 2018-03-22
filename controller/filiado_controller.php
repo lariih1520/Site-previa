@@ -100,9 +100,35 @@ class ControllerAcompanhante{
             $filiado->celular1 = '('.$ddd1.')'.$numero1;
             $filiado->celular2 = '('.$ddd2.')'.$numero2;
             $filiado->nome = $_POST['txtNome'];
+            $filiado->apelido = $_POST['txtApelido'];
             $filiado->email = $_POST['txtEmail'];
             $filiado->sexo = $_POST['slc_sexo'];
-            $filiado->altura = $_POST['txtAltura'];
+            
+            $alt = explode(',', $_POST['txtAltura']);
+            $filiado->altura = $alt[0].'.'.$alt[1];
+            
+            if(!empty($_POST['txtConfirm'])){
+                $senhaDigit   = $_POST['txtSenha'];
+                $senhaReal    = $_POST['txtSenhaReal'];
+                $novaSenha    = $_POST['txtNovaSenha'];
+                $ConfirmSenha = $_POST['txtConfirm'];
+
+                if($senhaDigit == $senhaReal){
+                    if($novaSenha == $ConfirmSenha){
+                        $filiado->senha = $_POST['txtNovaSenha'];
+                    }else{
+                        $filiado->senha = 1;
+                    }
+                    
+                }else{
+                    $filiado->senha = 1;
+                }
+            }else{
+                $filiado->senha = 1;
+            }
+            
+            //echo $senhaDigit.' '.$senhaReal.' '.$novaSenha.' '.$ConfirmSenha;
+            
             $filiado->peso = $_POST['txtPeso'];
             $filiado->estado = $_POST['txtUf'];
             $filiado->cidade = $_POST['txtCidade'];
@@ -111,7 +137,7 @@ class ControllerAcompanhante{
             $filiado->apresentacao = $_POST['txtApresentacao'];
             $filiado->cor_cabelo = $_POST['slc_cor_cabelo'];
             $filiado->nasc = $ano."-".$mes."-".$dia;
-
+            
             $anos = $ano_hoje - $ano;
             
             
@@ -148,7 +174,6 @@ class ControllerAcompanhante{
         
     }
     
-    /* Alterar plano */
     public function AlterarPlano(){
         
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -185,8 +210,11 @@ class ControllerAcompanhante{
         $dadosPag->bairro = $_POST['txtBairro'];
         $dadosPag->cidade = $_POST['txtCidade'];
         $dadosPag->uf = $_POST['txtUf'];
-        $dadosPag->formaPagar = $_GET['forma'];
         
+        if(!empty($_GET['forma'])){
+            $dadosPag->formaPagar = $_GET['forma'];
+        }
+           
         $cpf = $_POST['txtCpf'];
         $n = strlen($_POST['txtCpf']);
         
@@ -198,15 +226,9 @@ class ControllerAcompanhante{
             $cont++;
         }
         
-        /*if($soma != 44 or $soma != 55){
-            echo '<br>'.$n;
-            $q = $_GET['q'];
-            header('location:filiado-dados.php?editar=pagar-private&q='.$q.'&Erro=cpf');
-        }*/
-        
         $dadosPag->cpf = base64_encode($_POST['txtCpf']);
         
-        if($_GET['forma'] == 'card'){
+        if(!empty($_GET['forma']) and $_GET['forma'] == 'card'){
             $dadosPag->numeroCartao = base64_encode($_POST['txtNumeroCartao']);
             $dadosPag->cvv = base64_encode($_POST['txtCVV']);
             $dadosPag->mesExpira = base64_encode($_POST['txtMesExpira']);
@@ -239,6 +261,16 @@ class ControllerAcompanhante{
         require_once('model/filiado_class.php');
         $class = new Acompanhante();
         $rs = $class->SelectDadosPag();
+        
+        return $rs;
+        
+    }
+    
+    /* Buscar status do desconto */
+    public function BuscarStatusDesconto(){
+        require_once('model/filiado_class.php');
+        $class = new Acompanhante();
+        $rs = $class->getStatusDesconto(null);
         
         return $rs;
         
@@ -377,10 +409,10 @@ class ControllerAcompanhante{
     }
     
     /* Atualizar Status de pagamento */
-    public function AtualizeStatusPag($status){
-        
+    public function AtualizeStatusPag($status, $code){
+        echo $status.' '.$code;
         $class = new Acompanhante();
-        $class->UpdateStatusPag($status);
+        $class->UpdateStatusPag($status, $code);
         
     }
     

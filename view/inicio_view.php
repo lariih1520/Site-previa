@@ -48,7 +48,7 @@
                     $sexo = 1;
                     
                     $controller = new ControllerAcompanhante();
-                    $rs = $controller->BuscarFiliadosSexo($sexo, null, 15, null);
+                    $rs = $controller->BuscarFiliadosSexo($sexo.'.', null, 15, null);
                     
                     if(count($rs) > 3){
                 ?>
@@ -71,7 +71,7 @@
                                     
                                     $foto = $rs[$cont]->foto;
                                     $id = $rs[$cont]->id;
-                                    $nome = $rs[$cont]->nome;
+                                    $nome = $rs[$cont]->apelido;
                                     $idade = $rs[$cont]->idade;
                                     $uf = $rs[$cont]->uf;
                                     $acompanha = $rs[$cont]->acompanha;
@@ -98,6 +98,8 @@
                         <?php
                                     $cont++;
                                 }
+                            }else{
+                                echo "<center> Infelismente não há mulheres cadastradas </center>";
                             }
                         ?>
                             </ul>
@@ -135,7 +137,7 @@
                     <div class="content">
                      <?php
                         $sexo = 2;
-                        $rs = $controller->BuscarFiliadosSexo($sexo, null, 15, null);
+                        $rs = $controller->BuscarFiliadosSexo($sexo.'.', null, 15, null);
 
                         if(count($rs) > 3){
                     ?>
@@ -158,7 +160,7 @@
 
                                         $foto = $rs[$cont]->foto;
                                         $id = $rs[$cont]->id;
-                                        $nome = $rs[$cont]->nome;
+                                        $nome = $rs[$cont]->apelido;
                                         $idade = $rs[$cont]->idade;
                                         $uf = $rs[$cont]->uf;
                                         $acompanha = $rs[$cont]->acompanha;
@@ -188,6 +190,8 @@
                             <?php
                                         $cont++;
                                     }
+                                }else{
+                                    echo "<center> Infelismente não há homens cadastrados </center>";
                                 }
                             ?>
                                 </ul>

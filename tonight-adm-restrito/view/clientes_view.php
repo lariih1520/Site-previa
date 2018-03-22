@@ -30,7 +30,6 @@
             <li><p>uf</p> <span><?php echo $rs->uf ?></span></li>
             <li><p>cidade</p> <span><?php echo $rs->cidade ?></span></li>
             <li><p>data_cadastro</p> <span><?php echo $rs->data_cadastro ?></span></li>
-            <li><p>cpf</p> <span><?php echo $rs->cpf ?></span></li> 
             <li> <a href="?" class="botao"> OK </a> </li>
 <?php 
             
@@ -46,7 +45,7 @@
     <div id="hospedes">
         <table class="lst_hospedes">
             <tr class="tbl_titulo">
-                <td> Codigo: </td><td> Nome: </td><td> Nasc: </td><td> Uf </td><td> CPF </td><td> Ver </td> 
+                <td> Codigo: </td><td> Nome: </td><td> Nasc: </td><td> Uf </td><td> Ver </td> 
             </tr>
             
         <?php 
@@ -61,14 +60,12 @@
                     $nome   = $rs[$cont]->nome;
                     $nasc   = $rs[$cont]->nasc;
                     $uf     = $rs[$cont]->uf;
-                    $cpf    = $rs[$cont]->cpf;
         ?>
             <tr>
                 <td> <?php echo $codigo ?> </td>
                 <td> <?php echo $nome ?>   </td>
                 <td> <?php echo $nasc ?>   </td> 
-                <td> <?php echo $uf ?>     </td> 
-                <td> <?php echo $cpf ?>    </td>  
+                <td> <?php echo $uf ?>     </td>
                 <td> 
                     <a href="?modo=ver&codigo=<?php echo $codigo ?>"> Mais </a>
                 </td> 

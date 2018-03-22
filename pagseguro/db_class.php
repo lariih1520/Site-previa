@@ -11,7 +11,8 @@
     public $server;
     public $user;
     public $password;
-
+    public $db;
+    public $conexao;
 
     public function __construct(){
         /*
@@ -28,21 +29,22 @@
     }
 
     public function conectar(){
-
-        if($conexao = mysqli_connect($this->server, $this->user, $this->password, $this->db) or die ('Erro de conexão')){
+        
+        if ($conexao = mysqli_connect($this->server, $this->user, $this->password, $this->db) or die ('Erro de conexão')) {
             mysqli_query($conexao, "SET NAMES 'utf8'");
             mysqli_query($conexao, 'SET character_set_connection=utf8');
             mysqli_query($conexao, 'SET character_set_client=utf8');
             mysqli_query($conexao, 'SET character_set_results=utf8');
+            return $conexao;
             
-          return $conexao;
-            
-        }else{
+        } else {
           echo("Erro de conexão");
           die();
+            
         }
 
     }
+
 
     public function desconectar($conect){
 

@@ -85,6 +85,15 @@
                     $controller->ExcluirPlano();
                     
                     break;
+                
+                case 'descOnOff':
+                    include_once('model/plano_class.php');
+                    include_once('controller/planos_controller.php');
+                    
+                    $controller = new ControllerPlanos();
+                    $controller->descOnOff();
+                    
+                    break;
                     
             }
         break;
@@ -125,6 +134,24 @@
                     
                     $controller = new ControllerAcompanhante();
                     $controller->AdicionarDesconto();
+                    
+                    break;
+                     
+                case 'contaOnOff':
+                    include_once('model/filiado_class.php');
+                    include_once('controller/filiado_controller.php');
+                    
+                    $controller = new ControllerAcompanhante();
+                    $controller->ContaAtivarDesativar();
+                    
+                    break;
+                    
+                case 'deldesconto':
+                    include_once('model/filiado_class.php');
+                    include_once('controller/filiado_controller.php');
+                    
+                    $controller = new ControllerAcompanhante();
+                    $controller->DelDesconto();
                     
                     break;
                     

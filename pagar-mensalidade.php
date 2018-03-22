@@ -14,6 +14,18 @@
         <link rel="icon" type="icone/png" href="imagens/logo.png">
 		<link rel="stylesheet" type="text/css" href="css/estilo_padrao.css" />
 		<link rel="stylesheet" type="text/css" href="css/estilo_filiado_dados.css" />
+        <style>
+            
+            #conteudo{
+                padding-top: 50px;
+                min-height: 300px;
+            }
+            
+            .titulo_maior{
+                margin-top: 40px;
+            }
+            
+        </style>
 	</head>
 	<body>
 		<div id="principal">

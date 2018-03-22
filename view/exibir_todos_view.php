@@ -183,7 +183,7 @@
         while($cont < count($rs)){
         
             $id = $rs[$cont]->id;
-            $nome = $rs[$cont]->nome;
+            $nome = $rs[$cont]->apelido;
             $foto = $rs[$cont]->foto;
             $uf   = $rs[$cont]->uf;
 ?>

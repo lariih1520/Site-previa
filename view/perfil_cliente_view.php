@@ -347,7 +347,7 @@
                 <li>
                     <a href="perfil-filiado<?php echo $php ?>?codigo=<?php echo $resp[$cont]->id ?>">
                         <span class="perfil_sugestao">
-                             <p> Nome:   <?php echo $resp[$cont]->nome ?> </p>
+                             <p> Nome:   <?php echo $resp[$cont]->apelido ?> </p>
                              <p> Estado: <?php echo $resp[$cont]->uf ?> </p>
                              <p> Idade:  <?php echo $resp[$cont]->idade ?> </p>
                         </span>

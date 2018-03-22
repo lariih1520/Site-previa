@@ -22,8 +22,8 @@ class Filiado{
     public $cobra;
     
     public function setFiliado(
-        $nome, $nasc, $email, $senha, $confrmSenha, $ddd1, $celular1, $ddd2, $celular2,
-        $etnia, $sexo, $altura, $peso, $acompanha, $cidade, $estado, $cobra)
+        $nome, $apelido, $nasc, $email, $senha, $confrmSenha, $ddd1, $celular1, $ddd2, $celular2,
+        $etnia, $sexo, $altura, $peso, $acompanha, $cidade, $estado, $cobra, $cpf)
     {
         date_default_timezone_set('America/Sao_Paulo');
         $datetime = (date('Y/m/d H:i'));
@@ -72,9 +72,18 @@ class Filiado{
         if($idade == true){
             if ($senha == $confrmSenha) {
                 
+                $class = new Filiado;
+                $resp = $class->VerifyEmail($email);
+                
+                if($resp == true){
+                    $_SESSION['email'] = $email;
+                }else{
+                    ?><script> window.location.href = "seja-filiado.php?Erro=Email#erro"; </script> <?php
+                }
+                
                 $_SESSION['nome'] = $nome;
+                $_SESSION['apelido'] = $apelido;
                 $_SESSION['nasc'] = $nasc;
-                $_SESSION['email'] = $email;
                 $_SESSION['senha'] = $senha;
                 $_SESSION['celular1'] = '('.$ddd1.')'.$celular1;
                 
@@ -99,6 +108,7 @@ class Filiado{
                 $_SESSION['cidade'] = $cidade;
                 $_SESSION['estado'] = $estado;
                 $_SESSION['cobra'] = $cobra;
+                $_SESSION['cpf'] = $cpf;
                 
             }else{
                    
@@ -125,11 +135,29 @@ class Filiado{
         
     }
     
+    public function VerifyEmail($email){
+        require_once('model/db_class.php');
+        
+        $conexao = new Mysql_db();
+        $conect = $conexao->conectar();
+        
+        $sql = "select * from tbl_filiado where email = '".$email."'";
+        $select = mysqli_query($conect, $sql);
+        
+        if(mysqli_affected_rows($conect) > 0){
+            return false;
+        }else{
+            return true;
+        }
+        
+    }
+    
     public function getFiliado(){
         
         $filiado = new Filiado();
         
         $filiado->nome = $_SESSION['nome'];
+        $filiado->apelido = $_SESSION['apelido'];
         $filiado->nasc = $_SESSION['nasc'];
         $filiado->email = $_SESSION['email'];
         $filiado->senha = $_SESSION['senha'];
@@ -148,6 +176,7 @@ class Filiado{
         $filiado->cidade = $_SESSION['cidade'];
         $filiado->estado = $_SESSION['estado'];
         $filiado->cobra = $_SESSION['cobra'];
+        $filiado->cpf = $_SESSION['cpf'];
         
         return $filiado;
         

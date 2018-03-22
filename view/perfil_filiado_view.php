@@ -11,6 +11,10 @@
         include_once('view/perfil/filiado_visualizar.php');
     }
 
+    if(isset($_GET['transaction_id']) ){
+        require_once('pagseguro/notificacao.php');
+    }
+
    if (!empty($_SESSION['id_filiado']) and empty($_GET['codigo'])) {
         include_once('view/perfil/filiado_usuario.php');
    }

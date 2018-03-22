@@ -125,10 +125,14 @@ class Plano{
         $id = $_GET['id'];
         $titulo = $_POST['txtTitulo'];
         $preco = $_POST['txtPreco'];
+        $fotos = $_POST['txtFotos'];
+        $videos = $_POST['txtVideos'];
             
         $sql = "update tbl_tipo_conta
                 set titulo = '".$titulo."', 
-                valor = ".$preco."
+                valor = ".$preco.",
+                foto = ".$fotos.",
+                video = ".$videos."
                 where id_tipo_conta = ".$id;
         
         if(mysqli_query($this->conect, $sql)){
@@ -144,15 +148,99 @@ class Plano{
     public function DeletePlano(){
         
         $id = $_GET['id'];
-           
-        $sql = "delete from tbl_tipo_conta
-                where id_tipo_conta = ".$id;
+
+        $sql = "select * from tbl_filiado where id_tipo_conta = ".$id;
         
-        if(mysqli_query($this->conect, $sql)){
-            header('location:adm_planos.php?Sucesso');
+        if($select = mysqli_query($this->conect, $sql)){
+            
+            if(mysqli_affected_rows($this->conect) > 0){
+                
+                while($rs = mysqli_fetch_array($select)){
+                    $id_filiado = $rs['id_filiado'];
+                    
+                    $sql2 = "select * from tbl_tipo_conta where id_tipo_conta != ".$id." limit 2";
+                    
+                    if($select2 = mysqli_query($this->conect, $sql2)){
+            
+                        while($resp = mysqli_fetch_array($select2)){
+                            $id_tipo = $resp['id_tipo_conta'];
+
+                            $sql3 = "update tbl_filiado set id_tipo_conta = ".$id_tipo;
+                            $sql3 = $sql3." where id_filiado = ".$id_filiado;
+
+                            mysqli_query($this->conect, $sql3);
+                        }
+                    }
+                }
+            }
+            
+            $sql = "delete from tbl_tipo_conta
+                    where id_tipo_conta = ".$id;
+
+            if(mysqli_query($this->conect, $sql)){
+                ?> <script> window.location.href = "adm_planos.php?Sucesso"; </script> <?php
+
+            }else{
+                //echo $sql;
+                echo '<script> alert("Não foi possivel realizar a ação") </script>';
+                
+                ?> <script> window.location.href = "adm_planos.php?Erro"; </script> <?php
+            
+            }
+        }
+        
+    }
+    
+    public function statusDesconto(){
+        $sql = "select * from tbl_desconto";
+        
+        if($select = mysqli_query($this->conect, $sql)){
+            
+            $desc = 0;
+            while($rs = mysqli_fetch_array($select)){
+                
+                $desc = [
+                    'status' => $rs['status'],
+                    'data' => $rs['data']
+                ];
+                
+            }
+            
+            return $desc;
             
         }else{
-            header('location:adm_planos.php?Erro');
+            return 2;
+            
+        }
+        
+    }
+        
+    public function descOnOff(){
+        $sql = "select * from tbl_desconto";
+        
+        if($select = mysqli_query($this->conect, $sql)){
+            
+            while($rs = mysqli_fetch_array($select)){
+                $status = $rs['status'];
+                
+                if($status == 1){
+                    $sql = "update tbl_desconto set status = 0, data = now()";
+                }elseif($status == 0){
+                    $sql = "update tbl_desconto set status = 1, data = now()";
+                }
+                
+                if(mysqli_query($this->conect, $sql)){
+                    ?> <script> window.location.href = "adm_planos.php?Sucesso"; </script> <?php
+                }else{
+                    ?> <script> window.location.href = "adm_planos.php?Erro=update"; </script> <?php
+                }
+                
+            }
+            
+        }else{
+            echo '<script> alert("Não foi possivel realizar a ação") </script>';
+                
+            ?> <script> window.location.href = "adm_planos.php?Erro"; </script> <?php
             
         }
         

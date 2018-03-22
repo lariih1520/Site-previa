@@ -148,7 +148,7 @@ class Lucro{
                 $ano = $dataexpd[0];
                 $resp[$cont]->mesAno = $mes.'/'.$ano;
 
-                $sql1 = "select * from tbl_mensalidade where data_hora like '%".$databd."%'";
+                $sql1 = "select * from tbl_mensalidade where data_hora like '%".$databd."%' and valor != 0";
 
                 if($select1 = mysqli_query($this->conect, $sql1)){
                     

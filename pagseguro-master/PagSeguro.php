@@ -3,14 +3,14 @@
 class Pagamento{
     public function iniciaPagamentoAction() { //gera o código de sessão obrigatório para gerar identificador (hash)
 
-		//$data['token'] ='894B0178743C4806BE5ADA11F1129820'; //token teste SANDBOX
-		$data['token'] ='2C2D9B3A420B4CBFB96E39ACD3DA30DA'; //token Oficial
+		$data['token'] ='D1A51A1CA9FC46C7BA9990F11D04C77E'; //token teste SANDBOX
+		//$data['token'] ='C4B50A6C27204920A3428A497C30198C'; //token Oficial
 
-		$emailPagseguro = "bellussiroger1@gmail.com";
+		$emailPagseguro = "raquelkzs@yahoo.com.br";
 
 		$data = http_build_query($data);
-		//$url = 'https://ws.sandbox.pagseguro.uol.com.br/v2/sessions'; //Sandbox
-		$url = 'https://ws.pagseguro.uol.com.br/v2/sessions'; //Oficial
+		$url = 'https://ws.sandbox.pagseguro.uol.com.br/v2/sessions'; //Sandbox
+		//$url = 'https://ws.pagseguro.uol.com.br/v2/sessions'; //Oficial
 
 		$curl = curl_init();
 
@@ -38,13 +38,13 @@ class Pagamento{
 
     public function efetuaPagamentoCartao($dados) {
 
-		$data['token'] ='2C2D9B3A420B4CBFB96E39ACD3DA30DA'; //token produção
-		//$data['token'] ='894B0178743C4806BE5ADA11F1129820'; //token sandbox 
+		//$data['token'] ='C4B50A6C27204920A3428A497C30198C'; //token produção
+		$data['token'] ='D1A51A1CA9FC46C7BA9990F11D04C77E'; //token sandbox 
 		$data['paymentMode'] = 'default';
 		$data['senderHash'] = $dados['hash']; //gerado via javascript
 		$data['creditCardToken'] = $dados['creditCardToken']; //gerado via javascript
 		$data['paymentMethod'] = 'creditCard';
-		$data['receiverEmail'] = 'bellussiroger1@gmail.com';
+		$data['receiverEmail'] = 'raquelkzs@yahoo.com.br';
 		$data['senderName'] = $dados['senderName']; //nome do usuário deve conter nome e sobrenome
 		$data['senderAreaCode'] = $dados['senderAreaCode'];
 		$data['senderPhone'] = $dados['senderPhone'];
@@ -73,12 +73,12 @@ class Pagamento{
 		$data['shippingAddressRequired'] = 'false';
 		$data['itemAmount1'] = $dados['itemAmount1'];
 
-		$emailPagseguro = "bellussiroger1@gmail.com";
+		$emailPagseguro = "raquelkzs@yahoo.com.br";
 
 		$data = http_build_query($data);
         
-        $url = 'https://ws.pagseguro.uol.com.br/v2/transactions';
-		//$url = 'https://ws.sandbox.pagseguro.uol.com.br/v2/transactions'; //URL de teste
+        //$url = 'https://ws.pagseguro.uol.com.br/v2/transactions';
+		$url = 'https://ws.sandbox.pagseguro.uol.com.br/v2/transactions'; //URL de teste
 
 		$curl = curl_init();
 
@@ -100,27 +100,38 @@ class Pagamento{
 		$xml = simplexml_load_string($xml);
         //var_dump($xml);
 
-		//echo $xml -> paymentLink;
-		$code =  $xml -> code;
-		$date =  $xml -> date;
-		
-		$retornoCartao = array(
-				'code' => $code,
-				'date' => $date
-		);
+        if($xml->error){
+            $erro = $xml->error->message;
+            $code = $xml->error->code;
+            $retornoCartao = array(
+                'code' => $code,
+                'erro' => $erro,
+                'token' => $dados['creditCardToken']
+            );
 
+        }else{
+            //echo $xml -> paymentLink;
+            $code =  $xml -> code;
+            $date =  $xml -> date;
+
+            $retornoCartao = array(
+                    'code' => $code,
+                    'date' => $date
+            );
+        }
+        
 		return $retornoCartao;
 
 	}
 
 	public function efetuaPagamentoBoleto($dados) {
 
-		$data['token'] ='2C2D9B3A420B4CBFB96E39ACD3DA30DA'; //token produção
-		//$data['token'] ='894B0178743C4806BE5ADA11F1129820'; //token sandbox
+		//$data['token'] ='C4B50A6C27204920A3428A497C30198C'; //token produção
+		$data['token'] ='D1A51A1CA9FC46C7BA9990F11D04C77E'; //token sandbox
 		$data['paymentMode'] = 'default';
 		$data['hash'] = $dados['hash'];
 		$data['paymentMethod'] = 'boleto';
-		$data['receiverEmail'] = 'bellussiroger1@gmail.com';
+		$data['receiverEmail'] = 'raquelkzs@yahoo.com.br';
 		$data['senderName'] = $dados['senderName'];
 		$data['senderAreaCode'] = $dados['senderAreaCode'];
 		$data['senderPhone'] = $dados['senderPhone'];
@@ -134,11 +145,11 @@ class Pagamento{
 		$data['shippingAddressRequired'] = 'false';
 		$data['itemAmount1'] = $dados['itemAmount'];
 
-		$emailPagseguro = "bellussiroger1@gmail.com";
+		$emailPagseguro = "raquelkzs@yahoo.com.br";
 
 		$data = http_build_query($data);
-		$url = 'https://ws.pagseguro.uol.com.br/v2/sessions'; //URL real
-		//$url = 'https://ws.sandbox.pagseguro.uol.com.br/v2/transactions'; //URL de teste
+		//$url = 'https://ws.pagseguro.uol.com.br/v2/sessions'; //URL real
+		$url = 'https://ws.sandbox.pagseguro.uol.com.br/v2/transactions'; //URL de teste
 
 		$curl = curl_init();
 
@@ -159,17 +170,26 @@ class Pagamento{
 		$xml= simplexml_load_string($xml);
 
         //var_dump($xml);
-		//echo $xml -> paymentLink;
-		$boletoLink =  $xml -> paymentLink;
-		$code =  $xml -> code;
-		$date =  $xml -> date;
-		
-		$retornoBoleto = array(
-				'paymentLink' => $boletoLink,
-				'date' => $date,
-				'code' => $code
-		);
+        
+        if($xml->error){
+            $erro = $xml->error->message;
+            $retornoBoleto = array(
+                'erro' => $erro
+            );
+            
+        }else{
+            
+            $boletoLink =  $xml -> paymentLink;
+            $code =  $xml -> code;
+            $date =  $xml -> date;
 
+            $retornoBoleto = array(
+                    'paymentLink' => $boletoLink,
+                    'date' => $date,
+                    'code' => $code
+            );
+        }
+        
 		return $retornoBoleto;
 
 	}

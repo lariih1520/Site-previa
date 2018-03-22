@@ -21,6 +21,7 @@
                 $uf = $rs->uf;
                 $cidade = $rs->cidade;
                 $nome = $rs->nome;
+                $apelido = $rs->apelido;
                 $email = $rs->email;
                 $senha = $rs->senha;
                 $sexo = $rs->sexo;
@@ -85,20 +86,23 @@
 ?>
     <form action="router<?php echo $php ?>?controller=acompanhante&modo=alterar&q=dados" method="post" id="form1">
         <ul class="lst_dados">
-            <li> <p>Nome de usuário:</p>
-                <input type="text" name="txtNome" value="<?php echo $nome ?>" maxlength="20">
+            <li> <p>Nome real:</p>
+                <input type="text" name="txtNome" value="<?php echo $nome ?>" maxlength="50"  pattern="[a-zA-Z\s]+" required oninvalid="setCustomValidity('Preencha o nome (Apenas letras)')" onchange="try{setCustomValidity('')}catch(e){}">
+            </li>
+            <li> <p>Nome público:</p>
+                <input type="text" name="txtApelido" value="<?php echo $apelido ?>" maxlength="50"  pattern="[a-zA-Z\s]+" required oninvalid="setCustomValidity('Preencha o nome (Apenas letras)')" onchange="try{setCustomValidity('')}catch(e){}">
             </li>
             <li> <p> E-mail: </p>       
-                <input type="text" name="txtEmail" value="<?php echo $email ?>" maxlength="100">
+                <input type="text" name="txtEmail" value="<?php echo $email ?>" maxlength="100" required oninvalid="setCustomValidity('Preencha o campo e-mail')" onchange="try{setCustomValidity('')}catch(e){}">
             </li>
             <li><p> *Celular 1: </p> 
-                <input type="text" name="txtDDD1" maxlength="2" size="1" value="<?php echo $ddd1 ?>" placeholder="00" >
-                <input type="text" name="txtCel1" maxlength="9" size="10" value="<?php echo $celular1 ?>" placeholder="12348765" >
+                <input type="text" name="txtDDD1" maxlength="2" size="1" value="<?php echo $ddd1 ?>" placeholder="00" pattern="[0-9]+" placeholder="00" required oninvalid="setCustomValidity('Preencha o ddd (apenas numeros)')" onchange="try{setCustomValidity('')}catch(e){}">
+                <input type="text" name="txtCel1" maxlength="9" size="10" value="<?php echo $celular1 ?>" placeholder="12348765" pattern="[0-9]+" placeholder="12348765" required oninvalid="setCustomValidity('Preencha o celular (apenas numeros)')" onchange="try{setCustomValidity('')}catch(e){}">
             </li>
             
             <li><p> Celular 2 (opcional): </p> 
-                <input type="text" name="txtDDD2" maxlength="2" size="1" value="<?php echo $ddd2 ?>" placeholder="00">
-                <input type="text" name="txtCel2" maxlength="9" size="10" value="<?php echo $celular2 ?>" placeholder="12348765">
+                <input type="text" name="txtDDD2" maxlength="2" size="1" value="<?php echo $ddd2 ?>" placeholder="00"  pattern="[0-9]+" placeholder="00" oninvalid="setCustomValidity('Preencha o ddd (apenas numeros)')">
+                <input type="text" name="txtCel2" maxlength="9" size="10" value="<?php echo $celular2 ?>" placeholder="12348765"  pattern="[0-9]+" placeholder="12348765" oninvalid="setCustomValidity('Preencha o celular (apenas numeros)')" >
             </li>
             <li><p> *Data de nascimeto: </p> 
                 
@@ -241,7 +245,7 @@
                 </select>
             </li>
             <li> <p> Altura: </p>       
-                <input type="text" name="txtAltura" value="<?php echo $altura ?>" size="2" maxlength="4">
+                <input type="text" name="txtAltura" value="<?php echo $altura ?>" size="2" maxlength="4" pattern="[1-2]{1},[0-9]{2}" maxlength="4" size="3" required oninvalid="setCustomValidity('Preencha o campo altura(Ex:1,70)')" onchange="try{setCustomValidity('')}catch(e){}">
             </li>
             <li> <p> Peso: </p>         
                 <input type="text" name="txtPeso" value="<?php echo $peso ?>" size="2" maxlength="3"> Kg
@@ -267,12 +271,62 @@
             <li><p> Cidade:</p>
                  <input type="text" value="<?php echo $cidade ?>" id="cidade" name="txtCidade" maxlength="10">
             </li>
+            <li id="btnAlterarSenha"><br>
+                <p><a href="#altSenha" onclick="AlterarSenha()"> Alterar senha </a></p> 
+            </li>
+            <li class="hide" id="altSenha"><p> Alterar senha</p>
+                <p> Senha antiga:</p>
+                <input type="text" name="txtSenha" id="senhaAntiga">
+                
+                <input type="text" name="txtSenhaReal" class="hide" value="<?php echo $senha ?>" id="senhaReal">
+                
+                <span class="hide" id="senhaIncr"> Senha incorreta </span>
+                <p> Nova senha:</p>
+                 <input type="text" name="txtNovaSenha" maxlength="10" id="novaSenha">
+                <p> Confirmar senha:</p>
+                 <input type="text" name="txtConfirm" onkeyup="confirmsenha()" maxlength="10" id="confirmSenha">
+                <span class="hide" id="confmr"> Senhas não coincidem </span>
+            </li>
             <li> <p> Apresentação: </p> 
                 <textarea name="txtApresentacao" cols="50" rows="10" maxlength="300"><?php echo $apresentacao ?></textarea>
             </li>
         </ul>
         <input type="submit" name="btnSalvar" value="Salvar" class="botao">
+        <a href="perfil-filiado.php"> Cancelar </a>
     </form>    
+    <script src="js/jquery-3.2.1.min.js"></script>
+    <script>
+        
+        function AlterarSenha(){
+            $('#altSenha').toggleClass('hide');
+            $('#btnAlterarSenha').addClass('hide');
+            
+        }
+        
+        $("#senhaAntiga").focusout(function(){
+            senha = $('#senhaReal').val();
+            senhaAnt = $('#senhaAntiga').val();
+            
+            if(senha == senhaAnt){
+               $('#senhaIncr').addClass('hide');
+            }else{
+                $('#senhaIncr').removeClass('hide');
+            }
+            
+        });
+        
+        function confirmsenha(){
+            
+            nova = $('#novaSenha').val();
+            confirm = $('#confirmSenha').val();
+            if(nova == confirm){
+               $('#confmr').addClass('hide');
+            }else{
+                $('#confmr').removeClass('hide');
+            }
+        }
+        
+    </script>
 <?php
     }elseif($_GET['editar'] == 'dados-private' || $_GET['editar'] == 'pagar-private'){
         
@@ -324,34 +378,38 @@
             
             
     if($_GET['editar'] == 'dados-private' or empty($_GET['forma']) or $_GET['forma'] == 'card'){
+        
+        if(!empty($_GET['forma']) and $_GET['forma'] == 'card'){
+            $q = $q.'&forma=card';
+        }
 ?>  
      
-    <form action="router<?php echo $php ?>?controller=acompanhante&<?php echo $modo.'&'.$q ?>&forma=card" method="post" id="form2">
+    <form action="router<?php echo $php ?>?controller=acompanhante&<?php echo $modo.'&'.$q ?>" method="post" id="form2">
         <ul class="lst_dados">
             <li> <p>Nome: </p>
-                <input type="text" name="txtNome" value="<?php echo $nome ?>" maxlength="30">
+                <input type="text" name="txtNome" value="<?php echo $nome ?>" maxlength="30" required>
             </li> 
             <li> <p>Sobrenome: </p>
-                <input type="text" name="txtSobrenome" value="<?php echo $sobrenome ?>" maxlength="30">
+                <input type="text" name="txtSobrenome" value="<?php echo $sobrenome ?>" maxlength="30" required>
             </li> 
             <li> <p>Telefone: </p>
-                <input type="text" name="txtDDD" value="<?php echo $ddd ?>" maxlength="2" size="2" placeholder="DDD">
-                <input type="text" name="txtTel" value="<?php echo $telefone ?>" maxlength="8">
+                <input type="text" name="txtDDD" value="<?php echo $ddd ?>" maxlength="2" size="2" placeholder="DDD" required>
+                <input type="text" name="txtTel" value="<?php echo $telefone ?>" maxlength="8" required>
             </li> 
             <li> <p>CPF (apenas numeros): </p>
-                <input type="text" name="txtCpf" value="<?php echo $cpf ?>" maxlength="11">
+                <input type="text" name="txtCpf" value="<?php echo $cpf ?>" maxlength="11" required>
             </li> 
             <li> <p>CEP (apenas numeros):  </p>
-                <input type="text" name="txtCEP" id="cep" value="<?php echo $cep ?>" maxlength="8">
+                <input type="text" name="txtCEP" id="cep" value="<?php echo $cep ?>" maxlength="8" required>
             </li> 
             <li> <p>Rua: </p>
-                <input type="text" name="txtRua" id="rua" value="<?php echo $rua ?>" readonly>
+                <input type="text" name="txtRua" id="rua" value="<?php echo $rua ?>">
             </li> 
             <li> <p>Numero: </p>
                 <input type="text" name="txtNumero" value="<?php echo $numero ?>" maxlength="4" size="2">
             </li> 
             <li> <p>Bairro: </p>
-                <input type="text" name="txtBairro" id="bairro" value="<?php echo $bairro ?>" readonly>
+                <input type="text" name="txtBairro" id="bairro" value="<?php echo $bairro ?>">
             </li> 
             <li> <p>Cidade: </p>
                 <input type="text" name="txtCidade" id="cidade" value="<?php echo $cidade ?>" readonly>
@@ -360,16 +418,16 @@
                 <input type="text" name="txtUf" id="uf" value="<?php echo $estado ?>" readonly>
             </li> 
             <li> <p>Numero do cartão: </p>
-                <input type="text" name="txtNumeroCartao" value="<?php echo $numero_cartao ?>" maxlength="16">
+                <input type="text" name="txtNumeroCartao" value="<?php echo $numero_cartao ?>" maxlength="16" required>
             </li> 
             <li> <p>Mês de expiração: </p>
-                <input type="text" name="txtMesExpira" value="<?php echo $expiracaoMes ?>" maxlength="2" size="2">
+                <input type="text" name="txtMesExpira" value="<?php echo $expiracaoMes ?>" maxlength="2" size="2" required>
             </li> 
             <li> <p>Ano de expiração: </p>
-                <input type="text" name="txtAnoExpira" value="<?php echo $expiracaoAno ?>" maxlength="4" size="4">
+                <input type="text" name="txtAnoExpira" value="<?php echo $expiracaoAno ?>" maxlength="4" size="4" required>
             </li> 
             <li> <p>CVV: </p>
-                <input type="text" name="txtCVV" value="<?php echo $cvv ?>" maxlength="4" id="cvv">
+                <input type="text" name="txtCVV" value="<?php echo $cvv ?>" maxlength="4" id="cvv" required>
             </li>    
         </ul>
         <p><input type="submit" name="btnSalvar" value="<?php echo $botao; ?>" class="botao"> 
@@ -384,29 +442,29 @@
     <form action="router<?php echo $php ?>?controller=acompanhante&<?php echo $modo.'&'.$q ?>&forma=boleto" method="post" id="form3">
         <ul class="lst_dados">
             <li> <p>Nome: </p>
-                <input type="text" name="txtNome" value="<?php echo $nome ?>" maxlength="30">
+                <input type="text" name="txtNome" value="<?php echo $nome ?>" maxlength="30" required>
             </li> 
             <li> <p>Sobrenome: </p>
-                <input type="text" name="txtSobrenome" value="<?php echo $sobrenome ?>" maxlength="30">
+                <input type="text" name="txtSobrenome" value="<?php echo $sobrenome ?>" maxlength="30" required>
             </li> 
             <li> <p>Telefone: </p>
-                <input type="text" name="txtDDD" value="<?php echo $ddd ?>" maxlength="2" size="2" placeholder="DDD">
-                <input type="text" name="txtTel" value="<?php echo $telefone ?>" maxlength="8">
+                <input type="text" name="txtDDD" value="<?php echo $ddd ?>" maxlength="2" size="2" placeholder="DDD" required>
+                <input type="text" name="txtTel" value="<?php echo $telefone ?>" maxlength="8" required>
             </li> 
             <li> <p>CPF (apenas numeros): </p>
-                <input type="text" name="txtCpf" value="<?php echo $cpf ?>" maxlength="11">
+                <input type="text" name="txtCpf" value="<?php echo $cpf ?>" maxlength="11" required>
             </li> 
             <li> <p>CEP (apenas numeros):  </p>
-                <input type="text" name="txtCEP" id="cep" value="<?php echo $cep ?>" maxlength="8">
+                <input type="text" name="txtCEP" id="cep" value="<?php echo $cep ?>" maxlength="8" required>
             </li> 
             <li> <p>Rua: </p>
-                <input type="text" name="txtRua" id="rua" value="<?php echo $rua ?>" readonly>
+                <input type="text" name="txtRua" id="rua" value="<?php echo $rua ?>" >
             </li> 
             <li> <p>Numero: </p>
-                <input type="text" name="txtNumero" value="<?php echo $numero ?>" maxlength="4" size="2">
+                <input type="text" name="txtNumero" value="<?php echo $numero ?>" maxlength="4" size="2" required>
             </li> 
             <li> <p>Bairro: </p>
-                <input type="text" name="txtBairro" id="bairro" value="<?php echo $bairro ?>" readonly>
+                <input type="text" name="txtBairro" id="bairro" value="<?php echo $bairro ?>" >
             </li> 
             <li> <p>Cidade: </p>
                 <input type="text" name="txtCidade" id="cidade" value="<?php echo $cidade ?>" readonly>

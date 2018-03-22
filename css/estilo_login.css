@@ -28,6 +28,10 @@
 .titulo{
     color: white;
 }
+.titulo span{
+    color: #8A0808;
+    text-shadow: 0px 0px 1px white;
+}
 
 .botao{
     width: 200px;
@@ -70,3 +74,6 @@ input{
     text-align: center;
 }
 
+.cadastre_se a{
+    color: blue;
+}

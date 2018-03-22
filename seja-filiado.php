@@ -24,6 +24,7 @@
             <!-- conteudo -->
             <section id="conteudo">
                 <?php include_once('controller/filiado.php'); ?>
+                <?php include_once('controller/filiado_controller.php'); ?>
                 <?php include_once('view/seja_filiado_view.php'); ?>
             </section>
             

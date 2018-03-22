@@ -66,30 +66,23 @@
                 R$ <input type="text" name="txtPreco" value="<?php echo $rs->preco ?>" size="3">,00
             </li>
             <li><p> Numero de fotos: </p>
-                <span> <?php echo $rs->nmrFotos ?> </span>
+                <input type="text" name="txtFotos" value="<?php echo $rs->nmrFotos ?>" size="6">
             </li>
             <li><p> Numero de vídeos: </p>
-                <span> <?php echo $rs->nmrVideos ?> </span>
+                <input type="text" name="txtVideos" value="<?php echo $rs->nmrVideos ?>" size="6">
             </li>
-            <?php
-                if($rs->nmrUsuarios == 0){
-                    
-            ?>
             <li>
                 <a onclick="confirmDelete('<?php echo $rs->id ?>');">
                 <img src="icones/delete.png" class="icone">
                 </a>
             </li>
-            <?php
-                }
-            ?>
         </ul>
          <?php
             if($rs->nmrUsuarios > 0){
                     
         ?>
             <p class="margem">
-                (Não é possível excluir este plano)
+                Existem <?php echo $rs->nmrUsuarios ?> usuários com esta conta
             </p>
         <?php
             }
@@ -149,3 +142,37 @@
     }
 
 ?>
+
+<form action="router.php?controller=plano&modo=descOnOff" method="post">
+    <div id="descontos">
+        <p class="titulo"> Desconto </p>
+        <p> É adicionado um desconto de 100% para todos os usuários que se cadastrarem neste mês</p>
+        
+    <?php
+        
+        $controller = new ControllerPlanos();
+        $resp = $controller->statusDesconto();
+        
+        if($resp != 2){
+            
+            $data = $resp['data'];
+            
+            if($resp['status'] == 1){
+                $conta = 'Desconto ativo';
+                $class= 'on';
+                echo '<p> Ativado em: '.$data.'</p>';
+            }elseif($resp['status'] == 0){
+                $conta = 'Desconto inativo';
+                $class= 'off';
+                echo '<p> Ultima vez ativo: '.$data.'</p>';
+            }
+            
+            echo '<input type="submit" name="btnUpdate" value="'.$conta.'" class="onOff '.$class.'">';
+            
+        }else{
+            echo "Não encontrado";
+        }
+    ?>  
+    </div>
+    
+</form>

@@ -77,12 +77,37 @@ class ControllerAcompanhante{
         
     }
     
+    /* Ativar ou desativar a conta do filiado */
+    public function ContaAtivarDesativar(){
+        if($_SERVER['REQUEST_METHOD'] == 'POST'){
+            $class = new Acompanhante();
+            $class->ContaAtivarDesativar();
+        }
+    }
+    
+    /* Ativar ou desativar a conta do filiado */
+    public function DelDesconto(){
+
+        $class = new Acompanhante();
+        $class->DelDesconto();
+        
+    }
+    
     /* Buscar filiados atrasados com o pagamento */
     public function RecuperarContaFiliado(){
         require_once('model/filiado_class.php');
         
         $class = new Acompanhante();
         $rs = $class->RecuperarContaFiliado();
+        
+    }
+    
+    /* Atualizar a situação das contas que não pagaram a mensalidade */
+    public function AtualizarStatusPagamento(){
+        require_once('model/filiado_class.php');
+        
+        $class = new Acompanhante();
+        $rs = $class->AtualizarStatusPagamento();
         
     }
     

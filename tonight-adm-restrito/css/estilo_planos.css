@@ -58,3 +58,30 @@
 .margem{
     margin-top: 15px;
 }
+
+#descontos{
+    width: 930px;
+    height: 200px;
+    padding: 10px;
+    margin: auto;
+    margin-bottom: 10px;
+    border-top: solid 1px black;
+}
+
+.onOff{
+    cursor: pointer;
+    color:white;
+    padding: 2px 4px 2px 4px;
+    box-shadow: none;
+    font-size: 20px;
+    margin: auto;
+    margin-top: 10px;
+}
+.on{
+    border: solid 1px cadetblue;
+    background-color:cadetblue;
+}
+.off{
+    border: solid 1px darkred;
+    background-color:darkred;
+}

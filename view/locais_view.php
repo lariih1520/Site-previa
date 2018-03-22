@@ -43,7 +43,7 @@
     <a href="perfil-filiado<?php echo $php ?>?codigo=<?php echo $rs[$cont]->id ?>">    
         <div class="filiado">
             <img src="<?php echo $rs[$cont]->foto ?>" alt="Foto de perfil">
-            <p> Nome: <?php echo $rs[$cont]->nome ?> </p>
+            <p> Nome: <?php echo $rs[$cont]->apelido ?> </p>
             <p> Estado: <?php echo $rs[$cont]->uf ?> </p>
         </div>
     </a>

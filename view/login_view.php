@@ -44,7 +44,7 @@
                     $link = "seja-cliente".$php;
                     
                 }else{
-                    echo("Fazer login como acompanhante");
+                    echo("Fazer login como <span>acompanhante</span>");
                     $desc = "Faça o login para que você possa ser contratado como acompanhante.";
                     $link = "seja-filiado".$php;
                 }

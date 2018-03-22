@@ -1,44 +1,61 @@
 <?php
 	header("access-control-allow-origin: https://pagseguro.uol.com.br");
 	header("access-control-allow-origin: https://sandbox.pagseguro.uol.com.br");
+	
 	require_once("PagSeguro.class.php");
-    require_once('../controller/filiado_controller.php');
-    require_once('../model/filiado_class.php');
-        
-
-	if(isset($_POST['notificationType']) && $_POST['notificationType'] == 'transaction'){
+	require_once("db_class.php");
+    
+	if(isset($_POST['notificationType']) and $_POST['notificationType'] == 'transaction'){
 		$PagSeguro = new PagSeguro();
 		$response = $PagSeguro->executeNotification($_POST);
-        $code = $_POST['notificationCode'];
-        $controller = new ControllerAcompanhante();
         
-		if( $response->status==3 || $response->status==4 ){
+		if( $response->status==3 or $response->status == 4 ){
+            $conexao = new Mysql_db();
+            $conect = $conexao->conectar();
             
-            $controller->AtualizeStatusPag(3, $code);
+            $status = $response->status;
+            $code = $response->code;
             
+            $sql = 'update tbl_mensalidade set status = '.$status.' where code = "'.$code.'" ';
+            mysqli_query($conect, $sql);
+                
 		}else{
-            $controller->AtualizeStatusPag(1, $code);
             
 			//PAGAMENTO PENDENTE
-			//echo $PagSeguro->getStatusText($PagSeguro->status);
+            
+            $status = $response->status;
+            $code = $response->code;
+            
+			$sql = 'update tbl_mensalidade set status = '.$status.' where code = "'.$code.'" ';
+            mysqli_query($conect, $sql);
 		}
         
+        mysqli_close($conect);
 	}
+
     //RECEBER RETORNO
-    if( isset($_GET['transaction_id']) ){
-        $pagamento = $PagSeguro->getStatusByReference($_GET['codigo']);
-
+    if(isset($_GET['transaction_id'])){
+        
+        $pagamento = $PagSeguro->getStatusByCode($_GET['transaction_id']);
         $pagamento->codigo_pagseguro = $_GET['transaction_id'];
-
-        if($pagamento->status==3 || $pagamento->status==4){
+        
+        $code = $_GET['transaction_id'];
+        $status = $pagamento->status;
+        
+        $conexao = new Mysql_db();
+        $conect = $conexao->conectar();
+        
+        if($pagamento == 3 or $pagamento == 4){
             //ATUALIZAR DADOS DA VENDA, COMO DATA DO PAGAMENTO E STATUS DO PAGAMENTO
-            $controller = new ControllerAcompanhante();
-            $controller->AtualizeStatusPag(3);
 
+            $sql = 'update tbl_mensalidade set status = '.$status.' where code = "'.$code.'" ';
+            mysqli_query($conect, $sql);
+            
         }else{
             //ATUALIZAR NA BASE DE DADOS
-            $controller = new ControllerAcompanhante();
-            $controller->AtualizeStatusPag($pagamento->status);
+            
+            $sql = 'update tbl_mensalidade set status = '.$status.' where code = "'.$code.'" ';
+            mysqli_query($conect, $sql);
         }
     }
 ?>

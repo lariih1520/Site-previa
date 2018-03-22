@@ -1,6 +1,13 @@
     <h1 class="titulo_maior"> Lista de todos os hospedes do site </h1>
 
 <?php 
+    
+    if(!empty($_GET['Atualizar'])){
+        $contllr = new ControllerAcompanhante();
+        $rs = $contllr->AtualizarStatusPagamento();
+        
+    }
+    
     if(isset($_GET['gerar'])){
         
         if($_GET['gerar'] == 'desconto' and !empty($_GET['id'])){
@@ -12,13 +19,15 @@
                 $id = $rs->id_filiado;
                 $nome = $rs->nome;
                 $valorMes = $rs->valor;
+                $desconto = $rs->desconto;
             }
             
 ?>
-    <form action="router.php?controller=hospedes&modo=desconto&cod=<?php echo $id ?>" method="post">
+    <form action="router.php?controller=hospedes&modo=desconto&cod=<?php echo $id ?>" method="post" class="form">
         <fieldset>
             <legend class="titulo"> Gerar desconto </legend>
 
+            <div class="novoDesconto">
             <p> <label> Codigo: </label> <?php echo $id ?>  &#124; 
                 <label> Nome: </label> <?php echo $nome ?>  &#124; 
                 <label> Valor mensal: </label> R$ <?php echo $valorMes ?>,00 </p> 
@@ -29,8 +38,22 @@
             </p>
             <p> <label> Valor com desconto: </label> R$ <span id="valorDesconto"> </span>,00 </p>
             
-            <p> <input type="submit" name="btnConfirmar" value="Confirmar" class="botao"> </p>
+            <p> <input type="submit" name="btnConfirmar" value="Confirmar" class="botao on"> 
+                <a href="?"> Cancelar </a>
+            </p>
                 Este desconto é valido para o próximo pagamento
+            </div>
+            
+            <?php if($desconto != 0){ ?>
+            <div class="descontoAnterior">
+                <p><b>Desconto atual</b></p>
+                <p> Valor do desconto: <?php echo $desconto ?></p>
+                <p> Valor com desconto: <?php echo $valorMes - $desconto ?></p>
+                <p><a href="router.php?controller=hospedes&modo=deldesconto&code=<?php echo $id ?>" class="onOff off"> 
+                    Excluir desconto </a></p>
+            </div>
+            <?php } ?>
+            
         </fieldset>
     </form>
     <script src="../js/jquery-3.2.1.min.js"></script>
@@ -42,8 +65,8 @@
             desc = $("#desconto").val();
             
             if(desc > 0){
-                valorbd = (valorPag * desc) / 100;
-                valorDesc = valorPag - ((valorPag * desc) / 100);
+                valorbd = Math.round((valorPag * desc) / 100);
+                valorDesc = valorPag - Math.round((valorPag * desc) / 100);
             }else{
                 valorDesc = valorPag;
             }
@@ -81,7 +104,7 @@
 <?php       }
             
             
-        if($rs->apresentacao == '-'){ 
+        if($rs->apresentacao == '-' or $rs->apresentacao == '0'){ 
             $apresentacao = ''; 
         }else{
             $apresentacao = '<div class="apresentacao"><p>Apresentacao</p> <span>'.$rs->apresentacao.'</span></div>'; 
@@ -103,14 +126,32 @@
             <li><p>Sexo</p> <span><?php echo $rs->sexo ?></span></li>
             <li><p>Altura</p> <span><?php echo $rs->altura ?></span></li>
             <li><p>Peso</p> <span><?php echo $rs->peso ?></span></li>
-            <li><p>Conta ativa</p> <span><?php echo $conta_ativa ?></span></li>
+            <li>
+                <?php if($rs->excluido == null or $rs->excluido == 0000-00-00){
+                    if($conta_ativa == 'Ativa'){
+                        $conta = 'Conta ativa';
+                        $class= 'on';
+                    }elseif($conta_ativa == 'Inativa'){
+                       $conta = 'Conta inativa';
+                        $class= 'off';
+                    }
+                    echo '<form action="router.php?controller=hospedes&modo=contaOnOff" method="post">';
+                    echo '<input type="text" name="txtCod" value="'.$rs->id_filiado.'" class="hide">';
+                    echo '<input type="submit" name="btnUpdate" value="'.$conta.'" class="onOff '.$class.'">';
+                    echo '</form>';
+                }else{ ?>
+                
+                <p>Conta ativa</p> <span><?php echo $conta_ativa ?></span>
+                
+                <?php } ?>
+            </li>
             <li><p>Acompanha</p> <span><?php echo $rs->acompanha ?></span></li>
             <li><p>Cobrar</p> <span><?php echo $rs->cobrar ?> ,00 </span></li>
             <li><p>UF</p> <span><?php echo $rs->uf ?></span></li>
             <li><p>Cidade</p> <span><?php echo $rs->cidade ?></span></li>
             <li><p>Data de cadastro</p> <span><?php echo $rs->data_cadastro ?></span></li>
             <?php       
-                if($rs->excluido != null){
+                if($rs->excluido != null or $rs->excluido != 0000-00-00){
             ?>
             
             <li><p>Data de exclusão </p> <span><?php echo $rs->excluido ?></span></li>
@@ -271,15 +312,15 @@
         
         $rs = $controller->BuscarFiliadosPagAtraso();
         
-        if($rs == true){
+        if($rs != false){
             $msg = 'Algumas contas estão com o pagamento atrasado mais de uma semana! 
-                    <a href="router.php?controller=hospedes&modo=delAtrasados"> Deseja excluir ? </a>';
+                    <a href="router.php?controller=hospedes&modo=delAtrasados" class="atualzar"> Deseja excluir ? </a>';
             
         }elseif($rs == false){
             $msg = 'Não há contas com o pagamento atrasado';
         }
         ?>
-        <p class="delcontasatrasadas"><?php echo $msg ?></p>
+        <p class="delcontasatrasadas"><?php echo $msg ?><span><a href="?Atualizar=contas" class="atualzar"> Atualizar </a></span></p>
         
     </div>
 

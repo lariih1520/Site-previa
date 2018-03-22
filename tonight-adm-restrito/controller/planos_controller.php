@@ -42,6 +42,21 @@ class ControllerPlanos{
         
     }
     
+    public function statusDesconto(){
+        require_once('model/plano_class.php');
+        
+        $class = new Plano();
+        $rs = $class->statusDesconto();
+        
+        return $rs;
+    }
+    
+    public function descOnOff(){
+        $class = new Plano();
+        $class->descOnOff();
+        
+    }
+    
 }
 
 ?>

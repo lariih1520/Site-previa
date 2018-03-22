@@ -55,9 +55,10 @@
                 
                 $deve = $valor;
                 
-                $pagMes = $controller->getStatusPagamento();
-                if($pagMes > 1 and $pagMes != 'null'){
-                    $deve = $valor * $pagMes;
+                $rs = $controller->BuscarDadosPag();
+                if($rs != null){
+                    $desconto = $rs->desconto;
+                    $valor = $valor - $desconto;
                 }
                 
                 if($_GET['editar'] == 'pagar-private' & empty($_GET['forma'])){
@@ -68,14 +69,14 @@
                         <a href="filiado-dados.php?editar=pagar-private&forma=boleto">
                             <p> Escolher a opção: </p>
                             Boleto
-                            <p><?php echo 'Valor: R$'.$deve.',00'; ?></p>
+                            <p><?php echo 'Valor: R$'.$valor.',00'; ?></p>
                         </a>
                     </div>
                     <div class="seleciona">
                         <a href="filiado-dados.php?editar=pagar-private&forma=card">
                             <p> Escolher a opção: </p>
                             Cartão de crédito
-                            <p><?php echo 'Valor: R$'.$deve.',00'; ?></p>
+                            <p><?php echo 'Valor: R$'.$valor.',00'; ?></p>
                         </a>
                     </div>
                 </div>

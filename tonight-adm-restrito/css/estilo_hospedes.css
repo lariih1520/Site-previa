@@ -8,6 +8,10 @@ body{
 .hide{
     display: none;
 }
+.form{
+    margin-top: 18px;
+    margin-bottom: 18px;
+}
 fieldset{
     width: 760px;
     height: 200px;
@@ -118,6 +122,45 @@ a{
 }
 .delcontasatrasadas a{
     color: black;
+}
+span .atualzar{
+    color: blue;
+    margin-left: 5px;
+    padding-left: 5px;
+    padding-right: 5px;
+    border: solid 1px blue;
+}
+span .atualzar:hover{
+    color: black;
+    text-decoration: none;
+    border: solid 1px black;
+}
+.onOff{
+    cursor: pointer;
+    color:white;
+    padding: 2px;
+    box-shadow: none;
+    font-size: 20px;
+    margin: auto;
+    margin-top: 5px;
+}
+.on{
+    border: solid 1px cadetblue;
+    background-color:cadetblue;
+}
+.off{
+    border: solid 1px darkred;
+    background-color:darkred;
+}
+.novoDesconto{
+    float:left; 
+    padding-right:15px;
+    border-right:solid 1px black; 
+}
+.descontoAnterior{
+    float:left;
+    margin-left:20px;
+    border:solid 1px transparent;
 }
 .lst_hospedes{
     width:890px; 

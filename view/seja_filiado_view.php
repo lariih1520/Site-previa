@@ -1,4 +1,3 @@
-<div id="estilo">
 
 <?php
     
@@ -14,8 +13,12 @@
         <form action="?etapa=2" method="post">
         <ul class="lst_dados_1">
             
-            <li><p> *Nome: </p> 
+            <li><p> *Nome real: <span class="nomeReal">(Vísivel apenas para você)</span> </p> 
                 <input type="text" name="txtNome" maxlength="50" pattern="[a-zA-Z\s]+" required oninvalid="setCustomValidity('Preencha o nome (Apenas letras)')" onchange="try{setCustomValidity('')}catch(e){}">
+            </li>
+            
+            <li><p> *Nome público: <span class="nomeReal">(Vísivel à todos)</span> </p> 
+                <input type="text" name="txtApelido" maxlength="30" pattern="[a-zA-Z\s]+" required oninvalid="setCustomValidity('Preencha o nome (Apenas letras)')" onchange="try{setCustomValidity('')}catch(e){}">
             </li>
             
             <li><p> *Data de nascimeto: </p> 
@@ -67,7 +70,7 @@
             </li>
             
             <li><p> *Sexo: </p> 
-                <select name="slc_sexo" required>
+                <select name="slc_sexo">
                     <option value="0"> Selecione </option>
                     <option value="1"> Feminino </option>
                     <option value="2"> Masculino </option>
@@ -86,7 +89,7 @@
                 <input type="text" name="txtEmail" maxlength="100" required oninvalid="setCustomValidity('Preencha o campo e-mail')" onchange="try{setCustomValidity('')}catch(e){}">
             </li>
             
-            <li><p> *Celular 1: </p> 
+            <li><p> *Celular 1: <img src="icones/whatsapp.png" alt="whatsapp" class="icone"></p> 
                 <input type="text" name="txtDDD1" maxlength="2" size="1" pattern="[0-9]+" placeholder="00" required oninvalid="setCustomValidity('Preencha o ddd (apenas numeros)')" onchange="try{setCustomValidity('')}catch(e){}">
                 <input type="text" name="txtCel1" maxlength="9" size="10" pattern="[0-9]+" placeholder="12348765" required oninvalid="setCustomValidity('Preencha o celular (apenas numeros)')" onchange="try{setCustomValidity('')}catch(e){}">
             </li>
@@ -140,18 +143,22 @@
                     <option value="3"> Os dois </option>
                 </select>
             </li>
-            <li><p> CEP:  </p>
+            <li><p> *CEP:  </p>
                  <input type="text" id="cep" name="CEP" pattern="[0-9]+" maxlength="9">
             </li>
-            <li><p> UF:  </p>
+            <li><p> *UF:  </p>
                  <input type="text" id="uf" name="txtUf" placeholder="Preencha o CEP" readonly>
             </li>
-            <li><p> Cidade:</p>
+            <li><p> *Cidade:</p>
                  <input type="text" id="cidade" name="txtCidade" placeholder="Preencha o CEP" readonly>
             </li>
             <li><p> *Valor que deseja cobrar: </p> 
-                <input type="text" name="txtValor" maxlength="6" required size="5" pattern="[0-9]+" oninvalid="setCustomValidity('Escolha o valor que deseja cobrar (apenas números)')" onchange="try{setCustomValidity('')}catch(e){}">,00
+                R$
+                <input type="text" name="txtValor" maxlength="6" required size="3" pattern="[0-9]+" oninvalid="setCustomValidity('Escolha o valor que deseja cobrar (apenas números)')" onchange="try{setCustomValidity('')}catch(e){}">,00
                 / hora
+            </li>
+            <li><p> *CPF:(Apenas números) </p> 
+                <input type="text" name="txtCPF" maxlength="11" required pattern="[0-9]+" oninvalid="setCustomValidity('Preencha o campo CPF')" onchange="try{setCustomValidity('')}catch(e){}"> 
             </li>
             
             <?php
@@ -162,6 +169,10 @@
                         $msg = 'Pessoas com menos de 18 anos não podem se cadastrar';
                     elseif($_GET['Erro'] == 'cadastro')
                         $msg = 'Não foi possivel realizar o cadastro tente mais tarde';
+                    elseif($_GET['Erro'] == 'Email')
+                        $msg = 'Este e-mail já está sendo usado';
+                    else
+                        $msg = 'Erro';
             ?>
                 <li id="erro">
                     <?php echo $msg ?>
@@ -244,6 +255,7 @@
         
         if(isset($_POST['btnProx'])){
 
+            $apelido = $_POST['txtApelido'];
             $nome = $_POST['txtNome'];
             $nasc = $_POST['slc_ano'].'-'.$_POST['slc_mes'].'-'.$_POST['slc_dia'];
             $email = $_POST['txtEmail'];
@@ -261,16 +273,30 @@
             $cidade = $_POST['txtCidade'];
             $estado = $_POST['txtUf'];
             $cobra = $_POST['txtValor'];
+            $cpf = $_POST['txtCPF'];
 
             $rsp = $filiado->setFiliado(
-                $nome, $nasc, $email, $senha, $confrmSenha, $ddd1, $celular1, $ddd2, 
-                $celular2, $etnia, $sexo, $altura, $peso, $acompanha, $cidade, $estado, $cobra);
+                $nome, $apelido, $nasc, $email, $senha, $confrmSenha, $ddd1, $celular1, $ddd2, 
+                $celular2, $etnia, $sexo, $altura, $peso, $acompanha, $cidade, $estado, $cobra, $cpf);
             
+        }
+        
+        $desconto = new ControllerAcompanhante();
+        $desc = $desconto->BuscarStatusDesconto();
+        
+        if($desc != null or $desc != 2){
+            if($desc['status'] == 1){
+                $height = 'style="height:850px;"';
+            }else{
+                $height = '';
+            }
+        }else{
+            $height = '';
         }
 ?>
 
     <h1 class="titulo"> Escolha o tipo da conta! </h1>
-    <div class="content_dados_2">
+    <div class="content_dados_2" <?php echo $height ?> >
         <form action="router<?php echo $php ?>?controller=acompanhante&modo=inserir" method="post">
             
             <p class="sobre_pag"> Escolha uma das contas a seguir: <br>
@@ -306,7 +332,21 @@
             }else{
                 echo 'Não foram encontrados planos';
             }
-        ?>            
+        
+        
+        if($desc != null or $desc != 2){
+            if($desc['status'] == 1){
+    ?>
+            <div class="margembottom"></div>
+            <div class="promocao">
+                <p class="titulo_promocao"> <strong>Promoção!</strong> </p>
+                <p> Primeiro mês grátis, cadastre-se hoje e pague apenas em Março </p>
+                <p class="detalhepromocao"> Ao se cadastrar você concorda em permanecer utilizando o site por no minimo 2 (dois) meses </p>
+            </div>
+    <?php
+            }
+        }
+    ?>            
             <div class="termos">
                 <?php 
                     $rs = $filiado->getTermos();
@@ -353,4 +393,3 @@
             
         </script>
     
-</div>

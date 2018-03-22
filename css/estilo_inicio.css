@@ -3,6 +3,11 @@
 	Objetivo: Eestilização da página de inicio do site.
  **/
 
+.titulo a:hover{
+    transition: 0.5;
+    color: #303030;
+}
+
 #slide{
     width:980px;
     min-width: 800px;

@@ -29,7 +29,7 @@
     <nav>
         <div id="barra_superior"> 
             <?php
-                if ($lgrc == true || $lgrf == true) {
+                if ($lgrc == true or $lgrf == true) {
             ?>
             <a href="inicio<?php echo $php ?>?sair">
                 <img src="icones/power.png" class="icon" alt="Sair">
@@ -37,9 +37,6 @@
             <?php
                 }
             ?>
-            <a href="<?php echo $perfil ?>notification">
-                <img src="icones/sino.png" class="icon" alt="Notificações">
-            </a>
             <a href="<?php echo $perfil ?>confirguracoes">
                 <img src="icones/config.png" class="icon" alt="Configuraçãoes">
             </a>
@@ -56,19 +53,23 @@
                 <li><a href="inicio<?php echo $php ?>"> Home </a></li>
                 <li><a href="localidade<?php echo $php ?>"> Filtrar por estado </a></li>
                 <?php
-                    if($lgrc == false and $lgrf == false){
+                    if($lgrc == false){
                 ?>
                 <li><a href="seja-cliente<?php echo $php ?>"> Cadastre-se </a></li>
                 
                 <?php
                     }
+                    if($lgrf == false){
                 ?>
                 <li><a href="seja-filiado<?php echo $php ?>"> Seja acompanhante </a></li>
+                <?php
+                    }
+                ?>
                 <li><a href="sobre-o-site<?php echo $php ?>"> Sobre </a></li>
             </ul>
             <div class="content_logar">
                 <?php
-                    if($lgrc == false && $lgrf == false){
+                    if($lgrc == false and $lgrf == false){
                 ?>
                 <div class="botao_header">
                     <a href="login<?php echo $php ?>"> Fazer login </a>

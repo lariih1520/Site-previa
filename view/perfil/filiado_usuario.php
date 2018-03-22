@@ -9,9 +9,9 @@
         $estado = $rs->estado;
         $cidade = $rs->cidade;
         $nome = $rs->nome;
+        $apelido = $rs->apelido;
         $sobrenome = $rs->sobrenome;
         $email = $rs->email;
-        $senha = $rs->senha;
         $sexo = $rs->sexo;
         $foto = $rs->foto;
         $cor = $rs->cabelo;
@@ -23,6 +23,8 @@
         $ano = $rs->ano;
         $apresentacao = $rs->apresentacao;
         $cobrar = $rs->cobrar;
+        $ddd1 = $rs->ddd1;
+        $ddd2 = $rs->ddd2;
         $celular1 = $rs->celular1;
         $celular2 = $rs->celular2;
         $titulo = $rs->titulo;
@@ -31,14 +33,29 @@
         $qtd_videos = $rs->qtd_videos;
         $acompanha = $rs->acompanha;
         
+        $senhaExcluir = $rs->senha;
+        
+        $sen = strlen($rs->senha);
+        $cont = 0;
+        $senha = '';
+        while($cont < $sen){
+            $senha = $senha.'*';
+            $cont++;
+        }
+    }
+
+    $rs = $controller->BuscarDadosPag();
+    if($rs != null){
+        $desconto = $rs->desconto;
+        $valor = $valor - $desconto;
     }
 
     date_default_timezone_set('America/Sao_Paulo');
     $diah = date('d');
-    $diapag = '13';
+    $diapag = '22';
     
     $pagMes = $controller->getStatusPagamento();
-        
+      
     if($pagMes == 'naopaga' and $diah == $diapag){//Ainda não pago
 
         $mensalidade = '<div class="mensalidade">
@@ -57,6 +74,8 @@
 
     }elseif($pagMes == 'excluido'){ //Excluia
         $mensalidade = 'Conta excluida';
+    }else{
+        $mensalidade = '';
     }
         
     
@@ -81,20 +100,23 @@
         <p> Estes dados são exibidos aos clientes para que eles possam saber detalhes sobre você </p>
         
         <ul class="lst_dados">
-            <li> <p>Nome de usuário:</p><?php echo $nome ?> </li>
+            <li> <p>Nome real:</p><?php echo $nome ?> </li>
+            <li> <p>Nome público:</p><?php echo $apelido ?> </li>
             <li> <p> Nascimento: </p>   <?php echo $dia.'/'.$mes.'/'.$ano  ?> </li>
             <li> <p> E-mail: </p>       <?php echo $email ?> </li>
-            <li> <p> Celular 1: </p>    <?php echo $celular1 ?> </li>
-            <li> <p> Celular 2: </p>    <?php echo $celular2 ?> </li>
+            <li> <p> Celular 1: </p>    <?php echo '('.$ddd1.')'.$celular1 ?> 
+                 <img src="icones/whatsapp.png" class="icone" style="margin-top:-15px;"></li>
+            <li> <p> Celular 2: </p>    <?php echo '('.$ddd2.')'.$celular2 ?> </li>
             <li> <p> Etnia: </p>        <?php echo $etnia ?> </li>
             <li> <p> Cor de cabelo:</p> <?php echo $cor ?> </li>
-            <li> <p> Sexo: </p>         <?php echo $senha ?> </li>
+            <li> <p> Sexo: </p>         <?php echo $sexo ?> </li>
             <li> <p> Altura: </p>       <?php echo $altura ?> </li>
             <li> <p> Peso: </p>         <?php echo $peso ?> Kg </li>
             <li> <p> Cidade: </p>       <?php echo $cidade ?> </li>
             <li> <p> Estado: </p>       <?php echo $estado ?> </li>
             <li> <p> Atente: </p>       <?php echo $acompanha ?> </li>
         <li><p>Valor para contratar:</p><?php echo $cobrar ?>,00 / hora </li>
+            <li> <p> Senha: </p>       <?php echo $senha ?> </li>
         </ul>
         <div class="apresentacao">
             <p> Apresentacao </p>
@@ -202,6 +224,7 @@
             $uf = $rs->uf;
             $cpf = $rs->cpf;
             $cvv = $rs->cvv;
+            $desconto = $rs->desconto;
             $numero_cartao = $rs->numero_cartao;
             $expiracaoMes = $rs->expiracaoMes;
             $expiracaoAno = $rs->expiracaoAno;
@@ -291,10 +314,9 @@
         <div class="hide" id="abrirCampos">
             <p id="text"> Digite sua senha para continuar: </p>
             <input type="password" name="txtSenha" id="txtSenha" placeholder="senha">
-            <input type="password" name="senha" id="senha" value="<?php echo $senha ?>" class="hiden">
+            <input type="password" name="senha" id="senha" value="<?php echo $senhaExcluir ?>" class="hiden">
             <input type="submit" name="btnConfirmar" value="Confirmar" id="confirmar" onclick="confirmDelete()" class="botao">
             <a href="perfil-filiado<?php echo $php ?>"> Cancelar </a>
-            <p> (Esta ação não pode ser desfeita) </p>
         </div>
     </div>
     <script src="js/jquery-3.2.1.min.js" ></script>
