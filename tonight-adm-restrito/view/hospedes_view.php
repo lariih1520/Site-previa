@@ -111,6 +111,18 @@
         }
             
         echo $apresentacao;
+        
+        if($rs->acompanha == 1){
+            $acompanha = 'Mulheres';
+        }elseif($rs->acompanha == 2){
+            $acompanha = 'Homens';
+        }else{
+            $acompanha = 'Homens e mulheres';
+        }
+        
+        $altr = explode('.', $rs->altura);
+        $altura = $altr[0].','.$altr[1];
+        
 ?>
         
         <div style="clear:both;"></div>
@@ -124,8 +136,8 @@
             <li><p>Celular1</p> <span><?php echo $rs->celular1 ?></span></li>
             <li><p>Celular2</p> <span><?php echo $rs->celular2 ?></span></li>
             <li><p>Sexo</p> <span><?php echo $rs->sexo ?></span></li>
-            <li><p>Altura</p> <span><?php echo $rs->altura ?></span></li>
-            <li><p>Peso</p> <span><?php echo $rs->peso ?></span></li>
+            <li><p>Altura</p> <span><?php echo $altura ?></span></li>
+            <li><p>Peso</p> <span><?php echo $rs->peso ?></span> KG </li>
             <li>
                 <?php if($rs->excluido == null or $rs->excluido == 0000-00-00){
                     if($conta_ativa == 'Ativa'){
@@ -145,8 +157,8 @@
                 
                 <?php } ?>
             </li>
-            <li><p>Acompanha</p> <span><?php echo $rs->acompanha ?></span></li>
-            <li><p>Cobrar</p> <span><?php echo $rs->cobrar ?> ,00 </span></li>
+            <li><p>Acompanha</p> <span><?php echo $acompanha ?></span></li>
+            <li><p>Cobrar</p> R$ <span><?php echo $rs->cobrar ?>,00 </span></li>
             <li><p>UF</p> <span><?php echo $rs->uf ?></span></li>
             <li><p>Cidade</p> <span><?php echo $rs->cidade ?></span></li>
             <li><p>Data de cadastro</p> <span><?php echo $rs->data_cadastro ?></span></li>
@@ -249,6 +261,7 @@
 <?php 
     }
 ?>
+    <div style="clear:both;margin-top:5px;margin-bottom:5px;"></div>
     <div class="content_pesq">
         <form action="hospedes.php" method="get" id="form">
             <p> Pesquise: 

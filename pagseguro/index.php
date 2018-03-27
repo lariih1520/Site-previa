@@ -1,0 +1,3 @@
+<?php
+    header('../inicio.php');
+?>

@@ -3,7 +3,7 @@ class PagSeguro{
 	private $email         = "raquelkzs@yahoo.com.br";
 	private $token = "D1A51A1CA9FC46C7BA9990F11D04C77E"; //Sandbox
 	//private $token = "C4B50A6C27204920A3428A497C30198C"; //Oficial
-	private $url_retorno   = "https://tonight.net.br/pagseguro/notificacao.php";
+	//private $url_retorno   = "https://tonight.net.br/pagseguro/notificacao.php";
 	
 	//URL OFICIAL
 	//COMENTE AS 4 LINHAS ABAIXO E DESCOMENTE AS URLS DA SANDBOX PARA REALIZAR TESTES
@@ -81,7 +81,7 @@ class PagSeguro{
 		}		
 
 		if(isset($transaction_obj->status)){
-            $status = $transaction_obj->status
+            $status = $transaction_obj->status;
 			return $status;
         }else{
 			return NULL;

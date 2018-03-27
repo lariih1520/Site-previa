@@ -52,7 +52,7 @@
 
     date_default_timezone_set('America/Sao_Paulo');
     $diah = date('d');
-    $diapag = '22';
+    $diapag = '26';
     
     $pagMes = $controller->getStatusPagamento();
       
@@ -62,6 +62,11 @@
         Não esqueça de <a href="filiado-dados'.$php.'?editar=pagar-private">efetuar o pagamento </a> referente à este mês! Valor: '.$valor.',00
         </div>';
 
+    }elseif($pagMes == 'promocao' and $diah == $diapag){
+        $mensalidade = 
+            '<div class="mensalidade">
+                Neste mês sua mensalidade será gratuita devido a promoção! 
+            </div>';
     }elseif($pagMes == 'atraso'){ //Será excluida
 
         $mensalidade = '<div class="mensalidade">
@@ -77,13 +82,13 @@
     }else{
         $mensalidade = '';
     }
-        
+    
     
 ?>
 
     <?php echo $mensalidade ?>
     
-    <h1 class="titulo_maior"> Perfil <?php echo $nome ?> </h1>
+    <h1 class="titulo_maior"> Olá, <?php echo $nome ?> </h1>
 
     <div class="content_foto_perfil"> <!-- *** Foto perfil *** -->
         <div class="foto_perfil">
@@ -287,20 +292,15 @@
         
         <?php 
             $dia = date('d');
-            if($dia < 5 or $dia > $diapag){
-                
-                if($pagMes <= 1){
+                                             
+            if($pagMes == 'promocao' or $pagMes == 'paga' or $dia < 5 or $dia > $diapag){
         ?>
         
         <p class="clear"><a href="filiado-dados<?php echo $php ?>?editar=tipo-conta"> Alterar tipo de conta &raquo; </a></p>
         
-        <?php  }else{ ?>
-        
-        <p class="clear"> Não é possível alterar o tipo de conta antes da realização do pagamento </p>
-        
-        <?php  }
-                
-            }else{ ?>
+        <?php  
+            }else{ 
+        ?>
         
         <p class="clear"> Não é possível alterar seu tipo de conta nos dias próximos ao pagamento </p>
         

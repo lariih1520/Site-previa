@@ -3,14 +3,14 @@
 class Pagamento{
     public function iniciaPagamentoAction() { //gera o código de sessão obrigatório para gerar identificador (hash)
 
-		$data['token'] ='D1A51A1CA9FC46C7BA9990F11D04C77E'; //token teste SANDBOX
-		//$data['token'] ='C4B50A6C27204920A3428A497C30198C'; //token Oficial
+		//$data['token'] ='D1A51A1CA9FC46C7BA9990F11D04C77E'; //token teste SANDBOX
+		$data['token'] ='C4B50A6C27204920A3428A497C30198C'; //token Oficial
 
 		$emailPagseguro = "raquelkzs@yahoo.com.br";
 
 		$data = http_build_query($data);
-		$url = 'https://ws.sandbox.pagseguro.uol.com.br/v2/sessions'; //Sandbox
-		//$url = 'https://ws.pagseguro.uol.com.br/v2/sessions'; //Oficial
+		//$url = 'https://ws.sandbox.pagseguro.uol.com.br/v2/sessions'; //Sandbox
+		$url = 'https://ws.pagseguro.uol.com.br/v2/sessions'; //Oficial
 
 		$curl = curl_init();
 
@@ -38,8 +38,8 @@ class Pagamento{
 
     public function efetuaPagamentoCartao($dados) {
 
-		//$data['token'] ='C4B50A6C27204920A3428A497C30198C'; //token produção
-		$data['token'] ='D1A51A1CA9FC46C7BA9990F11D04C77E'; //token sandbox 
+		$data['token'] ='C4B50A6C27204920A3428A497C30198C'; //token produção
+		//$data['token'] ='D1A51A1CA9FC46C7BA9990F11D04C77E'; //token sandbox 
 		$data['paymentMode'] = 'default';
 		$data['senderHash'] = $dados['hash']; //gerado via javascript
 		$data['creditCardToken'] = $dados['creditCardToken']; //gerado via javascript
@@ -64,7 +64,7 @@ class Pagamento{
 		$data['billingAddressPostalCode'] = $dados['billingAddressPostalCode'];
 		$data['billingAddressCity'] = $dados['billingAddressCity'];
 		$data['billingAddressState'] = $dados['billingAddressState'];
-		$data['billingAddressCountry'] = 'Brasil';
+		$data['billingAddressCountry'] = 'BRA';
 		$data['currency'] = 'BRL';
 		$data['itemId1'] = '01';
 		$data['itemQuantity1'] = '1';
@@ -77,13 +77,12 @@ class Pagamento{
 
 		$data = http_build_query($data);
         
-        //$url = 'https://ws.pagseguro.uol.com.br/v2/transactions';
-		$url = 'https://ws.sandbox.pagseguro.uol.com.br/v2/transactions'; //URL de teste
+        $url = 'https://ws.pagseguro.uol.com.br/v2/transactions';
+		//$url = 'https://ws.sandbox.pagseguro.uol.com.br/v2/transactions'; //URL de teste
 
 		$curl = curl_init();
 
-		$headers = array('Content-Type: application/x-www-form-urlencoded; charset=ISO-8859-1'
-			);
+		$headers = array('Content-Type: application/x-www-form-urlencoded; charset=ISO-8859-1');
 
 		curl_setopt($curl, CURLOPT_URL, $url . "?email=" . $emailPagseguro);
 		curl_setopt($curl, CURLOPT_POST, true);
@@ -91,7 +90,7 @@ class Pagamento{
 		curl_setopt( $curl,CURLOPT_RETURNTRANSFER, true );
 		curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
 		curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
-		//curl_setopt($curl, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
+		curl_setopt($curl, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
 		curl_setopt($curl, CURLOPT_HEADER, false);
 		$xml = curl_exec($curl);
 
@@ -126,10 +125,10 @@ class Pagamento{
 
 	public function efetuaPagamentoBoleto($dados) {
 
-		//$data['token'] ='C4B50A6C27204920A3428A497C30198C'; //token produção
-		$data['token'] ='D1A51A1CA9FC46C7BA9990F11D04C77E'; //token sandbox
+		$data['token'] ='C4B50A6C27204920A3428A497C30198C'; //token produção
+		//$data['token'] ='D1A51A1CA9FC46C7BA9990F11D04C77E'; //token sandbox
 		$data['paymentMode'] = 'default';
-		$data['hash'] = $dados['hash'];
+		$data['senderHash'] = $dados['hash'];
 		$data['paymentMethod'] = 'boleto';
 		$data['receiverEmail'] = 'raquelkzs@yahoo.com.br';
 		$data['senderName'] = $dados['senderName'];
@@ -148,8 +147,8 @@ class Pagamento{
 		$emailPagseguro = "raquelkzs@yahoo.com.br";
 
 		$data = http_build_query($data);
-		//$url = 'https://ws.pagseguro.uol.com.br/v2/sessions'; //URL real
-		$url = 'https://ws.sandbox.pagseguro.uol.com.br/v2/transactions'; //URL de teste
+		$url = 'https://ws.pagseguro.uol.com.br/v2/transactions'; //URL real
+		//$url = 'https://ws.sandbox.pagseguro.uol.com.br/v2/transactions'; //URL de teste
 
 		$curl = curl_init();
 
@@ -161,7 +160,7 @@ class Pagamento{
 		curl_setopt( $curl,CURLOPT_RETURNTRANSFER, true );
 		curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
 		curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
-		//curl_setopt($curl, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
+		curl_setopt($curl, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
 		curl_setopt($curl, CURLOPT_HEADER, false);
 		$xml = curl_exec($curl);
 
@@ -173,8 +172,10 @@ class Pagamento{
         
         if($xml->error){
             $erro = $xml->error->message;
+            $code = $xml->error->code;
             $retornoBoleto = array(
-                'erro' => $erro
+                'erro' => $erro,
+                'code' => $code
             );
             
         }else{

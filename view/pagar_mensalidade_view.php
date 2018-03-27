@@ -46,34 +46,38 @@
     //gera o código de sessão obrigatório para gerar identificador (hash)
     $p = new Pagamento();
     $idSessao = $p->iniciaPagamentoAction();
-               
+    
+    if(isset($_GET['confirmar'])){
 ?>
     <!-- Este forme é necessário para que os parâmetros sejam passados para php -->
     <form action="?realizar=<?php echo $forma ?>" method="post" id="frmPag" class="hide">
+        <p> Não mudar os dados a seguir, é apenas para vizualização </p>
+        <p> Id da Sessão: <input type="text" id="idSessao" value="<?php echo $idSessao ?>" name="txtIdSessao"></p>
         
-        <input type="text" id="idSessao" value="<?php echo $idSessao ?>" name="txtIdSessao">
+        <p> Hash: <input type="text" id="hashPagSeguro" name="txtHash"></p>
         
-        <input type="text" id="hashPagSeguro" value="" name="txtHash">
+        <p> Bandeira do cartão: <input type="text" id="BandeiraPagSeguroName" name="txtBandeiraName"></p>
         
-        <input type="text" id="BandeiraPagSeguroName" value="" name="txtBandeiraName">
+        <p> Bandeira pagseguro: <input type="text" id="BandeiraPagSeguroBin" name="txtBandeiraBin"></p>
         
-        <input type="text" id="BandeiraPagSeguroBin" value="" name="txtBandeiraBin">
-        
-        <input type="text" id="tokenPagamentoCartao" value="" name="txtToken">
+        <p> Token: <input type="text" id="tokenPagamentoCartao" name="txtToken"></p>
 
-        <input type="text" id="numCartao" value="<?php echo $nmr_cartao ?>" name="txtNumCartao">
+        <p> Num Cartão: <input type="text" id="numCartao" value="<?php echo $nmr_cartao ?>" name="txtNumCartao"></p>
         
-        <input type="text" id="cvv" value="<?php echo $cvv ?>" name="txtCvv">
+        <p> CVV: <input type="text" id="cvv" value="<?php echo $cvv ?>" name="txtCvv"></p>
         
-        <input type="text" id="expiraMes" value="<?php echo $expiracaoMes ?>" name="txtExpiraMes">
+        <p> Expiracao mês: <input type="text" id="expiraMes" value="<?php echo $expiracaoMes ?>" name="txtExpiraMes"></p>
         
-        <input type="text" id="expiraAno" value="<?php echo $expiracaoAno ?>" name="txtExpiraAno">
-        
-<!--        <input type="submit" class="botao" value="Autorizar pagamento" name="btnAuto"> -->
+        <p> Expiracao Ano: <input type="text" id="expiraAno" value="<?php echo $expiracaoAno ?>" name="txtExpiraAno"></p>
+        <br>
+        <br>
+<!--        <input type="submit" class="botao" value="Tudo OKay" name="btnAuto"> -->
         
     </form>
 
 <?php  
+    }
+
     /******** Se o form for acionado ********/
     if(isset($_GET['realizar'])){
         
@@ -99,10 +103,9 @@
                 $valor = $res->valor - $desconto;
             }
             
-            $id_pag = $_SESSION['id_filiado'];
+            $id_filiado = $_SESSION['id_filiado'];
             
             $dados = [
-            
                 'hash' => $hash,
                 'creditCardToken' => $token,
                 'senderName' => $nome.' '.$sobrenome,
@@ -122,18 +125,19 @@
                 'billingAddressPostalCode' => $cep,
                 'billingAddressCity' => $cidade,
                 'billingAddressState' => $estado,
-                'reference' => 'mensal'.$id_pag.date('y-m-d'),
-                'itemAmount1' => $valor.'.00',
+                'reference' => 'mensal'.$id_filiado.date('y-m-d'),
+                'itemAmount1' => $valor.'.00'
             ];
                 
             $pag = new Pagamento();
             $retorno = $pag->efetuaPagamentoCartao($dados);
             
-            if($retorno["erro"]){
+            if(@$retorno["erro"]){
                 echo '<center><p>Erro:</p>'.$retorno["erro"].'</center>';
                 echo '<center>'.$retorno["code"].'</center>';
                 echo '<center>'.$retorno["token"].'</center>';
                 echo '<div class="titulo_maior"><a href="perfil-filiado.php"> Voltar para o perfil </a></div>';
+                echo '<br>';
                 
                 $showgif = false;
                 
@@ -156,12 +160,15 @@
                     $resp = $controller->InserirMensalidadePag('card', $dadosPagBd);
                 
                     if($resp == true){
-            ?>
-                <script>
-                    window.location.href = "perfil-filiado.php?Sucesso=sucesso";
-                </script>
-
-            <?php
+                        echo '<br>';
+                        echo '<center><p style="color:#0B6121;">Sucesso! Pagamento realizado</p></center>';
+                        echo '<br>';
+                        echo '<center><p><a href="perfil-filiado.php?Sucesso=sucesso"> &laquo; Voltar ao perfil </a></p></center>';
+                        echo '<br>';
+                        echo '<p>'.$dadosPagBd['date'].'</p>';
+                        
+                        $showgif = false;
+                
                     }
                 }else{
             ?>
@@ -179,7 +186,7 @@
             
             $hash = $_POST['txtHash'];
             
-            $id_pag = $_SESSION['id_filiado'];
+            $id_filiado = $_SESSION['id_filiado'];
             
             $rsp = $dados->BuscarDadosUsuario();
             if($rsp != null){
@@ -192,23 +199,22 @@
             }
             
             $dados = [
-                'hash' => $hash ,
+                'hash' => $hash,
                 'senderName' => $nome.' '.$sobrenome,
                 'senderAreaCode' => $ddd,
                 'senderPhone' => $telefone,
                 'senderEmail' => $email,
                 'senderCPF' => $cpf,
-                'reference' => 'mensal'.$id_pag.date('y-m-d'),
-                'itemAmount' => $valor.'.00',
+                'reference' => 'mensal'.$id_filiado.date('y-m-d'),
+                'itemAmount' => $valor.'.00'
             ];
             
             $pag = new Pagamento();
             $retorno = $pag->efetuaPagamentoBoleto($dados);
             
-            //var_dump($retorno);
-            
-            if($retorno["erro"]){
+            if(@$retorno["erro"]){
                 echo '<center><p>Erro:</p>'.$retorno["erro"].'</center>';
+                echo '<center><p>Code:</p>'.$retorno["code"].'</center>';
                 echo '<div class="titulo_maior"><a href="perfil-filiado.php"> Voltar para o perfil </a></div>';
                 
                 $showgif = false;
@@ -228,28 +234,14 @@
                 if($resp == true){
                     
                     if($retorno['paymentLink'] != null){
-                        echo "<center><p> Codigo:".$retorno['code']." </p></center>";
-                        echo "<center><p> Data:".$retorno['date']." </p></center>";
-                        echo "<center><p> Link:".$retorno['paymentLink']." </p></center>";
-                        echo '<center><a href="'.$retorno['paymentLink'].'"> Link para o boleto </a></center>';
-            /*? >
-                <input type="text" value="<?php echo $retorno['paymentLink'] ?>" name="txtLinkBoleto" class="hide" id="link">
-
-                <script src="js/jquery-3.2.1.min.js" ></script>
-                <script>
-                    link = $('#link').val();
-                    alert('Link para: ' + link);
-                    
-                    window.location.href = link;
-                              
-                </script>
-
-            <? php*/
+                        echo "<br>";
+                        echo '<center><a href="'.$retorno['paymentLink'].'" target="_blank"> Link para o boleto </a></center>';
+            
                     }else{
-                        ?><script> window.location.href = "perfil-filiado.php"; </script> <?php  
+                        ?><script> window.location.href = "perfil-filiado.php?ERROLink"; </script> <?php  
                     }
                 }else{
-                    ?> <script> window.location.href = "perfil-filiado.php"; </script> <?php  
+                    ?> <script> window.location.href = "perfil-filiado.php?ERROBd"; </script> <?php  
                 }
                 
             }
@@ -269,9 +261,11 @@
         $(document).ready(function() {
             
             SetarIdSession();
+            
             setTimeout(function(){
                 GetBrand();
-            }, 2000);            
+            }, 1000);   
+            
             setTimeout(function(){
                 GerarToken();
             }, 2000);
@@ -280,7 +274,7 @@
                 GerarIdentificador();
                 
                 $('#frmPag').submit();
-            }, 4000);
+            }, 3000);
         });
         
     </script>
@@ -288,7 +282,6 @@
 <?php
       }
     
-        
     /***** Se a forma de pagamento for feita  por boleto *****/
     }elseif(isset($_GET['confirmar']) and $_GET['forma'] == 'boleto'){
         
@@ -306,7 +299,7 @@
                     GerarIdentificador();
                     $('#frmPag').submit();
                     
-                }, 3000);
+                }, 2000);
             });
                 
         </script>
@@ -314,22 +307,21 @@
 <?php
         }
     }
-    
                
 ?>
         
 <!--
 ************************ CLASSES REFERENTES AO PAGSEGURO **************************
- 
-    <script type="text/javascript" src=
-    "https://stc.pagseguro.uol.com.br/pagseguro/api/v2/checkout/pagseguro.directpayment.js">
-    </script>
 -->
-    <!--    Em Sandbox: -->
-    <script src=
-    "https://stc.sandbox.pagseguro.uol.com.br/pagseguro/api/v2/checkout/pagseguro.directpayment.js">
+
+    <!-- URL Oficial -->
+    <script type="text/javascript" src="https://stc.pagseguro.uol.com.br/pagseguro/api/v2/checkout/pagseguro.directpayment.js">
     </script>
-    
+
+    <!--    Em Sandbox:
+    <script src="https://stc.sandbox.pagseguro.uol.com.br/pagseguro/api/v2/checkout/pagseguro.directpayment.js">
+    </script>
+ -->
     <script>
 
     function SetarIdSession(){
@@ -364,7 +356,7 @@
           });
     }
 
-    function GerarToken(){  
+    function GerarToken(){ 
         numCartao = $("#numCartao").val();
         cvvCartao = $("#cvv").val();
         expiracaoMes = $("#expiraMes").val();

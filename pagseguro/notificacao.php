@@ -1,6 +1,6 @@
 <?php
-	header("access-control-allow-origin: https://pagseguro.uol.com.br");
 	header("access-control-allow-origin: https://sandbox.pagseguro.uol.com.br");
+	header("access-control-allow-origin: https://pagseguro.uol.com.br");
 	
 	require_once("PagSeguro.class.php");
 	require_once("db_class.php");

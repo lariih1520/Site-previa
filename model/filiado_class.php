@@ -1462,9 +1462,11 @@ class Acompanhante{
     /* Pegar o status do pacamento do próprio banco */
     public function getStatusPagamento(){
         $id = $_SESSION['id_filiado'];
+        
         $sql = "select month(now()) - month(data_hora) as mes,
                 day(now()) - day(data_hora) as dias,
-                day(data_hora) as diapag
+                day(data_hora) as diapag,
+                forma
                 from tbl_mensalidade where id_filiado = ".$id;
         $sql = $sql." order by data_hora desc limit 1";
                    
@@ -1474,16 +1476,18 @@ class Acompanhante{
                 $dias = $rs['dias'];
                 $diapag = $rs['diapag'];
                 $mes = $rs['mes'];
+                $forma = $rs['forma'];
                 
-                if($mes == 0){//Se a mensalidade foi paga
+                if($mes <= 0){//Se a mensalidade foi paga
                     $tempo = 'paga';
+                    
+                    if($forma == "promocao"){
+                        $tempo = 'promocao';
+                    }
                     
                 }elseif($mes == 1){//Se está no mês de pagamento
                     
-                    if($dias >= 0 and $dias <= 7){ //Se ainda está em tempo de pagar
-                        $tempo = 'naopaga';
-                        
-                    }elseif($dias < 0){ //Se já passou do tempo de pagar
+                    if($dias <= 7){ //Se ainda está em tempo de pagar
                         $tempo = 'naopaga';
                         
                     }else{ //Se já passou do tempo de pagar
