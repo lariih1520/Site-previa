@@ -90,25 +90,12 @@
             <div id="pefil">
                 <div class="foto_perfil">
                     <img src="<?php echo $foto ?>" alt="Foto perfil">
+                    <div class="tonight"></div>
                 </div>
                 <div class="apresentacao">
                     <?php echo $apresentacao; ?>
                 </div>
             </div>
-        <?php
-            if($tamanhoApresent < 180){
-        ?>
-<!--        DISCOMENTAR QUANDO ESTIVER PRONTO
-
-            <div class="contrate">
-                <a href="contratar.php?codigo=< ?php echo $id ?>">
-                    <p class="botao"> Contrate! </p>
-                </a>
-            </div>
--->
-        <?php
-            }
-        ?>    
         </div>
 
         <div id="dados_perfil">
@@ -130,22 +117,6 @@
                 <li> Estado:   <?php echo $uf ?> </li>
                 <li> Cidade:   <?php echo $cidade ?> </li>
             </ul>
-        <?php
-            if($tamanhoApresent >= 180){
-        ?>
-            
-            
-<!--        DISCOMENTAR QUANDO ESTIVER PRONTO
-
-            <div class="contrate">
-                <a href="contratar.php?acompanhante=< ?php echo $id ?>">
-                    <p class="botao"> Contrate! </p>
-                </a>
-            </div>
--->
-        <?php
-            }
-        ?>    
         </div>
         <div class="sugestoes">
             <ul class="lst_dados">
@@ -167,6 +138,7 @@
 ?>
         <div class="imgs_filiado">
             <img src="<?php echo $rs[$cont]->foto ?>" alt="foto do usuário">
+            <div class="tonight"></div>
         </div>
 <?php
             $cont++;
@@ -239,6 +211,7 @@
                     </span>
                 </a>
                 <img src="<?php echo $resp[$cont]->foto  ?>" alt="Foto" class="img_peril">
+                <div class="tonight"></div>
             </li>
         
         <?php

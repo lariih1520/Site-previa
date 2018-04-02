@@ -213,15 +213,20 @@ class Acompanhante{
                 
                 if($rs['foto_perfil'] != null){
                     $filiado->foto = $rs['foto_perfil'];
-
                 }else{
-
                     if($rs['sexo'] == 1){
                         $filiado->foto = 'icones/usuaria.jpg';
                     }else{
                         $filiado->foto = 'icones/usuario.jpg';
                     }
-
+                }
+                
+                if($rs['foto_perfil'] == false){
+                    if($rs['sexo'] == 1){
+                        $filiado->foto = 'icones/usuaria.jpg';
+                    }else{
+                        $filiado->foto = 'icones/usuario.jpg';
+                    }
                 }
                 
                 $filiado->id_filiado = $rs['id_filiado'];
@@ -317,7 +322,7 @@ class Acompanhante{
                             $sql = $sql.", 'ref".date('m-d')."', 'mensal".$rs['id_filiado']."', 'promocao')";
                             mysqli_query($this->conect, $sql);
                             
-                            if(date('d') >= 20){
+                            if(date('d') >= 28){
                                 $ano = date('Y');
                                 $mes = date('m');
                                 $mes = $mes + 1;
@@ -1038,16 +1043,23 @@ class Acompanhante{
                 }
                 
                 if($rs['foto_perfil'] != null){
-                    $resut[$cont]->foto = $rs['foto_perfil'];
+                    $filiados[$cont]->foto = $rs['foto_perfil'];
                         
                 }else{
-
                     if($rs['sexo'] == 1){
-                        $resut[$cont]->foto = 'icones/usuaria.jpg';
+                        $filiados[$cont]->foto = 'icones/usuaria.jpg';
                     }else{
-                        $resut[$cont]->foto = 'icones/usuario.jpg';
+                        $filiados[$cont]->foto = 'icones/usuario.jpg';
                     }
 
+                }
+                
+                if($rs['foto_perfil'] == false){
+                    if($rs['sexo'] == 1){
+                        $filiados[$cont]->foto = 'icones/usuaria.jpg';
+                    }else{
+                        $filiados[$cont]->foto = 'icones/usuario.jpg';
+                    }
                 }
                 
                 $filiados[$cont]->uf = $rs['uf'];
@@ -1112,9 +1124,9 @@ class Acompanhante{
                     $filiados[$cont]->id = $rs['id_filiado'];
                     $filiados[$cont]->nome = $rs['nome'];
                     $filiados[$cont]->apelido = $rs['apelido'];
+                    
                     if($rs['foto_perfil'] != null){
                         $filiados[$cont]->foto = $rs['foto_perfil'];
-                        
                     }else{
                         
                         if($rs['sexo'] == 1){
@@ -1123,6 +1135,14 @@ class Acompanhante{
                             $filiados[$cont]->foto = 'icones/usuario.jpg';
                         }
                         
+                    }
+                    
+                    if($rs['foto_perfil'] == false){
+                        if($rs['sexo'] == 1){
+                            $filiados[$cont]->foto = 'icones/usuaria.jpg';
+                        }else{
+                            $filiados[$cont]->foto = 'icones/usuario.jpg';
+                        }
                     }
                     
                     $data = explode('-', $rs['nasc']);
@@ -1396,6 +1416,15 @@ class Acompanhante{
                     }
                 }
                 
+                if($rs['foto_perfil'] == false){
+                    if($rs['sexo'] == 1){
+                        $filiado[$cont]->foto = 'icones/usuaria.jpg';
+                    }else{
+                        $filiado[$cont]->foto = 'icones/usuario.jpg';
+                    }
+                }
+
+                
                 $filiado[$cont]->uf = $rs['uf'];
                 $filiado[$cont]->id = $rs['id_filiado'];
                 
@@ -1592,7 +1621,14 @@ class Acompanhante{
                         }else{
                             $resut[$cont]->foto = 'icones/usuario.jpg';
                         }
-                        
+                    }
+                    
+                    if($rs['foto_perfil'] == false){
+                        if($rs['sexo'] == 1){
+                            $resut[$cont]->foto = 'icones/usuaria.jpg';
+                        }else{
+                            $resut[$cont]->foto = 'icones/usuario.jpg';
+                        }
                     }
                     
                     $resut[$cont]->idade = $idade;

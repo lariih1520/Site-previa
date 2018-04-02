@@ -45,7 +45,7 @@
             
             if(!empty($_SESSION['id_cliente'])){
                 $lgrc = true;
-                $msg = '<a href="perfil?perfil=cliente"> Ir para o perfil </a>';
+                $msg = '<a href="perfil-cliente.php"> Ir para o perfil </a>';
 
             }else{
                 $lgrc = false;

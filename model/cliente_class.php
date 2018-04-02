@@ -275,7 +275,7 @@ class Cliente{
                 }
                 
             }else{
-                
+                $arq = date('d-H-i').$arq;
                 $imagem =  'midia/'.$arq;
 
                 $extArq = strtolower(substr($arq, strlen($arq)-3, 3));
@@ -289,8 +289,7 @@ class Cliente{
                         $sql."sexo = ".$cliente->sexo.", celular = '".$cliente->celular."', nasc = '".
                             $cliente->nasc."', enteresse = ".$cliente->enteresse.", foto_perfil = '".$imagem."'
                             where id_cliente = ".$cliente->id;
-                            /*    , id_cidade = '".$cliente->id_cidade."'   */
-                        
+                            
                         if(mysqli_query($this->conect, $sql)){
                             
                             mysqli_close($this->conect);

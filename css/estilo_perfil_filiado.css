@@ -46,6 +46,18 @@
     max-width: 290px;
     height: 290px;
 }
+.tonight{
+    z-index: 999;
+    width: 270px;
+    height: 30px;
+    position: relative;
+    margin: -35px 0px 0px 0px;
+    border: solid 1px transparent;
+    background-position: bottom left;
+    background-repeat: no-repeat;
+    background-size: 100px 30px;
+    background-image: url("../imagens/tonight.png");
+}
 .apresentacao{
     width: 300px;
     height: auto;

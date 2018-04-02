@@ -35,22 +35,39 @@
 .acompanhante{
     float: left;
     width: 290px;
-    height: 360px;
+    height: 350px;
+    overflow: hidden;
     text-align: center;
     margin-left: 12px;
+    margin-bottom:12px;
     padding-top: 10px;
-    background-color: black;
+    border-radius: 10px;
+    border: solid 1px #CDCDCD;
 }
 .acompanhante img{
     margin: auto;
     width: 270px;
-    height: 300px;
+    min-height: 260px;
+    max-height: 300px;
     margin-bottom: 4px;
 }
 .acompanhante p {
-    color: white;
+    color: black;
     margin-bottom: 4px;
 }
+.tonight{
+    z-index: 999;
+    width: 270px;
+    height: 30px;
+    position: relative;
+    margin: -40px 0px 0px 8px;
+    border: solid 1px transparent;
+    background-position: bottom left;
+    background-repeat: no-repeat;
+    background-size: 100px 30px;
+    background-image: url("../imagens/tonight.png");
+}
+
 .pesquisa{
     cursor: pointer;
 }

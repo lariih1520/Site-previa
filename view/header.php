@@ -2,11 +2,13 @@
         
         if(!empty($_SESSION['id_cliente'])){
             $lgrc = true;
+            $lgrf = false;
             $perfil = 'perfil-cliente'.$php.'?';
             
         }else{
             $perfil = '';
             $lgrc = false;
+            $lgrf = false;
         }
 
         if(!empty($_SESSION['id_filiado'])){
@@ -46,7 +48,7 @@
         <div id="content_header"> 
             <div id="content_logo">
                 <a href="index<?php echo $php ?>">
-                   <img src="imagens/logo.png" id="logo" title="Tonight" alt="logo tonight">
+                   <img src="imagens/logo.png" id="logo" title="Tonight.net" alt="logo tonight">
                 </a>
             </div>
             <ul class="lst_menu">
@@ -65,7 +67,7 @@
                 <?php
                     }
                 ?>
-                <li><a href="sobre-o-site<?php echo $php ?>"> Sobre </a></li>
+                <li><a href="exibir-todos<?php echo $php ?>"> Ver todos </a></li>
             </ul>
             <div class="content_logar">
                 <?php

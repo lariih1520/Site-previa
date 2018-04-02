@@ -190,6 +190,7 @@
     <div class="acompanhante">
         <a href="perfil-filiado<?php echo $php ?>?codigo=<?php echo $id ?>">
             <img src="<?php echo $foto ?>">
+            <div class="tonight"></div>
             <p> Nome:<?php echo $nome ?></p>
             <p> Estado: <?php echo $uf ?> </p>
         </a>
