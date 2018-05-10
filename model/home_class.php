@@ -19,7 +19,7 @@ class Home{
     }
     
     public function SelectFotos(){
-        $sql = 'select * from tbl_home_slide';
+        $sql = 'select * from tbl_home_slide limit 6';
         
         if($select = mysqli_query($this->conect, $sql)){
             

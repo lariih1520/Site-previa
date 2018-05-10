@@ -14,17 +14,17 @@
 
 
     public function __construct(){
-        /*
+        
         $this->server = "localhost";
         $this->user = "root";
         $this->password = "bcd127";
         $this->db = "db_tonight";
-        */
+        /*
         $this->server = "localhost";
         $this->user = "tonig231";
         $this->password = "9pL6q34mWu";
         $this->db = "tonig231_tonight";
-        
+        */
     }
 
     public function conectar(){

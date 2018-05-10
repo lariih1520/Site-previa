@@ -4,7 +4,7 @@
         
     ?>
     <div id="divisao">
-    <div class="titulo"> Cadastre-se para contratar um dos nossos aompanhantes! </div>
+    <div class="titulo"> Cadastrar-se como cliente </div>
     <form method="post" action="router<?php echo $php ?>?controller=cliente&modo=inserir" id="frm" class="cont_alinhar">
         <ul class="lst_cadastrar_dados">
             <li> 

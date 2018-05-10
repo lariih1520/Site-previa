@@ -436,6 +436,12 @@ class ControllerAcompanhante{
         return $rs;
     }
     
+    public function ClienteVizualizar(){
+        require_once('model/filiado_class.php');
+        
+        $class = new Acompanhante();
+        $rs = $class->ClienteVizualizar();
+    }
 }
 
 ?>

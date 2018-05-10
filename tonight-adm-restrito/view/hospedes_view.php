@@ -225,10 +225,7 @@
             ?>
             
             <li> <a href="?" class="botao"> OK </a> </li>
-<?php 
-            
-        }
-?>
+<?php   } ?>
             
         </ul>
         <script>
@@ -266,16 +263,14 @@
         <form action="hospedes.php" method="get" id="form">
             <p> Pesquise: 
                 <input type="text" name="txtPesquisa" placeholder="Pesquise pelo nome ou codigo"> 
-                <a href="#" onclick="form.submit();">
-                    <img src="icones/pesquisa.png" class="icone">
-                </a>
+                <a href="#" onclick="form.submit();"> <img src="icones/pesquisa.png" class="icone"> </a>
             </p>
             <p><a href="?"> Limpar </a></p>
         </form>
         <div id="hospedes">
             <table class="lst_hospedes">
                 <tr class="tbl_titulo">
-                    <td> Codigo: </td><td> Nome: </td><td> Nasc: </td><td> Uf </td><td> Cobra </td><td> CPF </td><td> Ver </td> 
+                    <td> Id: </td><td> Nome: </td><td> Nasc: </td><td> Uf </td><td> Cobra </td><td> Visualizacoes </td><td> CPF </td><td> Ver </td> 
                 </tr>
 
             <?php 
@@ -297,7 +292,11 @@
                         $nasc   = $rs[$cont]->nasc;
                         $uf     = $rs[$cont]->uf;
                         $cobra  = $rs[$cont]->cobrar;
+                        $visualizacoes    = $rs[$cont]->visualizacoes;
                         $cpf    = $rs[$cont]->cpf;
+                        
+                        $name = explode(' ', $nome);
+                        $nome = $name[0];
             ?>
                 <tr>
                     <td> <?php echo $codigo ?> </td>
@@ -305,6 +304,7 @@
                     <td> <?php echo $nasc ?>   </td> 
                     <td> <?php echo $uf ?>     </td> 
                     <td> R$ <?php echo $cobra ?>,00  </td> 
+                    <td> <?php echo $visualizacoes ?> </td> 
                     <td> <?php echo $cpf ?>    </td>  
                     <td> 
                         <a href="?modo=ver&codigo=<?php echo $codigo ?>"> Mais </a>
@@ -321,20 +321,22 @@
             ?>    
             </table>
         </div>
-        <?php 
+<!--
+        < ?php 
         
         $rs = $controller->BuscarFiliadosPagAtraso();
         
         if($rs != false){
-            $msg = 'Algumas contas estão com o pagamento atrasado mais de uma semana! 
+            $msg = 'Algumas contas estão com o pagamento atrasado. 
                     <a href="router.php?controller=hospedes&modo=delAtrasados" class="atualzar"> Deseja excluir ? </a>';
             
         }elseif($rs == false){
             $msg = 'Não há contas com o pagamento atrasado';
         }
         ?>
-        <p class="delcontasatrasadas"><?php echo $msg ?><span><a href="?Atualizar=contas" class="atualzar"> Atualizar </a></span></p>
+        <p class="delcontasatrasadas">< ?php echo $msg ?><span><a href="?Atualizar=contas" class="atualzar"> Atualizar </a></span></p>
         
+-->
     </div>
 
     <?php 
@@ -374,8 +376,7 @@
                 </td> 
             </tr>
             
-        <?php 
-                    $cont++;
+        <?php       $cont++;
                 }
               
         ?>    
@@ -384,15 +385,3 @@
     <?php
         }
     ?>   
-
-<?php
-    /*
-    $controller = new ControllerAcompanhante();
-    $rs = $controller->AtualizarFiliados();
-    
-    if(){
-        
-    }
-    */
-?>
-

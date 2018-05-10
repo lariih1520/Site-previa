@@ -2,9 +2,12 @@
     $id = $_GET['codigo'];
 
     $controller = new ControllerAcompanhante();
+
+    if(isset($_GET['r'])){@$controller->ClienteVizualizar();}
+    
     $rs = $controller->BuscarDadosUsuario();
 
-    if($rs != null and $rs->excluido == null or $rs->excluido == 0000-00-00){
+    if($rs != null and $rs->excluido == null){
         
         $deleted = $rs->excluido;
         $id_filiado = $rs->id_filiado;

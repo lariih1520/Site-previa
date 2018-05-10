@@ -53,6 +53,15 @@
                     
                     break;
                     
+                case 'alterarSlide':
+                    include_once('model/index_class.php');
+                    include_once('controller/index_controller.php');
+                    
+                    $controller = new ControllerIndex();
+                    $controller->alterarSlide();
+                    
+                    break;
+                    
             }
             
         break;

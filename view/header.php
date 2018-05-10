@@ -1,5 +1,19 @@
     <?php
         
+        if(!isset($_GET['r'])) {
+            if(empty($_GET)){
+                echo "
+                <script> 
+                document.location=\"?r=1&Largeur=\"+screen.width+\"&Hauteur=\"+screen.height; 
+                </script>"; 
+            }else{
+                echo "
+                <script> 
+                document.location=\"".$_SERVER['REQUEST_URI']."&r=1&Largeur=\"+screen.width+\"&Hauteur=\"+screen.height; 
+                </script>"; 
+            }
+        }
+    
         if(!empty($_SESSION['id_cliente'])){
             $lgrc = true;
             $lgrf = false;
@@ -55,12 +69,6 @@
                 <li><a href="inicio<?php echo $php ?>"> Home </a></li>
                 <li><a href="localidade<?php echo $php ?>"> Filtrar por estado </a></li>
                 <?php
-                    if($lgrc == false){
-                ?>
-                <li><a href="seja-cliente<?php echo $php ?>"> Cadastre-se </a></li>
-                
-                <?php
-                    }
                     if($lgrf == false){
                 ?>
                 <li><a href="seja-filiado<?php echo $php ?>"> Seja acompanhante </a></li>
@@ -68,6 +76,7 @@
                     }
                 ?>
                 <li><a href="exibir-todos<?php echo $php ?>"> Ver todos </a></li>
+                <li><a href="sobre-o-site<?php echo $php ?>"> Sobre </a></li>
             </ul>
             <div class="content_logar">
                 <?php

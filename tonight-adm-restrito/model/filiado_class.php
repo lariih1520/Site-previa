@@ -35,6 +35,7 @@ class Acompanhante{
     public $cep;
     public $desconto;
     public $cpf;
+    public $visualizacoes;
     
     public function __construct(){
         require_once('db_class.php');
@@ -45,9 +46,12 @@ class Acompanhante{
     }
     
     public function SelectFiliados(){
-        $sql = 'select fi.*, pf.cpf from tbl_filiado as fi
+        $sql = 'select fi.*, pf.cpf, vi.visualizacoes from tbl_filiado as fi
                 left join tbl_pagamento_filiado as pf
-                on fi.id_filiado = pf.id_filiado where fi.conta_ativa = 1 order by fi.id_filiado desc';
+                on fi.id_filiado = pf.id_filiado 
+                left join tbl_visualizacoes as vi
+                on fi.id_filiado = vi.id_filiado
+                where fi.conta_ativa = 1 order by fi.id_filiado desc';
         
         if($select = mysqli_query($this->conect, $sql)){
             
@@ -64,6 +68,12 @@ class Acompanhante{
                     $result[$cont]->nasc = $rs['nasc'];
                     $result[$cont]->uf = $rs['uf'];
                     $result[$cont]->cobrar = $rs['cobrar'];
+                    
+                    if($rs['visualizacoes'] != null){
+                        $result[$cont]->visualizacoes = $rs['visualizacoes'];
+                    }else{
+                        $result[$cont]->visualizacoes = 0;
+                    }
                     $result[$cont]->cpf = base64_decode($rs['cpf']);
 
                     $cont++;
@@ -81,9 +91,11 @@ class Acompanhante{
     }
  
     public function SelectFiliadoPesq($pesq){
-        $sql = 'select fi.*, pf.cpf from tbl_filiado as fi
+        $sql = 'select fi.*, pf.cpf, vi.visualizacoes from tbl_filiado as fi
                 left join tbl_pagamento_filiado as pf
                 on fi.id_filiado = pf.id_filiado 
+                left join tbl_visualizacoes as vi
+                on fi.id_filiado = vi.id_filiado
                 where fi.nome like "%'.$pesq.'%" 
                 or fi.id_filiado like "%'.$pesq.'%" ';
         
@@ -101,6 +113,11 @@ class Acompanhante{
                     $result[$cont]->nasc = $rs['nasc'];
                     $result[$cont]->uf = $rs['uf'];
                     $result[$cont]->cobrar = $rs['cobrar'];
+                    if($rs['visualizacoes'] != null){
+                        $result[$cont]->visualizacoes = $rs['visualizacoes'];
+                    }else{
+                        $result[$cont]->visualizacoes = 0;
+                    }
                     $result[$cont]->cpf = base64_decode($rs['cpf']);
 
                     $cont++;
@@ -259,8 +276,8 @@ class Acompanhante{
         $sql = "delete from tbl_filiado_midia where id_filiado = ".$id;
         if(mysqli_query($this->conect, $sql)){
         
-            $sql = "update tbl_filiado set status = 0, conta_ativa = 0,
-                    foto_perfil = '-', apresentacao = '-', excluido = date(now())
+            $sql = "update tbl_filiado set conta_ativa = 0,
+                    foto_perfil = null, apresentacao = null, excluido = date(now())
                     where id_filiado = ".$id;
         
             
@@ -331,7 +348,6 @@ class Acompanhante{
             }
             
         }else{
-            //echo $sql;
             echo '<script> alert("Não foi possivel realizar a ação") </script>';
             ?> <script> window.location.href = "hospedes.php?modo=ver&codigo=<?php echo $id ?>&Erro#visualizar"; </script> <?php
                 
@@ -358,110 +374,77 @@ class Acompanhante{
     
     //Desativar a conta dos filiados estiverem com um atraso no pagamento
     public function AtualizarStatusPagamento(){
-        
-        $sql1 = "select *, month(data_cadastro) as mes,
-                day(data_cadastro) as dia, year(data_cadastro) as ano
-                from tbl_filiado where conta_ativa = 1";
+        $sql1 ="select fi.id_filiado, date(fi.data_cadastro) as data_cadastro, 
+                pag.data_pag as dia_pag,
+                date_add(date(fi.data_cadastro), interval 15 day) as data_pag 
+                from tbl_filiado as fi
+                inner join tbl_pagamento_filiado as pag
+                on fi.id_filiado = pag.id_filiado";
         
         if($select1 = mysqli_query($this->conect, $sql1)){
 
             if(mysqli_affected_rows($this->conect) > 0){
 
                 while($rs1 = mysqli_fetch_array($select1)){
-                    $mes = date('m');
-                    $dia = date('d');
+                    $id_filiado = $rs1['id_filiado'];
+                    $data_cadast = $rs1['data_cadastro'];
+                    $data_pag = $rs1['data_pag'];
+                    $dia_pag = $rs1['dia_pag'];
                     
-                    //Se a pessoa tem cadastro na tblmensalidade
-                    if($rs1['mes'] == $mes){
+                    $sql2 ="select 
+                            if(date(now()) between '".$data_cadast."' and '".$data_pag."', 'false', 'verifypag') 
+                            as condicao";
+                    $select2 = mysqli_query($this->conect, $sql2);
+                    
+                    while($rs2 = mysqli_fetch_array($select2)){
+                        $cond = $rs2['condicao'];
                         
-                        //Se ainda não passou o dia do pagamento desde
-                        //que a pessoa se cadastrou
-                        if($rs1['dia'] < 10 and $dia < 10){
-                            $tblpag = '0';
-                        }elseif($rs1['dia'] > 10){
-                            $tblpag = '0';
-                        }else{
-                            $tblpag = '1';
-                        }
-                        
-                    }else{
-                        $tblpag = '1';
-                        
-                    }
-                    //Se a condição a cima for  falsa ela entra no if
-                    if($tblpag == '1'){
-                        $id = $rs1['id_filiado'];
-
-                        $sql = "select month(now()) - month(data_hora) as mes, 10 - day(data_hora) as dias
-                                from tbl_mensalidade where id_filiado = ".$id;
-                        $sql = $sql." order by data_hora desc limit 1";
-                        
-                        if($select = mysqli_query($this->conect, $sql)){
-
-                            if(mysqli_affected_rows($this->conect) > 0){
-
-                                while($rs = mysqli_fetch_array($select)){
-                                    $dias = $rs['dias'];
-                                    $mes = $rs['mes'];
-                                    $dia = date('d');
-                                    
-                                    if($mes == 1){
-
-                                        if($dia >= 17){ //Se a conta deve ser excluida
-                                            
-                                            $sql = "update tbl_filiado set conta_ativa = 0
-                                            where id_filiado = ".$id;
-                                            
-                                            mysqli_query($this->conect, $sql);
-
-                                        }
-
-                                    }elseif($mes >= 2){ //Se passou do tempo da conta ser excluida
-                                        
-                                        $sql = "update tbl_filiado set conta_ativa = 0
-                                        where id_filiado = ".$id;
-                                        
-                                        mysqli_query($this->conect, $sql);
-                                    }
-                                    
-                                }
-
+                        if($cond == 'verifypag'){
+                            $id = $id_filiado;
+                            
+                            //Se ainda não estamnos no dia de pagamento 
+                            if(date('d') <= $dia_pag){
+                                $ultimopag = date('Y-m', strtotime('-1 month'));
                             }else{
-                                // Se a pessoa não tem cadastro na tblmensalidade
-                                // Se o dia de cadastro justifica essa condição ou não
-                                if($rs1['mes'] == $mes - 1){
+                                //Verificar se a mensalidade deste mês foi paga
+                                $ultimopag = date('Y-m');
+                            }
+                            
+                            $sql4 = "select if(concat(year(data_hora),'-', 
+                            if(month(data_hora) < 10, concat(0,month(data_hora)), 
+                            month(data_hora))) like '%".$ultimopag."%', 'false', 'desativar') 
+                            as condicao from tbl_mensalidade where id_filiado = ".$id."
+                            order by id_transferencia desc limit 1";
+                                                        
+                            $select4 = mysqli_query($this->conect, $sql4);
+                            
+                            if(mysqli_affected_rows($this->conect) > 0){
+                                while($rs4 = mysqli_fetch_array($select4)){
                                     
-                                    if($rs1['dia'] > 10 and $dia <10){
-                                        $tblpag = '0';
-                                    }else{
-                                         $sql = "update tbl_filiado set conta_ativa = 0
+                                    if($rs4['condicao'] == 'desativar'){
+                                        $sql5 = "update tbl_filiado set conta_ativa = 0
                                         where id_filiado = ".$id;
-                                        
-                                        mysqli_query($this->conect, $sql);
+
+                                        mysqli_query($this->conect, $sql5);
                                     }
-                                    
-                                }else{
-                                     $sql = "update tbl_filiado set conta_ativa = 0
-                                        where id_filiado = ".$id;
-                                        
-                                        mysqli_query($this->conect, $sql);
-                                    
                                 }
-                                
-                                
+                            }else{
+                                $sql5 = "update tbl_filiado set conta_ativa = 0
+                                        where id_filiado = ".$id;
+                                mysqli_query($this->conect, $sql5);
+
                             }
                         }
                     }
                 }
-                
                 echo "<script>alert('Atualizado com sucesso')</script>";
                 
             }else{ 
-                echo "<script>alert('Atualizado com sucesso')</script>";
+                echo "<script>alert('Não encontrados acompanhantes com a conta ativa')</script>";
             }
             
         }else{
-            echo "<script>alert('Não atualizado')</script>";
+            echo "<script>alert('Infelismente não foi possivel atualizar')</script>";
 
         }
         
@@ -477,19 +460,19 @@ class Acompanhante{
             
             $cont = 0;
             while($cont < count($filiados)){
-                $id = $filiados->id;
+                $id = $filiados[$cont]['id'];
 
                 $sql = "delete from tbl_filiado_midia where id_filiado = ".$id;
                 if(mysqli_query($this->conect, $sql)){
-
-                    $sql = "update tbl_filiado set status = 0, conta_ativa = 0,
-                            foto_perfil = '-', apresentacao = '-', excluido = date(now())
+                    
+                    $sql = "update tbl_filiado set conta_ativa = 0,
+                            foto_perfil = null, apresentacao = null, excluido = date(now())
                             where id_filiado = ".$id;
 
                     mysqli_query($this->conect, $sql);
 
                 }else{
-                    //echo $sql;
+                    
                     echo "<script>alert('Não foi possivel realizar a exclusão, tente novamente mais tarde')</script>";
 
                     ?> <script> window.location.href = "hospedes.php?Erro"; </script> <?php
@@ -501,98 +484,72 @@ class Acompanhante{
             ?> <script> window.location.href = "hospedes.php?Sucesso&nmr=<?php echo $cont ?>"; </script> <?php
             
         }else{
-            echo "<script>alert('Não foi possivel realizar a exclusão, tente novamente mais tarde')</script>";
+            echo "<script>alert('Não há filiados com mensalidade atrasada')</script>";
 
-            ?> <script> window.location.href = "hospedes.php?Erro"; </script> <?php
-
+            ?> <script> window.location.href = "hospedes.php"; </script> <?php
         }
     }
     
     //Buscar os usuários que devem ser excluidos e se há
     public function SelectFiliadosPagAtraso(){
         
-        $sql1 = "select * from tbl_filiado where conta_ativa = 0 and excluido = 0000-00-00";
+        $sql1 = "select fi.id_filiado, date(fi.data_cadastro) as data_cadastro, 
+                pag.data_pag as dia_pag,
+                concat(year(now()), '-', if(month(now()) < 10, 
+                concat(0, month(now())), month(now())), '-', if(pag.data_pag < 10, 
+                concat(0, pag.data_pag), pag.data_pag)) as data_pag 
+                from tbl_filiado as fi
+                inner join tbl_pagamento_filiado as pag
+                on fi.id_filiado = pag.id_filiado
+                where conta_ativa = 0 and excluido is null or excluido = 0";
         
         $select1 = mysqli_query($this->conect, $sql1);
         
         if(mysqli_affected_rows($this->conect) > 0){
             
+            $filiado = false;
             while($rs1 = mysqli_fetch_array($select1)){
                 
                 $id = $rs1['id_filiado'];
+                $diapag = $rs1['dia_pag'];
+                $datapag = $rs1['data_pag'];
                 
-                $sql = "select month(now()) - month(data_hora) as mes, 10 - day(data_hora) as dias
-                        from tbl_mensalidade where id_filiado = ".$id;
-                $sql = $sql." order by data_hora desc limit 1";
+                if(date('d') > $diapag){
+                    $sql = "select 
+                            if(date(now()) between '".$datapag."' and date_add('".$datapag."', interval 7 day),
+                            'false', 'verifypag') as condicao";
 
-                $select = mysqli_query($this->conect, $sql);
-
-                if(mysqli_affected_rows($this->conect) > 0){
-                    
-                    while($rs = mysqli_fetch_array($select)){
-                        $dias = $rs['dias'];
-                        $mes = $rs['mes'];
-                        $dia = date('d');
-                        $filiado = new Acompanhante();
-
-                        if($mes == 1){
-
-                            if($dia >= 17){ //Se a conta deve ser excluida
-                                $filiado->id = $id;
-                            }
-
-                        }elseif($mes >= 2){ //Se passou do tempo da conta ser excluida
-                            $filiado->id = $id;
-                        }
+                    if($select = mysqli_query($this->conect, $sql)){
                         
-                    }
-
-                }else{
-                    $sql1 = "select month(data_cadastro) as mes,
-                    day(data_cadastro) as dia
-                    from tbl_filiado where id_filiado =".$id;
-
-                    if($select1 = mysqli_query($this->conect, $sql1)){
-
-                        if(mysqli_affected_rows($this->conect) > 0){
-
-                            while($rs1 = mysqli_fetch_array($select1)){
-                                $mes = date('m');
-                                $dia = date('d');
-
-                                //Se a pessoa tem cadastro para pagamento
-                                if($rs1['mes'] == $mes){
-
-                                    if($rs1['dia'] < 10 and $dia < 10){
-                                        $tblpag = false;
-                                    }elseif($rs1['dia'] > 10){
-                                        $tblpag = '0';
-                                    }else{
-                                        $tblpag = '1';
+                        $cont = 0;
+                        while($rs = mysqli_fetch_array($select)){
+                            $condicao = $rs['condicao'];
+                            
+                            if($condicao == 'verifypag'){
+                                $sql2 = "select 
+                                        if(date(data_hora) like '%".date('Y-m-')."%', 'okay', 'excluir') 
+                                        as condicao from tbl_mensalidade where id_filiado = ".$id;
+                                $sql2 = $sql2." order by data_hora desc limit 1";
+                                $select2 = mysqli_query($this->conect, $sql2);
+                                
+                                if(mysqli_affected_rows($this->conect) > 0){
+                                    
+                                    while($rs2 = mysqli_fetch_array($select2)){
+                                        if($rs2['condicao'] != 'okay'){
+                                            //Se a conta deve ser excluida
+                                            $filiado[$cont]['id'] = $id;
+                                            $cont++;
+                                        }
                                     }
-
                                 }else{
-
-                                    if($rs1['dia'] > 10 and $dia < 10){
-                                        $tblpag = '0';
-                                    }else{
-                                        $tblpag = '1';
-                                    }
-
-                                }
-
-                                if($tblpag == '1'){
-                                    
-                                    $filiado = new Acompanhante();
-                                    $filiado->id = $id;
-                                    
+                                    $filiado[$cont]['id'] = $id;
+                                    $cont++;
                                 }
                             }
                         }
                     }
                 }
             }
-            
             return $filiado; // Retorno dos ids
             
         }else{

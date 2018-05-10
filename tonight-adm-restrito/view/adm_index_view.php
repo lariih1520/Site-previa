@@ -86,3 +86,59 @@
         </div>
         
     </div>
+
+    <h1 class="titulo" id="acompanhantes"> Acompanhante da semana - Slide </h1>
+
+    <?php
+        $rs = $controller->BuscarFiliados();
+                
+        if($rs != false){
+            
+            $cont = 0;
+            while($cont < count($rs)){
+                
+                if($rs[$cont]->status == 1){
+                    $classe = 'on';
+                }else{
+                    $classe = 'off';
+                }
+                
+                $id_filiado = $rs[$cont]->id_filiado;
+    ?>
+    <div class="usuario">
+        <a href="router.php?controller=index&modo=alterarSlide&id=<?php echo $id_filiado ?>">
+        <h1 class="titulo <?php echo $classe ?>"> 
+            <img src="../<?php echo $rs[$cont]->foto ?>" class="ftPrfl" alt="perfil">
+            <?php echo $rs[$cont]->nome.' ('.$rs[$cont]->apelido.')' ?> 
+        </h1>
+        </a>
+        
+        <ul class="userWeek">
+    <?php
+            $resp = $controller->ImagensFiliado($id_filiado);
+            
+            if($resp != false){
+                
+                $cnt = 0;
+                while($cnt < count($resp)){
+    
+            ?> <li> <img src="../<?php echo $resp[$cnt]->foto ?>"> </li> <?php
+                
+                    $cnt++;
+                }
+            }else{
+                echo 'Este usuário não possui fotos ';
+            }
+    ?>
+        </ul>
+        
+    </div>
+
+    <?php
+                $cont++;
+            }
+        }else{
+            echo "Não foram encontrados usuáirios";
+        }
+    ?>
+

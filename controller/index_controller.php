@@ -14,6 +14,14 @@ class ControllerIndex{
         return $rs;
     }
     
+    public function SlideDestaque(){
+        require_once('model/index_class.php');
+        $class = new Index();
+        $rs = $class->SlideDestaque();
+        
+        return $rs;
+    }
+    
 }
 
 ?>

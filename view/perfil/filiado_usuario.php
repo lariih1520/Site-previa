@@ -48,15 +48,15 @@
     if($rs != null){
         $desconto = $rs->desconto;
         $valor = $valor - $desconto;
+        $diapag = $rs->data_pag;
     }
 
     date_default_timezone_set('America/Sao_Paulo');
     $diah = date('d');
-    $diapag = '26';
     
     $pagMes = $controller->getStatusPagamento();
-      
-    if($pagMes == 'naopaga' and $diah == $diapag){//Ainda não pago
+
+    if($pagMes == 'naopaga'){//Ainda não pago
 
         $mensalidade = '<div class="mensalidade">
         Não esqueça de <a href="filiado-dados'.$php.'?editar=pagar-private">efetuar o pagamento </a> referente à este mês! Valor: '.$valor.',00
@@ -78,14 +78,16 @@
         $mensalidade = '';
 
     }elseif($pagMes == 'excluido'){ //Excluia
-        $mensalidade = 'Conta excluida';
+        
+        $mensalidade = '<div class="mensalidade">
+        Não esqueça de <a href="filiado-dados'.$php.'?editar=pagar-private">efetuar o pagamento </a> referente à este mês! Valor: '.$valor.',00
+        </div>';
+        
     }else{
         $mensalidade = '';
     }
     
-    
 ?>
-
     <?php echo $mensalidade ?>
     
     <h1 class="titulo_maior"> Olá, <?php echo $nome ?> </h1>
@@ -280,12 +282,23 @@
 
     <div class="sua_conta" id="tipo_conta"> <!-- ****** Tipo de conta ****** -->
         <p class="titulo"> Seu tipo de conta </p>
-
+        
+        <?php  if($diapag <= 9){ $diapag = '0'.$diapag; } ?>
+        
         <div class="tipo_conta">
             <p class="titulo"> <?php echo $titulo ?> </p>
             <p class="valor"> Preço: <?php echo $valor ?>,00 / Mês </p>
             <p> Quantidade de fotos: <?php echo $qtd_fotos ?> </p>
             <p> Quantidade de videos: <?php echo $qtd_videos ?> </p>
+            <p> Próximo pagamento: 
+                <?php 
+                if($pagMes == 'paga'){
+                    echo $diapag.date('/m/Y', strtotime('+1 months'));  
+                }else{
+                    echo $diapag.date('/m/Y'); 
+                }
+                ?> 
+            </p>
         </div>
         
         <div class="clear"></div>

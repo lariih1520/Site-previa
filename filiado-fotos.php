@@ -16,6 +16,11 @@
 		<link rel="stylesheet" type="text/css" href="css/estilo_filiado_fotos.css" />
         <script src="js/jquery.min.js"></script>
 	    <script src="js/jquery.form.js"></script>
+        <style>
+            #cetralizar_divs{
+                width: 960px;
+            }
+        </style>
 	</head>
 	<body>
 		<div id="principal">
@@ -23,14 +28,19 @@
             <!-- Cabecalho -->
             <?php include_once('view/header.php'); ?>
             
-            <!-- conteudo -->
-            <section id="conteudo">
-                <?php
-                    include_once('controller/filiado_controller.php');
-                    include_once('view/filiado_fotos_view.php');
-                ?>
-            </section>
+            <div id="cetralizar_divs">
+
+                <!-- conteudo -->
+                <section id="conteudo">
+                    <?php
+                        include_once('controller/filiado_controller.php');
+                        include_once('view/filiado_fotos_view.php');
+                    ?>
+                </section>
             
+            </div>
+            <div style="clear:both;border:solid 1px transparent;"></div>
+        
             <!-- rodape -->
             <?php include_once('view/footer.html'); ?>
 		</div>

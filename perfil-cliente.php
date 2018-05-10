@@ -14,6 +14,11 @@
         <link rel="icon" type="icone/png" href="imagens/logo.png">
 		<link rel="stylesheet" type="text/css" href="css/estilo_padrao.css" />
         <link rel="stylesheet" type="text/css" href="css/estilo_perfil_cliente.css" /> 
+        <style>
+            #cetralizar_divs{
+                width: 960px;
+            }
+        </style>
 	</head>
 	<body>
 		<div id="principal">
@@ -21,15 +26,20 @@
             <!-- Cabecalho -->
             <?php include_once('view/header.php'); ?>
             
-            <!-- conteudo -->
-            <section id="conteudo">
-                <?php
-                    if(!empty($_SESSION['id_cliente'])){
-                        include_once('view/perfil_cliente_view.php'); 
-                    }
-                ?>
-            </section>
-            
+            <div id="cetralizar_divs">
+
+                <!-- conteudo -->
+                <section id="conteudo">
+                    <?php
+                        if(!empty($_SESSION['id_cliente'])){
+                            include_once('view/perfil_cliente_view.php'); 
+                        }
+                    ?>
+                </section>
+
+            </div>
+            <div style="clear:both;border:solid 1px transparent;"></div>
+        
             <!-- rodape -->
             <?php include_once('view/footer.html'); ?>
 		</div>

@@ -131,4 +131,54 @@
     border: solid 1px gray;
 }
 
-
+.titulo{
+    height: 45px;
+    padding-top: 4px;
+    margin-bottom: 10px;
+}
+.usuario{
+    width: 940px;
+    height: 300px;
+    margin: auto;
+    padding: 10px;
+    margin-bottom: 20px;
+    border-bottom: solid 1px transparent;
+}
+.ftPrfl{
+    float: left;
+    width: 40px;
+    height: 40px;
+    margin-right: 10px;
+    border-radius: 40px;
+}
+.userWeek{
+    color: gray;
+    width: 930px;
+    height: 240px;
+    margin: auto;
+    margin-top: 10px;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    text-align: center;
+    border: solid 1px #CDCDCD;
+}
+.userWeek li{
+    width: 200px;
+    height: 220px;
+    float: left;
+    overflow: hidden;
+    text-align: center;
+    margin-left: 10px;
+    margin-bottom: 10px;
+    border: solid 1px #CDCDCD;
+}
+.userWeek li img{
+    max-width: 200px;
+    height: 220px;
+}
+.on{
+    border: solid 2px green;
+}
+.off{
+    border: solid 2px gray;
+}

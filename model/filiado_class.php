@@ -49,6 +49,7 @@ class Acompanhante{
     public $id_transfer;
     public $id_midia;
     public $excluido;
+    public $data_pag;
     
     public function __construct(){
         require_once('db_class.php');
@@ -184,7 +185,7 @@ class Acompanhante{
                     $filiado->sexo = 'Masculino';
                 }
                 
-                if($rs['apresentacao'] == null or $rs['apresentacao'] == 0){
+                if($rs['apresentacao'] == null or $rs['apresentacao'] == false){
                     $filiado->apresentacao = 'Não há apresentação';
                     
                 }else{
@@ -304,7 +305,8 @@ class Acompanhante{
                 while($rs = mysqli_fetch_array($select)){
                     $_SESSION['id_filiado'] = $rs['id_filiado'];
                     $cpf = base64_encode($fld->cpf);
-                    $sql2 = "insert into tbl_pagamento_filiado (id_filiado, cpf) values (".$rs['id_filiado'].", '".$cpf."')";
+                    $sql2 = "insert into tbl_pagamento_filiado (id_filiado, cpf, data_pag) values ";
+                    $sql2 = $sql2."(".$rs['id_filiado'].", '".$cpf."', day(DATE_ADD(CURDATE(), INTERVAL 15 DAY)))";
                     mysqli_query($this->conect, $sql2);
                     
                     $desconto = new Acompanhante();
@@ -321,28 +323,6 @@ class Acompanhante{
                             $sql = $sql." values (".$rs['id_filiado'].", '".$dt."', 0, 3, ".$desc['valor'];
                             $sql = $sql.", 'ref".date('m-d')."', 'mensal".$rs['id_filiado']."', 'promocao')";
                             mysqli_query($this->conect, $sql);
-                            
-                            if(date('d') >= 28){
-                                $ano = date('Y');
-                                $mes = date('m');
-                                $mes = $mes + 1;
-                                $time = date('H:i');
-
-                                if($mes <= 9){
-                                    $mes = '0'.$mes;
-                                }else{
-                                    if($mes == 12){
-                                        $mes = '01';
-                                    }
-                                }
-
-                                $dt = $ano.'-'.$mes.'-10 '.$time;
-                                $sql = "insert into tbl_mensalidade ";
-                                $sql = $sql."(id_filiado, data_hora, valor, status, desconto, code, referencia, forma)";
-                                $sql = $sql." values (".$rs['id_filiado'].", '".$dt."', 0, 3, ".$desc['valor'];
-                                $sql = $sql.", 'ref".date('m-d')."', 'mensal".$rs['id_filiado']."', 'promocao')";
-                                mysqli_query($this->conect, $sql);
-                            }
                         }
                     }
                     
@@ -394,61 +374,6 @@ class Acompanhante{
             return $desc;
         }else{
             return 2;
-        }
-        
-    }
-    
-    /* Cadastrar dados do pagamento */
-    public function InsertDadosPag($dadosPag){
-        
-        $q = $_GET['q'];
-        $id = $_SESSION['id_filiado'];
-        $forma = $dadosPag->formaPagar;
-        
-        if($q == 'pagar'){
-            $link = 'pagar-mensalidade.php?confirmar&forma='.$forma;
-            
-        }elseif($q == 'dados-private'){
-            $link = 'perfil-filiado.php';
-        }
-        
-        $sql = 'select * from tbl_pagamento_filiado where id_filiado = '.$id;
-        
-        mysqli_query($this->conect, $sql);
-        
-        if(mysqli_affected_rows($this->conect) > 0){
-            $dadosPag->id = $id;
-            $update = new Acompanhante();
-            $update->UpdateDadosPag($dadosPag);
-            
-        }else{
-            
-            $sql = 'insert into tbl_pagamento_filiado (
-            id_filiado, nome, sobrenome, telefone, rua, numero, bairro,
-            cidade, uf, cep, desconto, cpf, numero_cartao,
-            cvv, expiracaoMes, expiracaoAno)';
-            
-            $sql = $sql.'values ('.$id.', "'.$dadosPag->nome.'", "'.$dadosPag->sobrenome.'",
-            "'.$dadosPag->telefone.'", "'.$dadosPag->rua.'", '.$dadosPag->numero.', "'.$dadosPag->bairro.'",
-            "'.$dadosPag->cidade.'", "'.$dadosPag->uf.'", "'.$dadosPag->cep.'", 0, "'.$dadosPag->cpf.'",
-            "'.$dadosPag->numeroCartao.'", "'.$dadosPag->cvv.'",
-            "'.$dadosPag->mesExpira.'", "'.$dadosPag->anoExpira.'")';
-            
-            if(mysqli_query($this->conect, $sql)){
-               
-            
-            ?> <script>  window.location.href = "<?php echo $link ?>"; </script> <?php
-                
-            }else{
-                $link = $link.'?Erro';
-                
-            ?> <script> window.location.href = "<?php echo $link ?>"; </script> <?php
-                
-                //echo $sql;
-                //header('location:'.$link.'?Erro');
-            }
-            
-            
         }
         
     }
@@ -725,8 +650,8 @@ class Acompanhante{
         $sql = "delete from tbl_filiado_midia where id_filiado = ".$id;
         if(mysqli_query($this->conect, $sql)){
 
-            $sql = "update tbl_filiado set status = 0, conta_ativa = 0,
-                    foto_perfil = '-', apresentacao = '-', excluido = '".$datetime."'
+            $sql = "update tbl_filiado set conta_ativa = 0,
+                    foto_perfil = null, apresentacao = null, excluido = '".$datetime."'
                     where id_filiado = ".$id;
 
             if(mysqli_query($this->conect, $sql)){
@@ -793,6 +718,13 @@ class Acompanhante{
                 $dados->bairro = $rs['bairro'];
                 $dados->cidade = $rs['cidade'];
                 $dados->uf = $rs['uf'];
+                
+                if($rs['data_pag'] != null or $rs['data_pag'] != 0){
+                    $dados->data_pag = $rs['data_pag'];
+                }else{
+                    $dados->data_pag = 10;
+                }
+                
                 $dados->desconto = $rs['desconto'];
                 
                 $lencpf = strlen(base64_decode($rs['cpf']));
@@ -1492,12 +1424,14 @@ class Acompanhante{
     public function getStatusPagamento(){
         $id = $_SESSION['id_filiado'];
         
-        $sql = "select month(now()) - month(data_hora) as mes,
-                day(now()) - day(data_hora) as dias,
-                day(data_hora) as diapag,
-                forma
-                from tbl_mensalidade where id_filiado = ".$id;
-        $sql = $sql." order by data_hora desc limit 1";
+        $sql = "select month(now()) - month(m.data_hora) as mes,
+                day(now()) - pf.data_pag as dias,
+                pf.data_pag as diapag, m.forma
+                from tbl_mensalidade as m
+                inner join tbl_pagamento_filiado as pf
+                on m.id_filiado = pf.id_filiado
+                where m.id_filiado = ".$id;
+        $sql = $sql." order by m.data_hora desc limit 1";
                    
         if($select = mysqli_query($this->conect, $sql)){
             $tempo = 'naopaga';
@@ -1529,13 +1463,10 @@ class Acompanhante{
                 }
                 
             }
-
             return $tempo;
-              
         }else{
             return false;
         }
-            
     }
     
     /* Listar filiados peo sexo, etnia, com limit de retorno e excluindo algum id expessifico */
@@ -1739,6 +1670,20 @@ class Acompanhante{
         
         return $resut;
         
+    }
+    
+    public function ClienteVizualizar(){
+        $id = $_GET['codigo'];
+        $sql = "select * from tbl_visualizacoes where id_filiado = ".$id;
+        
+        $select = mysqli_query($this->conect, $sql);
+        if(mysqli_affected_rows($this->conect) > 0){
+            $sql = "update tbl_visualizacoes set visualizacoes = visualizacoes + 1 where id_filiado =".$id;
+        }else{
+            $sql = "insert into tbl_visualizacoes (visualizacoes, id_filiado) ";
+            $sql .= "values (1, ".$id.")";
+        }
+        mysqli_query($this->conect, $sql);
     }
     
 }

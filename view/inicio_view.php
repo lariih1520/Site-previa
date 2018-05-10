@@ -7,9 +7,6 @@
 
                      <!-- IMAGENS DO SLIDE -->
                     <div id="slider">
-                        <!--<a href="#" class="trs"><img src="imagens/free-wallpaper.jpg" alt="" /></a>
-                        <a href="#" class="trs"><img src="imagens/back.png" alt="" /></a>-->
-                        
                         <?php
                             require_once('controller/home_controller.php');
                             $controller = new ControllerHome();
@@ -40,6 +37,86 @@
                     </figure>
                 </div>
                 
+                <!-- Começo dos Slides-->
+                <?php
+                $fotosslide = new Inicio();
+                $resp = $fotosslide->FotosSlide();
+                
+                if($resp != false){
+                ?>
+                <div class="w3-content w3-display-container">
+                    <button class="w3-button w3-black w3-display-left" onclick="plusDivs(-1)">&#10094;</button>
+                <?php
+                     
+                    $nmr = (int)(count($resp) / 4);
+                        
+                    $cnt = 0;
+                    while($cnt < $nmr){
+                        $img1 = $resp[$cnt]->imgSlide;
+                        $id1 = $resp[$cnt]->id_filiado;
+                        $cnt++;
+                        $img2 = $resp[$cnt]->imgSlide;
+                        $id2 = $resp[$cnt]->id_filiado;
+                        $cnt++;
+                        $img3 = $resp[$cnt]->imgSlide;
+                        $id3 = $resp[$cnt]->id_filiado;
+                        $cnt++;
+                        $img4 = $resp[$cnt]->imgSlide;
+                        $id4 = $resp[$cnt]->id_filiado;
+
+                ?>
+                        <div class="mySlides">
+                            <a href="perfil-filiado.php?codigo=<?php echo $id1 ?>"><img src="<?php echo $img1 ?>" alt="Fotos slide"></a>
+                            <a href="perfil-filiado.php?codigo=<?php echo $id2 ?>"><img src="<?php echo $img2 ?>" alt="Fotos slide"></a>
+                            <a href="perfil-filiado.php?codigo=<?php echo $id3 ?>"><img src="<?php echo $img3 ?>" alt="Fotos slide"></a>
+                            <a href="perfil-filiado.php?codigo=<?php echo $id4 ?>"><img src="<?php echo $img4 ?>" alt="Fotos slide"></a>
+                        </div>
+                <?php
+                        $cnt++;
+                    }
+                    
+                ?>
+                    <button class="w3-button w3-black w3-display-right" style="margin-left:-40px;" onclick="plusDivs(1)">&#10095;</button>
+                </div>
+
+                <script>/* Slide automático */
+                    var slideIndex = 0;
+                    carousel();
+
+                    function carousel() {
+                        var i;
+                        var x = document.getElementsByClassName("mySlides");
+                        for (i = 0; i < x.length; i++) {
+                          x[i].style.display = "none"; 
+                        }
+                        slideIndex++;
+                        if (slideIndex > x.length) {slideIndex = 1} 
+                        x[slideIndex-1].style.display = "block"; 
+                        setTimeout(carousel, 3000); //Mudar imagem a cada 3 segundos
+                    }
+                </script>
+                <script>/* Slide manual */
+                    var slideIndex = 1;
+                    showDivs(slideIndex);
+
+                    function plusDivs(n) {
+                      showDivs(slideIndex += n);
+                    }
+
+                    function showDivs(n) {
+                      var i;
+                      var x = document.getElementsByClassName("mySlides");
+                      if (n > x.length) {slideIndex = 1}    
+                      if (n < 1) {slideIndex = x.length}
+                      for (i = 0; i < x.length; i++) {
+                         x[i].style.display = "none";  
+                      }
+                      x[slideIndex-1].style.display = "block";  
+                    }
+                </script>
+                <?php
+                }
+                ?>
                 <!-- Lista de usuários mulheres -->
                 <div id="mulheres">
                     <h1 class="titulo"><a href="exibir-todos<?php echo $php ?>?var=mulheres">
@@ -51,7 +128,7 @@
                     $sexo = 1;
                     
                     $controller = new ControllerAcompanhante();
-                    $rs = $controller->BuscarFiliadosSexo($sexo.'.', null, 9, null);
+                    $rs = $controller->BuscarFiliadosSexo($sexo.'.', null, 6, null);
                     
                 ?>
                     <div class="carrossel">
@@ -112,7 +189,7 @@
                     
                      <?php
                         $sexo = 2;
-                        $rs = $controller->BuscarFiliadosSexo($sexo.'.', null, 9, null);
+                        $rs = $controller->BuscarFiliadosSexo($sexo.'.', null, 6, null);
                     ?>
                         <div id="carrossel2" class="carrossel">
                             <ul>

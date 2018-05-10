@@ -14,6 +14,11 @@
         <link rel="icon" type="icone/png" href="imagens/logo.png">
 		<link rel="stylesheet" type="text/css" href="css/estilo_padrao.css" />
 		<link rel="stylesheet" type="text/css" href="css/estilo_seja_cliente.css" />
+        <style>
+            #cetralizar_divs{
+                width: 960px;
+            }
+        </style>
 	</head>
 	<body>
 		<div id="principal">
@@ -21,11 +26,16 @@
             <!-- Cabecalho -->
             <?php include_once('view/header.php'); ?>
             
-            <!-- conteudo -->
-            <div id="conteudo">
-                <?php include_once('view/seja_cliente_view.php'); ?>
-            </div>
+            <div id="cetralizar_divs">
+
+                <!-- conteudo -->
+                <div id="conteudo">
+                    <?php include_once('view/seja_cliente_view.php'); ?>
+                </div>
             
+            </div>
+            <div style="clear:both;border:solid 1px transparent;"></div>
+        
             <!-- rodape -->
             <?php include_once('view/footer.html'); ?>
 		</div>
